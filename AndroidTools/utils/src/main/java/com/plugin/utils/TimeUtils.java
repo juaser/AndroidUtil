@@ -26,139 +26,16 @@ public class TimeUtils {
      * 表示单引号。所有其他字符均不解释；只是在格式化时将它们简单复制到输出字符串，或者在分析时与输入字符串进行匹配。
      * </p>
      * 定义了以下模式字母（所有其他字符 'A' 到 'Z' 和 'a' 到 'z' 都被保留）： <br>
-     * <table border="1" cellspacing="1" cellpadding="1" summary="Chart shows pattern letters, date/time component, presentation, and examples.">
-     * <tr bgcolor="#ccccff">
-     * <th align="left">字母</th>
-     * <th align="left">日期或时间元素</th>
-     * <th align="left">表示</th>
-     * <th align="left">示例</th>
-     * </tr>
-     * <tr>
-     * <td><code>G</code></td>
-     * <td>Era 标志符</td>
-     * <td>Text</td>
-     * <td><code>AD</code></td>
-     * </tr>
-     * <tr bgcolor="#eeeeff">
-     * <td><code>y</code> </td>
-     * <td>年 </td>
-     * <td>Year </td>
-     * <td><code>1996</code>; <code>96</code> </td>
-     * </tr>
-     * <tr>
-     * <td><code>M</code> </td>
-     * <td>年中的月份 </td>
-     * <td>Month </td>
-     * <td><code>July</code>; <code>Jul</code>; <code>07</code> </td>
-     * </tr>
-     * <tr bgcolor="#eeeeff">
-     * <td><code>w</code> </td>
-     * <td>年中的周数 </td>
-     * <td>Number </td>
-     * <td><code>27</code> </td>
-     * </tr>
-     * <tr>
-     * <td><code>W</code> </td>
-     * <td>月份中的周数 </td>
-     * <td>Number </td>
-     * <td><code>2</code> </td>
-     * </tr>
-     * <tr bgcolor="#eeeeff">
-     * <td><code>D</code> </td>
-     * <td>年中的天数 </td>
-     * <td>Number </td>
-     * <td><code>189</code> </td>
-     * </tr>
-     * <tr>
-     * <td><code>d</code> </td>
-     * <td>月份中的天数 </td>
-     * <td>Number </td>
-     * <td><code>10</code> </td>
-     * </tr>
-     * <tr bgcolor="#eeeeff">
-     * <td><code>F</code> </td>
-     * <td>月份中的星期 </td>
-     * <td>Number </td>
-     * <td><code>2</code> </td>
-     * </tr>
-     * <tr>
-     * <td><code>E</code> </td>
-     * <td>星期中的天数 </td>
-     * <td>Text </td>
-     * <td><code>Tuesday</code>; <code>Tue</code> </td>
-     * </tr>
-     * <tr bgcolor="#eeeeff">
-     * <td><code>a</code> </td>
-     * <td>Am/pm 标记 </td>
-     * <td>Text </td>
-     * <td><code>PM</code> </td>
-     * </tr>
-     * <tr>
-     * <td><code>H</code> </td>
-     * <td>一天中的小时数（0-23） </td>
-     * <td>Number </td>
-     * <td><code>0</code> </td>
-     * </tr>
-     * <tr bgcolor="#eeeeff">
-     * <td><code>k</code> </td>
-     * <td>一天中的小时数（1-24） </td>
-     * <td>Number </td>
-     * <td><code>24</code> </td>
-     * </tr>
-     * <tr>
-     * <td><code>K</code> </td>
-     * <td>am/pm 中的小时数（0-11） </td>
-     * <td>Number </td>
-     * <td><code>0</code> </td>
-     * </tr>
-     * <tr bgcolor="#eeeeff">
-     * <td><code>h</code> </td>
-     * <td>am/pm 中的小时数（1-12） </td>
-     * <td>Number </td>
-     * <td><code>12</code> </td>
-     * </tr>
-     * <tr>
-     * <td><code>m</code> </td>
-     * <td>小时中的分钟数 </td>
-     * <td>Number </td>
-     * <td><code>30</code> </td>
-     * </tr>
-     * <tr bgcolor="#eeeeff">
-     * <td><code>s</code> </td>
-     * <td>分钟中的秒数 </td>
-     * <td>Number </td>
-     * <td><code>55</code> </td>
-     * </tr>
-     * <tr>
-     * <td><code>S</code> </td>
-     * <td>毫秒数 </td>
-     * <td>Number </td>
-     * <td><code>978</code> </td>
-     * </tr>
-     * <tr bgcolor="#eeeeff">
-     * <td><code>z</code> </td>
-     * <td>时区 </td>
-     * <td>General time zone </td>
-     * <td><code>Pacific Standard Time</code>; <code>PST</code>; <code>GMT-08:00</code> </td>
-     * </tr>
-     * <tr>
-     * <td><code>Z</code> </td>
-     * <td>时区 </td>
-     * <td>RFC 822 time zone </td>
-     * <td><code>-0800</code> </td>
-     * </tr>
-     * </table>
-     * <pre>
-     *                     yyyy-MM-dd 1969-12-31
-     *                     yyyy-MM-dd 1970-01-01
-     *               yyyy-MM-dd HH:mm 1969-12-31 16:00
-     *               yyyy-MM-dd HH:mm 1970-01-01 00:00
-     *              yyyy-MM-dd HH:mmZ 1969-12-31 16:00-0800
-     *              yyyy-MM-dd HH:mmZ 1970-01-01 00:00+0000
-     *       yyyy-MM-dd HH:mm:ss.SSSZ 1969-12-31 16:00:00.000-0800
-     *       yyyy-MM-dd HH:mm:ss.SSSZ 1970-01-01 00:00:00.000+0000
-     *     yyyy-MM-dd'T'HH:mm:ss.SSSZ 1969-12-31T16:00:00.000-0800
-     *     yyyy-MM-dd'T'HH:mm:ss.SSSZ 1970-01-01T00:00:00.000+0000
+     * yyyy-MM-dd 1969-12-31
+     * yyyy-MM-dd 1970-01-01
+     * yyyy-MM-dd HH:mm 1969-12-31 16:00
+     * yyyy-MM-dd HH:mm 1970-01-01 00:00
+     * yyyy-MM-dd HH:mmZ 1969-12-31 16:00-0800
+     * yyyy-MM-dd HH:mmZ 1970-01-01 00:00+0000
+     * yyyy-MM-dd HH:mm:ss.SSSZ 1969-12-31 16:00:00.000-0800
+     * yyyy-MM-dd HH:mm:ss.SSSZ 1970-01-01 00:00:00.000+0000
+     * yyyy-MM-dd'T'HH:mm:ss.SSSZ 1969-12-31T16:00:00.000-0800
+     * yyyy-MM-dd'T'HH:mm:ss.SSSZ 1970-01-01T00:00:00.000+0000
      * </pre>
      */
     public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -477,5 +354,41 @@ public class TimeUtils {
         return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
     }
 
+    /**
+     * 判断两个时间差距
+     *
+     * @param startDate 秒 时间戳
+     * @param endDate   秒 时间戳
+     * @return
+     */
+    public static String twoTimestampMinus(int startDate, int endDate) {
+        int minus = Math.abs(startDate - endDate);
+        int day = 0;
+        int hour = 0;
+        int minute = 0;
+        int second = 0;
+        day = minus / (24 * 60 * 60);
+        if (day > 0) {
+            minus = minus - day * (24 * 60 * 60);
+        }
+        hour = minus / (60 * 60);
+        if (hour > 0) {
+            minus = minus - hour * (60 * 60);
+        }
+        minute = minus / 60;
+        if (minute > 0) {
+            minus = minus - minute * 60;
+        }
+        second = minus;
+        String str = "";
+        if (hour > 0) {
+            str = "剩余" + day + "天" + hour + "小时";
+        } else if (minute > 0) {
+            str = "剩余" + hour + "小时" + minute + "分";
+        } else {
+            str = "剩余" + minute + "分" + second + "秒";
+        }
+        return str;
+    }
 }
 
