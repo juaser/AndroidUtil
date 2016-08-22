@@ -1,9 +1,9 @@
 package com.zxl.androidtools.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.plugin.utils.base.BaseActivity;
 import com.plugin.weight.choose.SwitchButton;
 import com.plugin.weight.choose.ToggleButton;
 import com.zxl.androidtools.R;
@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
  * @author：zxl
  * @CreateTime 2016/8/22.
  */
-public class SwitchButtonActivity extends Activity implements ToggleButton.OnToggleChanged, SwitchButton.OnChangeListener {
+public class SwitchButtonActivity extends BaseActivity implements ToggleButton.OnToggleChanged, SwitchButton.OnChangeListener {
     @Bind(R.id.toggleBtn)
     ToggleButton toggleBtn;
     @Bind(R.id.tv_toggle_status)

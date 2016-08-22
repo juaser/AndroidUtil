@@ -17,10 +17,13 @@
         </activity>
         <activity
             android:name="plugin.test.TestActivity"
-            android:label="@string/acticityname_test" />
+            android:label="@string/label_test" />
         <activity
             android:name=".ui.SwitchButtonActivity"
-            android:label="@string/activityname_switch" />
+            android:label="@string/label_switch" />
+        <activity
+            android:name=".ui.FlowLayoutActivty"
+            android:label="@string/label_flow" />
     </application>
 
 </manifest>

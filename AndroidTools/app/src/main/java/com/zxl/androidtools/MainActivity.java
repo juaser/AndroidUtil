@@ -3,11 +3,11 @@ package com.zxl.androidtools;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.plugin.utils.SystemInfoUtils;
+import com.plugin.utils.base.BaseActivity;
 import com.zxl.androidtools.adapter.MainRecyclerAdapter;
 import com.zxl.androidtools.inter.OnClickPositonListerner;
 
@@ -17,7 +17,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements OnClickPositonListerner {
+public class MainActivity extends BaseActivity implements OnClickPositonListerner {
 
     @Bind(R.id.recycler)
     RecyclerView recycler;

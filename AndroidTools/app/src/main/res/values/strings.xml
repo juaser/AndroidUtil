@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">AndroidTools</string>
-    <string name="activityname_mian">主界面</string>
-    <string name="activityname_switch">开关选择器</string>
-    <string name="acticityname_test">测试</string>
+    <string name="label_mian">主界面</string>
+    <string name="label_test">测试</string>
+    <string name="label_switch">开关选择器</string>
+    <string name="label_flow">测量子布局的宽度，换行</string>
 </resources>
