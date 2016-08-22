@@ -2,7 +2,6 @@ package com.plugin.utils.log;
 
 import android.util.Log;
 
-
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -12,8 +11,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import core.android.log.KLog;
 
 /**
  * Created by zhaokaiqiang on 15/11/18.
@@ -26,11 +23,11 @@ public class XmlLog {
             xml = XmlLog.formatXML(xml);
             xml = headString + "\n" + xml;
         } else {
-            xml = headString + KLog.NULL_TIPS;
+            xml = headString + LogUtils.NULL_TIPS;
         }
 
         KLogUtil.printLine(tag, true);
-        String[] lines = xml.split(KLog.LINE_SEPARATOR);
+        String[] lines = xml.split(LogUtils.LINE_SEPARATOR);
         for (String line : lines) {
             if (!KLogUtil.isEmpty(line)) {
                 Log.d(tag, "║ " + line);

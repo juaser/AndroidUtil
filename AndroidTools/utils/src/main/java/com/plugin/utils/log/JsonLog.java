@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import core.android.log.KLog;
 
 /**
  * Created by zhaokaiqiang on 15/11/18.
@@ -21,10 +20,10 @@ public class JsonLog {
         try {
             if (msg.startsWith("{")) {
                 JSONObject jsonObject = new JSONObject(msg);
-                message = jsonObject.toString(KLog.JSON_INDENT);
+                message = jsonObject.toString(LogUtils.JSON_INDENT);
             } else if (msg.startsWith("[")) {
                 JSONArray jsonArray = new JSONArray(msg);
-                message = jsonArray.toString(KLog.JSON_INDENT);
+                message = jsonArray.toString(LogUtils.JSON_INDENT);
             } else {
                 message = msg;
             }
@@ -33,8 +32,8 @@ public class JsonLog {
         }
 
         KLogUtil.printLine(tag, true);
-        message = headString + KLog.LINE_SEPARATOR + message;
-        String[] lines = message.split(KLog.LINE_SEPARATOR);
+        message = headString + LogUtils.LINE_SEPARATOR + message;
+        String[] lines = message.split(LogUtils.LINE_SEPARATOR);
         for (String line : lines) {
             Log.d(tag, "║ " + line);
         }
