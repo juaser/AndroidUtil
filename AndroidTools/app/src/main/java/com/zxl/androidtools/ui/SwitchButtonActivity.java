@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
  * @author：zxl
  * @CreateTime 2016/8/22.
  */
-public class SwitchButtonActivity extends Activity {
+public class SwitchButtonActivity extends Activity implements ToggleButton.OnToggleChanged, SwitchButton.OnChangeListener {
     @Bind(R.id.toggleBtn)
     ToggleButton toggleBtn;
     @Bind(R.id.tv_toggle_status)
@@ -32,40 +32,41 @@ public class SwitchButtonActivity extends Activity {
         setContentView(R.layout.activity_switch);
         ButterKnife.bind(this);
         initView();
-        setToggleClick();
-        setSwitchClick();
     }
 
+    /**
+     * 初始化
+     */
     public void initView() {
         toggleBtn.setToggleOn();
         tvToggleStatus.setText("开");
         switchBtn.setmSwitchOn(true);
         tvSwitchStatus.setText("开");
+        toggleBtn.setOnToggleChanged(this);
+        switchBtn.setOnChangeListener(this);
     }
 
-    public void setToggleClick() {
-        toggleBtn.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
-            @Override
-            public void onToggle(boolean on) {
-                if (on) {
-                    tvToggleStatus.setText("开");
-                } else {
-                    tvToggleStatus.setText("关");
-                }
-            }
-        });
+    /**
+     * ToggleButton监听
+     */
+    @Override
+    public void onToggle(boolean on) {
+        if (on) {
+            tvToggleStatus.setText("开");
+        } else {
+            tvToggleStatus.setText("关");
+        }
     }
 
-    public void setSwitchClick() {
-        switchBtn.setOnChangeListener(new SwitchButton.OnChangeListener() {
-            @Override
-            public void onChange(SwitchButton sb, boolean state) {
-                if (state) {
-                    tvSwitchStatus.setText("开");
-                } else {
-                    tvSwitchStatus.setText("关");
-                }
-            }
-        });
+    /**
+     * SwitchButton监听
+     */
+    @Override
+    public void onChange(SwitchButton sb, boolean state) {
+        if (state) {
+            tvSwitchStatus.setText("开");
+        } else {
+            tvSwitchStatus.setText("关");
+        }
     }
 }
