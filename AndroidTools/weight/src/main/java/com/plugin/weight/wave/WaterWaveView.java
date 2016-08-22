@@ -1,4 +1,4 @@
-package com.plugin.weight;
+package com.plugin.weight.wave;
 
 import android.content.Context;
 import android.graphics.Bitmap;

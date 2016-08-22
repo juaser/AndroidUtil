@@ -15,6 +15,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.SwitchButtonActivity"
+            android:label="@string/activityname_switch" />
+        <activity
+            android:name="plugin.test.TestActivity"
+            android:label="@string/acticityname_test" />
     </application>
 
 </manifest>
