@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Weight</string>
+    <string name="ellipsis">\u2026</string>
 </resources>

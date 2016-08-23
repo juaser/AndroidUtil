@@ -24,6 +24,9 @@
         <activity
             android:name=".ui.FlowLayoutActivty"
             android:label="@string/label_flow" />
+        <activity
+            android:name=".ui.MarqueeActivity"
+            android:label="@string/label_marquee" />
     </application>
 
 </manifest>

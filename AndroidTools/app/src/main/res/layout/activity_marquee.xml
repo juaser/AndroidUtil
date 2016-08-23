@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:vswitch="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="纵向的跑马灯效果" />
+
+        <com.plugin.weight.textview.UPMarqueeView
+            android:id="@+id/upMarquee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="10dp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="Android实现跑马灯效果的方法。分享给大家供大家参考" />
+
+    <com.plugin.weight.textview.VerticalSwitchTextView
+        android:id="@+id/vertical_switch_textview1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/color_wihte"
+        android:ellipsize="end"
+        android:padding="8dp"
+        android:textColor="@color/color_black"
+        android:textSize="30sp"
+        vswitch:alignment="left"
+        vswitch:idleDuaration="1500"
+        vswitch:switchDuaration="500"
+        vswitch:switchOrientation="up" />
+
+    <com.plugin.weight.textview.VerticalSwitchTextView
+        android:id="@+id/vertical_switch_textview2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_wihte"
+        android:ellipsize="start"
+        android:padding="8dp"
+        android:textColor="@color/color_black"
+        android:textSize="30sp"
+        vswitch:alignment="center"
+        vswitch:idleDuaration="1000"
+        vswitch:switchDuaration="800"
+        vswitch:switchOrientation="down" />
+</LinearLayout>
