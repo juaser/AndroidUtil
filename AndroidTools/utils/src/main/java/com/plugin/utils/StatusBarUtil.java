@@ -409,6 +409,7 @@ public class StatusBarUtil {
         return context.getResources().getDimensionPixelSize(resourceId);
     }
 
+
     /**
      * 计算状态栏颜色
      *
