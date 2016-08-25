@@ -147,4 +147,15 @@ public class RegularUtils {
         Matcher m = p.matcher(str);
         return m.replaceAll("").trim();
     }
+    /**
+     * 判断网址是否有效
+     */
+    public static boolean isLinkAvailable(String link) {
+        Pattern pattern = Pattern.compile("^(http://|https://)?((?:[A-Za-z0-9]+-[A-Za-z0-9]+|[A-Za-z0-9]+)\\.)+([A-Za-z]+)[/\\?\\:]?.*$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(link);
+        if (matcher.matches()) {
+            return true;
+        }
+        return false;
+    }
 }

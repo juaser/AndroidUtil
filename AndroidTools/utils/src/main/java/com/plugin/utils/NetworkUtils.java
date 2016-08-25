@@ -90,18 +90,6 @@ public class NetworkUtils {
         return info != null && info.isAvailable() && info.getSubtype() == TelephonyManager.NETWORK_TYPE_LTE;
     }
 
-    /**
-     * 判断wifi是否连接状态
-     * <p>需添加权限 android.permission.ACCESS_NETWORK_STATE</p>
-     *
-     * @param context 上下文
-     * @return true: 连接<br>false: 未连接
-     */
-    public static boolean isWifiConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm != null && cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
-    }
 
     /**
      * 获取移动网络运营商名称
@@ -235,5 +223,52 @@ public class NetworkUtils {
             default:
                 return "NETWORK_UNKNOWN";
         }
+    }
+
+    /**
+     * 检测网络是否连接
+     */
+    public static boolean isNetConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo[] infos = cm.getAllNetworkInfo();
+            if (infos != null) {
+                for (NetworkInfo ni : infos) {
+                    if (ni.isConnected()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 检测wifi是否连接
+     * * <p>需添加权限 android.permission.ACCESS_NETWORK_STATE</p>
+     */
+    public static boolean isWifiConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 检测3G是否连接
+     */
+    public static boolean is3gConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                return true;
+            }
+        }
+        return false;
     }
 }
