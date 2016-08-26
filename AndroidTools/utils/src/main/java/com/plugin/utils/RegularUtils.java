@@ -50,6 +50,8 @@ public class RegularUtils {
      * 验证邮箱
      */
     private static final String REGEX_EMAIL = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
+
+    private static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
     /**
      * 验证url
      */
@@ -147,6 +149,7 @@ public class RegularUtils {
         Matcher m = p.matcher(str);
         return m.replaceAll("").trim();
     }
+
     /**
      * 判断网址是否有效
      */
