@@ -2,9 +2,12 @@ package com.zxl.androidtools;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import android.widget.TextView;
 
 import com.plugin.utils.base.BaseActivity;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * @Description:
@@ -12,9 +15,20 @@ import com.plugin.utils.base.BaseActivity;
  * @Date: 26/8/16.
  */
 public class TestActivity extends BaseActivity {
+    @Bind(R.id.tv_test)
+    TextView tvTest;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ContextCompat.getDrawable(this,R.drawable.shape_retangle_white);
+        setContentView(R.layout.activity_test);
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 }

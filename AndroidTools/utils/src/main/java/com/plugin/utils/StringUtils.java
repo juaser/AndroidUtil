@@ -10,6 +10,12 @@ import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 
+import com.plugin.utils.log.LogUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 
 /**
@@ -149,5 +155,36 @@ public class StringUtils {
                     + "GB";
         }
         return size;
+    }
+
+    /**
+     * To string string.
+     *
+     * @param is the is
+     * @return the string
+     */
+    public static String toString(InputStream is) {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String result = "";
+        String line = "";
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            result = sb.toString();
+        } catch (IOException e) {
+            LogUtils.e("IOException");
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    LogUtils.e("IOException");
+                }
+
+            }
+        }
+        return result;
     }
 }

@@ -12,8 +12,10 @@ public class Sample {
         String str = "Hello world!";
         // string转byte
         byte[] bs = str.getBytes();
-        System.out.println("原文："+str);
-        System.out.println("byte数组"+bs.toString());
-        System.out.println("byte数组toString"+Arrays.toString(bs));
+        System.out.println("原文：" + str);
+        System.out.println("byte数组" + bs.toString());
+        System.out.println("byte数组toString" + Arrays.toString(bs));
+
     }
+
 }

@@ -5,4 +5,5 @@
     <string name="label_switch">开关选择器</string>
     <string name="label_flow">测量子布局的宽度，换行</string>
     <string name="label_marquee">跑马灯效果</string>
+    <string name="laber_xml">xml解析</string>
 </resources>

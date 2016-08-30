@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="plugin.test.TestActivity"
+            android:name=".TestActivity"
             android:label="@string/label_test" />
         <activity
             android:name=".ui.SwitchButtonActivity"
@@ -27,6 +27,9 @@
         <activity
             android:name=".ui.MarqueeActivity"
             android:label="@string/label_marquee" />
+        <activity
+            android:name=".ui.TestXmlActivity"
+            android:label="@string/laber_xml" />
     </application>
 
 </manifest>

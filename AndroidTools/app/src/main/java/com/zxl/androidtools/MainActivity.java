@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.plugin.utils.SystemInfoUtils;
 import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.adapter.MainRecyclerAdapter;
 import com.zxl.androidtools.inter.OnClickPositonListerner;
 
@@ -42,6 +43,7 @@ public class MainActivity extends BaseActivity implements OnClickPositonListerne
         activity_labname = new ArrayList<>();
         activity_packagename = new ArrayList<>();
         ActivityInfo[] activities = SystemInfoUtils.getInstance(this).getActivityInfo();
+        LogUtils.e("activity.size==" + activities.length);
         if (activities != null) {
             for (ActivityInfo activityInfo : activities) {
                 if (activityInfo.labelRes != 0) {
