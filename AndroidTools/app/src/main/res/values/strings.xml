@@ -11,4 +11,5 @@
     <string name="str_parser_jdom">jdom解析</string>
     <string name="str_parser_sax">sax解析</string>
     <string name="str_parser_pull">pull解析</string>
+    <string name="str_parser_create">xml创建</string>
 </resources>

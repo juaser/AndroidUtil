@@ -59,4 +59,15 @@
         android:padding="10dp"
         android:text="@string/str_parser_pull"
         android:textColor="@color/color_black" />
+
+    <TextView
+        android:id="@+id/tv_createxml"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/color_wihte"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/str_parser_create"
+        android:textColor="@color/color_black" />
 </LinearLayout>

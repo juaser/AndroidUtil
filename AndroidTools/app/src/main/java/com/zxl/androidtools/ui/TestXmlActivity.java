@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.plugin.utils.IOUtils;
 import com.plugin.utils.base.BaseActivity;
 import com.plugin.utils.log.LogUtils;
+import com.plugin.utils.xml.CreateXmlDemo;
 import com.plugin.utils.xml.Dom4jDemo;
 import com.plugin.utils.xml.DomDemo;
 import com.plugin.utils.xml.JDomDemo;
@@ -121,6 +122,16 @@ public class TestXmlActivity extends BaseActivity {
             LogUtils.e("XmlPullParserException");
         } finally {
             IOUtils.close(open);
+        }
+    }
+
+    @OnClick(R.id.tv_createxml)
+    void create() {
+        CreateXmlDemo createXmlDemo = new CreateXmlDemo();
+        try {
+            createXmlDemo.createXml();
+        } catch (IOException e) {
+            LogUtils.e("IOException");
         }
     }
 }
