@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_domparser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/color_wihte"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/str_parser_dom"
+        android:textColor="@color/color_black" />
+
+    <TextView
+        android:id="@+id/tv_dom4j"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/color_wihte"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/str_parser_dom4J"
+        android:textColor="@color/color_black" />
+
+    <TextView
+        android:id="@+id/tv_jdom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/color_wihte"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/str_parser_jdom"
+        android:textColor="@color/color_black" />
+
+    <TextView
+        android:id="@+id/tv_sax"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/color_wihte"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/str_parser_sax"
+        android:textColor="@color/color_black" />
+
+    <TextView
+        android:id="@+id/tv_pull"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/color_wihte"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/str_parser_pull"
+        android:textColor="@color/color_black" />
+</LinearLayout>
