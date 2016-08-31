@@ -41,7 +41,7 @@ public class T {
         String message = String.valueOf(value);
         if (null == toast) {
             toast = Toast.makeText(AppManager.getInstance().getTop(), String.valueOf(message), Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.setGravity(Gravity.CENTER, 0, 20);
         } else {
             toast.setText(message);
         }

@@ -1,8 +1,5 @@
 package com.zxl.androidtools.ui;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-
 import com.plugin.utils.IOUtils;
 import com.plugin.utils.base.BaseActivity;
 import com.plugin.utils.log.LogUtils;
@@ -24,7 +21,6 @@ import java.io.InputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -33,12 +29,15 @@ import butterknife.OnClick;
  * @Date: 30/8/16.
  */
 public class TestXmlActivity extends BaseActivity {
+    
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_parserxml;
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parserxml);
-        ButterKnife.bind(this);
+    public void initView() {
+
     }
 
     @OnClick(R.id.tv_domparser)

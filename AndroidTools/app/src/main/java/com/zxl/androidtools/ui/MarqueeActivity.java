@@ -1,7 +1,5 @@
 package com.zxl.androidtools.ui;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * @description：
@@ -33,12 +30,8 @@ public class MarqueeActivity extends BaseActivity {
     List<String> marquees;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_marquee);
-        ButterKnife.bind(this);
-        initView();
-        setView();
+    public int getLayoutId() {
+        return R.layout.activity_marquee;
     }
 
     public void initView() {
@@ -49,6 +42,7 @@ public class MarqueeActivity extends BaseActivity {
         marquees = new ArrayList<>();
         marquees.add("11111");
         marquees.add("22222");
+        setView();
     }
 
     public void setView() {

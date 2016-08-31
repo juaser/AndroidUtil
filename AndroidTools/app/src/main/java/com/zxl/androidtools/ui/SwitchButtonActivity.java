@@ -1,6 +1,5 @@
 package com.zxl.androidtools.ui;
 
-import android.os.Bundle;
 import android.widget.TextView;
 
 import com.plugin.utils.base.BaseActivity;
@@ -9,7 +8,6 @@ import com.plugin.weight.choose.ToggleButton;
 import com.zxl.androidtools.R;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * @description：
@@ -27,11 +25,8 @@ public class SwitchButtonActivity extends BaseActivity implements ToggleButton.O
     TextView tvSwitchStatus;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_switch);
-        ButterKnife.bind(this);
-        initView();
+    public int getLayoutId() {
+        return R.layout.activity_switch;
     }
 
     /**

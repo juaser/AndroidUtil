@@ -1,6 +1,5 @@
 package com.zxl.androidtools.ui;
 
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,7 +10,6 @@ import com.plugin.weight.textview.PigeonTextView;
 import com.zxl.androidtools.R;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * @description：
@@ -25,11 +23,8 @@ public class FlowLayoutActivty extends BaseActivity {
     private int num = 20;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flow);
-        ButterKnife.bind(this);
-        initView();
+    public int getLayoutId() {
+        return R.layout.activity_flow;
     }
 
     public void initView() {

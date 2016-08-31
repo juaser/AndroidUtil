@@ -29,7 +29,10 @@
             android:label="@string/label_marquee" />
         <activity
             android:name=".ui.TestXmlActivity"
-            android:label="@string/laber_xml" />
+            android:label="@string/label_xml" />
+        <activity
+            android:name=".ui.TestHttpActivity"
+            android:label="@string/label_http" />
     </application>
 
 </manifest>

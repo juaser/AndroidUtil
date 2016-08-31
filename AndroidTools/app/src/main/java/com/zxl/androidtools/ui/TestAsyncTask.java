@@ -1,8 +1,6 @@
 package com.zxl.androidtools.ui;
 
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import com.plugin.utils.base.BaseActivity;
 
@@ -12,9 +10,15 @@ import com.plugin.utils.base.BaseActivity;
  * @Date: 30/8/16.
  */
 public class TestAsyncTask extends BaseActivity {
+    
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public int getLayoutId() {
+        return 0;
+    }
+
+    @Override
+    public void initView() {
+
     }
 
     private class MThread extends Thread {

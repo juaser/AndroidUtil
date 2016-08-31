@@ -1,13 +1,10 @@
 package com.zxl.androidtools;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.TextView;
 
 import com.plugin.utils.base.BaseActivity;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * @Description:
@@ -19,16 +16,12 @@ public class TestActivity extends BaseActivity {
     TextView tvTest;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+    public int getLayoutId() {
+        return R.layout.activity_test;
     }
 
-
-
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
+    public void initView() {
+
     }
 }
