@@ -2,6 +2,7 @@ package com.zxl.androidtools;
 
 import android.widget.TextView;
 
+import com.plugin.utils.PathUtils;
 import com.plugin.utils.base.BaseActivity;
 
 import butterknife.Bind;
@@ -22,6 +23,6 @@ public class TestActivity extends BaseActivity {
 
     @Override
     public void initView() {
-
+        String imagepath = PathUtils.getInstance().getDemoDir();
     }
 }
