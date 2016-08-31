@@ -1,13 +1,10 @@
 package com.plugin.utils;
 
-import android.os.Environment;
-
 import com.plugin.utils.log.LogUtils;
-import com.plugin.utils.manager.AppManager;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,107 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import static com.plugin.utils.IOUtils.close;
+
 /**
  * Created by  mac133 .
  * Created on  16/8/1 上午10:32
  * Description ${文件操作工具类}
  */
 public class FileUtils {
-
-    public static final String ROOT_DIR = "Android/data/"
-            + AppManager.getInstance().getTop().getPackageName();
-    public static final String DOWNLOAD_DIR = "download";
-    public static final String CACHE_DIR = "cache";
-    public static final String ICON_DIR = "icon";
-
-    /**
-     * 判断SD卡是否挂载
-     */
-    public static boolean isSDCardAvailable() {
-        if (Environment.MEDIA_MOUNTED.equals(Environment
-                .getExternalStorageState())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * 获取下载目录
-     */
-    public static String getDownloadDir() {
-        return getDir(DOWNLOAD_DIR);
-    }
-
-    /**
-     * 获取缓存目录
-     */
-    public static String getCacheDir() {
-        return getDir(CACHE_DIR);
-    }
-
-    /**
-     * 获取icon目录
-     */
-    public static String getIconDir() {
-        return getDir(ICON_DIR);
-    }
-
-    /**
-     * 获取应用目录，当SD卡存在时，获取SD卡上的目录，当SD卡不存在时，获取应用的cache目录
-     */
-    public static String getDir(String name) {
-        StringBuilder sb = new StringBuilder();
-        if (isSDCardAvailable()) {
-            sb.append(getExternalStoragePath());
-        } else {
-            sb.append(getCachePath());
-        }
-        sb.append(name);
-        sb.append(File.separator);
-        String path = sb.toString();
-        if (createDirs(path)) {
-            return path;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * 获取SD下的应用目录
-     */
-    public static String getExternalStoragePath() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Environment.getExternalStorageDirectory().getAbsolutePath());
-        sb.append(File.separator);
-        sb.append(ROOT_DIR);
-        sb.append(File.separator);
-        return sb.toString();
-    }
-
-
-    /**
-     * 获取应用的cache目录
-     */
-    public static String getCachePath() {
-        File f = AppManager.getInstance().getTop().getCacheDir();
-        if (null == f) {
-            return null;
-        } else {
-            return f.getAbsolutePath() + "/";
-        }
-    }
-
-    /**
-     * 创建文件夹
-     */
-    public static boolean createDirs(String dirPath) {
-        File file = new File(dirPath);
-        if (!file.exists() || !file.isDirectory()) {
-            return file.mkdirs();
-        }
-        return true;
-    }
 
     /**
      * 复制文件，可以选择是否删除源文件
@@ -151,8 +55,11 @@ public class FileUtils {
             if (deleteSrc) {
                 srcFile.delete();
             }
-        } catch (Exception e) {
-            LogUtils.e(e);
+        } catch (FileNotFoundException e) {
+            LogUtils.e("FileNotFoundException");
+            return false;
+        } catch (IOException e) {
+            LogUtils.e("IOException");
             return false;
         } finally {
             close(out);
@@ -165,14 +72,10 @@ public class FileUtils {
      * 判断文件是否可写
      */
     public static boolean isWriteable(String path) {
-        try {
-            if (StringUtils.isEmpty(path)) {
-                return false;
-            }
-            File f = new File(path);
-            return f.exists() && f.canWrite();
-        } catch (Exception e) {
-            LogUtils.e(e);
+        File f = new File(path);
+        if (f.exists() && f.isFile() && f.canRead()) {
+            return true;
+        } else {
             return false;
         }
     }
@@ -181,12 +84,12 @@ public class FileUtils {
      * 修改文件的权限,例如"777"等
      */
     public static void chmod(String path, String mode) {
+        String command = "chmod " + mode + " " + path;
+        Runtime runtime = Runtime.getRuntime();
         try {
-            String command = "chmod " + mode + " " + path;
-            Runtime runtime = Runtime.getRuntime();
             runtime.exec(command);
-        } catch (Exception e) {
-            LogUtils.e(e);
+        } catch (IOException e) {
+            LogUtils.e("IOException");
         }
     }
 
@@ -218,8 +121,10 @@ public class FileUtils {
                 }
                 res = true;
             }
-        } catch (Exception e) {
-            LogUtils.e(e);
+        } catch (FileNotFoundException e) {
+            LogUtils.e("FileNotFoundException");
+        } catch (IOException e) {
+            LogUtils.e("IOException");
         } finally {
             close(fos);
             close(is);
@@ -254,8 +159,10 @@ public class FileUtils {
                 raf.write(content);
                 res = true;
             }
-        } catch (Exception e) {
-            LogUtils.e(e);
+        } catch (FileNotFoundException e) {
+            LogUtils.e("FileNotFoundException");
+        } catch (IOException e) {
+            LogUtils.e("IOException");
         } finally {
             close(raf);
         }
@@ -300,8 +207,10 @@ public class FileUtils {
             p.setProperty(key, value);
             fos = new FileOutputStream(f);
             p.store(fos, comment);
-        } catch (Exception e) {
-            LogUtils.e(e);
+        } catch (FileNotFoundException e) {
+            LogUtils.e("FileNotFoundException");
+        } catch (IOException e) {
+            LogUtils.e("IOException");
         } finally {
             close(fis);
             close(fos);
@@ -358,8 +267,10 @@ public class FileUtils {
             p.putAll(map);
             fos = new FileOutputStream(f);
             p.store(fos, comment);
-        } catch (Exception e) {
-            LogUtils.e(e);
+        } catch (FileNotFoundException e) {
+            LogUtils.e("FileNotFoundException");
+        } catch (IOException e) {
+            LogUtils.e("IOException");
         } finally {
             close(fis);
             close(fos);
@@ -386,8 +297,10 @@ public class FileUtils {
             Properties p = new Properties();
             p.load(fis);
             map = new HashMap<String, String>((Map) p);// 因为properties继承了map，所以直接通过p来构造一个map
-        } catch (Exception e) {
-            LogUtils.e(e);
+        } catch (FileNotFoundException e) {
+            LogUtils.e("FileNotFoundException");
+        } catch (IOException e) {
+            LogUtils.e("IOException");
         } finally {
             close(fis);
         }
@@ -414,8 +327,11 @@ public class FileUtils {
                 out.write(buffer, 0, count);
                 out.flush();
             }
-        } catch (Exception e) {
-            LogUtils.e(e);
+        } catch (FileNotFoundException e) {
+            LogUtils.e("FileNotFoundException");
+            return false;
+        } catch (IOException e) {
+            LogUtils.e("IOException");
             return false;
         } finally {
             close(in);
@@ -423,20 +339,6 @@ public class FileUtils {
         }
         if (delete) {
             file.delete();
-        }
-        return true;
-    }
-
-    /**
-     * 关闭流
-     */
-    public static boolean close(Closeable io) {
-        if (io != null) {
-            try {
-                io.close();
-            } catch (IOException e) {
-                LogUtils.e(e);
-            }
         }
         return true;
     }

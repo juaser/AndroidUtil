@@ -85,6 +85,14 @@ public class PathUtils {
     }
 
     /**
+     *此返回路径为/data/data/包/cache目录
+     * @return
+     */
+    public String getPhoneCacheDir() {
+        return getContext().getCacheDir().getAbsolutePath();
+    }
+
+    /**
      * 获取data根目录
      *
      * @return
@@ -110,7 +118,7 @@ public class PathUtils {
         if (isSDCardAvailable()) {
             root_path = getPhoneExternalDir();
         } else {
-            root_path = getPhoneRootDir();
+            root_path = getPhoneCacheDir();
         }
         return root_path;
     }
