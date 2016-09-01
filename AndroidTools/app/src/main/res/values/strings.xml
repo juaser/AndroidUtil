@@ -10,6 +10,7 @@
     <string name="label_http">原生Http</string>
     <string name="label_circlewave">水波纹控件</string>
     <string name="label_testdialog">对话框</string>
+    <string name="label_testfresco">Fresco的使用</string>
 
     <string name="str_parser_dom">DOM解析</string>
     <string name="str_parser_dom4J">dom4j解析</string>
