@@ -5,18 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/8/2
- *     desc  : 时间相关的工具类
- * </pre>
+ * @Description: 时间相关的工具类
+ * @Author: zxl
+ * @Date: 1/9/16 上午11:19.
  */
 public class TimeUtils {
 
-    private TimeUtils() {
-        throw new UnsupportedOperationException("u can't fuck me...");
-    }
 
     /**
      * <p>在工具类中经常使用到工具类的格式化描述，这个主要是一个日期的操作类，所以日志格式主要使用 SimpleDateFormat的定义格式.</p>
@@ -55,7 +49,7 @@ public class TimeUtils {
      * @param milliseconds 毫秒时间戳
      * @return 时间字符串
      */
-    public static String milliseconds2String(long milliseconds) {
+    public String milliseconds2String(long milliseconds) {
         return milliseconds2String(milliseconds, DEFAULT_SDF);
     }
 
@@ -67,7 +61,7 @@ public class TimeUtils {
      * @param format       时间格式
      * @return 时间字符串
      */
-    public static String milliseconds2String(long milliseconds, SimpleDateFormat format) {
+    public String milliseconds2String(long milliseconds, SimpleDateFormat format) {
         return format.format(new Date(milliseconds));
     }
 
@@ -78,7 +72,7 @@ public class TimeUtils {
      * @param time 时间字符串
      * @return 毫秒时间戳
      */
-    public static long string2Milliseconds(String time) {
+    public long string2Milliseconds(String time) {
         return string2Milliseconds(time, DEFAULT_SDF);
     }
 
@@ -90,7 +84,7 @@ public class TimeUtils {
      * @param format 时间格式
      * @return 毫秒时间戳
      */
-    public static long string2Milliseconds(String time, SimpleDateFormat format) {
+    public long string2Milliseconds(String time, SimpleDateFormat format) {
         try {
             return format.parse(time).getTime();
         } catch (ParseException e) {
@@ -106,7 +100,7 @@ public class TimeUtils {
      * @param time 时间字符串
      * @return Date类型
      */
-    public static Date string2Date(String time) {
+    public Date string2Date(String time) {
         return string2Date(time, DEFAULT_SDF);
     }
 
@@ -118,7 +112,7 @@ public class TimeUtils {
      * @param format 时间格式
      * @return Date类型
      */
-    public static Date string2Date(String time, SimpleDateFormat format) {
+    public Date string2Date(String time, SimpleDateFormat format) {
         return new Date(string2Milliseconds(time, format));
     }
 
@@ -129,7 +123,7 @@ public class TimeUtils {
      * @param time Date类型时间
      * @return 时间字符串
      */
-    public static String date2String(Date time) {
+    public String date2String(Date time) {
         return date2String(time, DEFAULT_SDF);
     }
 
@@ -141,7 +135,7 @@ public class TimeUtils {
      * @param format 时间格式
      * @return 时间字符串
      */
-    public static String date2String(Date time, SimpleDateFormat format) {
+    public String date2String(Date time, SimpleDateFormat format) {
         return format.format(time);
     }
 
@@ -151,7 +145,7 @@ public class TimeUtils {
      * @param time Date类型时间
      * @return 毫秒时间戳
      */
-    public static long date2Milliseconds(Date time) {
+    public long date2Milliseconds(Date time) {
         return time.getTime();
     }
 
@@ -161,7 +155,7 @@ public class TimeUtils {
      * @param milliseconds 毫秒时间戳
      * @return Date类型时间
      */
-    public static Date milliseconds2Date(long milliseconds) {
+    public Date milliseconds2Date(long milliseconds) {
         return new Date(milliseconds);
     }
 
@@ -178,7 +172,7 @@ public class TimeUtils {
      *                     </ul>
      * @return unit时间戳
      */
-    private static long milliseconds2Unit(long milliseconds, int unit) {
+    private long milliseconds2Unit(long milliseconds, int unit) {
         switch (unit) {
             case UNIT_MSEC:
             case UNIT_SEC:
@@ -205,7 +199,7 @@ public class TimeUtils {
      *              </ul>
      * @return unit时间戳
      */
-    public static long getIntervalTime(String time1, String time2, int unit) {
+    public long getIntervalTime(String time1, String time2, int unit) {
         return getIntervalTime(time1, time2, unit, DEFAULT_SDF);
     }
 
@@ -225,7 +219,7 @@ public class TimeUtils {
      * @param format 时间格式
      * @return unit时间戳
      */
-    public static long getIntervalTime(String time1, String time2, int unit, SimpleDateFormat format) {
+    public long getIntervalTime(String time1, String time2, int unit, SimpleDateFormat format) {
         return milliseconds2Unit(string2Milliseconds(time1, format)
                 - string2Milliseconds(time2, format), unit);
     }
@@ -245,7 +239,7 @@ public class TimeUtils {
      *              </ul>
      * @return unit时间戳
      */
-    public static long getIntervalTime(Date time1, Date time2, int unit) {
+    public long getIntervalTime(Date time1, Date time2, int unit) {
         return milliseconds2Unit(date2Milliseconds(time2) - date2Milliseconds(time1), unit);
     }
 
@@ -254,7 +248,7 @@ public class TimeUtils {
      *
      * @return 毫秒时间戳
      */
-    public static long getCurTimeMills() {
+    public long getCurTimeMills() {
         return System.currentTimeMillis();
     }
 
@@ -264,7 +258,7 @@ public class TimeUtils {
      *
      * @return 时间字符串
      */
-    public static String getCurTimeString() {
+    public String getCurTimeString() {
         return milliseconds2String(getCurTimeMills());
     }
 
@@ -275,7 +269,7 @@ public class TimeUtils {
      * @param format 时间格式
      * @return 时间字符串
      */
-    public static String getCurTimeString(SimpleDateFormat format) {
+    public String getCurTimeString(SimpleDateFormat format) {
         return milliseconds2String(getCurTimeMills(), format);
     }
 
@@ -285,7 +279,7 @@ public class TimeUtils {
      *
      * @return Date类型时间
      */
-    public static Date getCurTimeDate() {
+    public Date getCurTimeDate() {
         return new Date();
     }
 
@@ -303,7 +297,7 @@ public class TimeUtils {
      *             </ul>
      * @return unit时间戳
      */
-    public static long getIntervalByNow(String time, int unit) {
+    public long getIntervalByNow(String time, int unit) {
         return getIntervalByNow(time, unit, DEFAULT_SDF);
     }
 
@@ -322,7 +316,7 @@ public class TimeUtils {
      * @param format 时间格式
      * @return unit时间戳
      */
-    public static long getIntervalByNow(String time, int unit, SimpleDateFormat format) {
+    public long getIntervalByNow(String time, int unit, SimpleDateFormat format) {
         return getIntervalTime(getCurTimeString(), time, unit, format);
     }
 
@@ -340,7 +334,7 @@ public class TimeUtils {
      *             </ul>
      * @return unit时间戳
      */
-    public static long getIntervalByNow(Date time, int unit) {
+    public long getIntervalByNow(Date time, int unit) {
         return getIntervalTime(getCurTimeDate(), time, unit);
     }
 
@@ -350,7 +344,7 @@ public class TimeUtils {
      * @param year 年份
      * @return true: 闰年<br>false: 平年
      */
-    public static boolean isLeapYear(int year) {
+    public boolean isLeapYear(int year) {
         return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
     }
 
@@ -361,7 +355,7 @@ public class TimeUtils {
      * @param endDate   秒 时间戳
      * @return
      */
-    public static String twoTimestampMinus(int startDate, int endDate) {
+    public String twoTimestampMinus(int startDate, int endDate) {
         int minus = Math.abs(startDate - endDate);
         int day = 0;
         int hour = 0;

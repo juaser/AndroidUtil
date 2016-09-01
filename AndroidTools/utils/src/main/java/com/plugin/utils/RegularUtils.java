@@ -7,17 +7,28 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/8/2
- *     desc  : 正则相关的工具类
- * </pre>
+ * @Description: 正则相关的工具类
+ * @Author: zxl
+ * @Date: 1/9/16 上午10:55.
  */
 public class RegularUtils {
-
-    private RegularUtils() {
-        throw new UnsupportedOperationException("u can't fuck me...");
+    private static volatile RegularUtils mInstance = null;
+    
+    private RegularUtils(){
+    }
+    
+    public static RegularUtils getInstance() {
+        RegularUtils instance=mInstance;
+        if(instance==null){
+            synchronized (RegularUtils.class) {
+                instance =mInstance;
+                if (instance == null) {
+                    instance = new RegularUtils();
+                    mInstance=instance;
+                }
+            }   
+        }
+        return instance;
     }
 
     /**

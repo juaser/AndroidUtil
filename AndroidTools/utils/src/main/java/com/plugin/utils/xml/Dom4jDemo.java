@@ -19,6 +19,24 @@ import java.util.Iterator;
 public class Dom4jDemo {
     private SAXReader saxReader = new SAXReader();
     private Document document;
+    private static volatile Dom4jDemo mInstance = null;
+
+    private Dom4jDemo() {
+    }
+
+    public static Dom4jDemo getInstance() {
+        Dom4jDemo instance = mInstance;
+        if (instance == null) {
+            synchronized (Dom4jDemo.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new Dom4jDemo();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
 
     public void parserXml(String fileName) throws DocumentException {
         document = saxReader.read(new File(fileName));

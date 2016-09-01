@@ -19,11 +19,29 @@ import javax.xml.parsers.ParserConfigurationException;
  * @Author: zxl
  * @Date: 30/8/16.
  */
-public class DomDemo  {
+public class DomDemo {
 
     private DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     private DocumentBuilder db = null;
     private Document document = null;
+    private static volatile DomDemo mInstance = null;
+
+    private DomDemo() {
+    }
+
+    public static DomDemo getInstance() {
+        DomDemo instance = mInstance;
+        if (instance == null) {
+            synchronized (DomDemo.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new DomDemo();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
 
     public void parserXml(String fileName) throws ParserConfigurationException, IOException, SAXException {
         db = dbf.newDocumentBuilder();

@@ -6,65 +6,86 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.plugin.utils.manager.AppManager;
+
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/8/2
- *     desc  : 尺寸相关的工具类
- * </pre>
+ * @Description: 尺寸相关的工具类
+ * @Author: zxl
+ * @Date: 1/9/16 上午11:10.
  */
 public class SizeUtils {
 
+    private static volatile SizeUtils mInstance = null;
+
     private SizeUtils() {
-        throw new UnsupportedOperationException("u can't fuck me...");
+    }
+
+    public static SizeUtils getInstance() {
+        SizeUtils instance = mInstance;
+        if (instance == null) {
+            synchronized (SizeUtils.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new SizeUtils();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
+
+    /**
+     * @description: 获取上下文
+     */
+    public Context getContext() {
+        return AppManager.getInstance().getTop();
     }
 
     /**
      * dp转px
      *
-     * @param context 上下文
+    
      * @param dpValue dp值
      * @return px值
      */
-    public static int dp2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public  int dp2px(float dpValue) {
+        final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
     /**
      * px转dp
      *
-     * @param context 上下文
+    
      * @param pxValue px值
      * @return dp值
      */
-    public static int px2dp(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public  int px2dp( float pxValue) {
+        final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
     /**
      * sp转px
      *
-     * @param context 上下文
+    
      * @param spValue sp值
      * @return px值
      */
-    public static int sp2px(Context context, float spValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+    public  int sp2px( float spValue) {
+        final float fontScale = getContext().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 
     /**
      * px转sp
      *
-     * @param context 上下文
+    
      * @param pxValue px值
      * @return sp值
      */
-    public static int px2sp(Context context, float pxValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+    public  int px2sp(float pxValue) {
+        final float fontScale = getContext().getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
 

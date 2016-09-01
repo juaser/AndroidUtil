@@ -31,8 +31,8 @@ public class WaterWaveView extends View {
     private float stroke_wave_width = 2;//水波纹的线宽;
     private float wave_length;//水波纹的波长
     private float wave_length_part;//四分之一的长度
-    private float wave_height = 10; //水波纹的波高 波高要和移动速度一致
-    private float wave_moveSpeed = 10;//移动速度
+    private float wave_height = 5; //水波纹的波高 波高要和移动速度一致
+    private float wave_moveSpeed = 5;//移动速度
     private float wave_line;//水波纹水平线
     private float wave_leftx;//波纹的左边缘
     private int wave_num = 1;//水波纹界面的波形数目

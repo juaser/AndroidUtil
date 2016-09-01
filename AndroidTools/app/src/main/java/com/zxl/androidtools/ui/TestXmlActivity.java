@@ -29,7 +29,7 @@ import butterknife.OnClick;
  * @Date: 30/8/16.
  */
 public class TestXmlActivity extends BaseActivity {
-    
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_parserxml;
@@ -42,11 +42,10 @@ public class TestXmlActivity extends BaseActivity {
 
     @OnClick(R.id.tv_domparser)
     void domXml() {
-        DomDemo domdemo = new DomDemo();
         InputStream open = null;
         try {
             open = getAssets().open("userdemo.xml");
-            domdemo.parserXml(open);
+            DomDemo.getInstance().parserXml(open);
         } catch (IOException e) {
             LogUtils.e("IOException");
         } catch (ParserConfigurationException e) {
@@ -60,11 +59,10 @@ public class TestXmlActivity extends BaseActivity {
 
     @OnClick(R.id.tv_jdom)
     void jdomXml() {
-        JDomDemo jdomdemo = new JDomDemo();
         InputStream open = null;
         try {
             open = getAssets().open("userdemo.xml");
-            jdomdemo.parserXml(open);
+            JDomDemo.getInstance().parserXml(open);
         } catch (IOException e) {
             LogUtils.e("IOException");
         } catch (JDOMException e) {
@@ -76,11 +74,10 @@ public class TestXmlActivity extends BaseActivity {
 
     @OnClick(R.id.tv_dom4j)
     void dom4jXml() {
-        Dom4jDemo dom4jdemo = new Dom4jDemo();
         InputStream open = null;
         try {
             open = getAssets().open("userdemo.xml");
-            dom4jdemo.parserXml(open);
+            Dom4jDemo.getInstance().parserXml(open);
         } catch (IOException e) {
             LogUtils.e("IOException");
         } catch (DocumentException e) {
@@ -92,11 +89,10 @@ public class TestXmlActivity extends BaseActivity {
 
     @OnClick(R.id.tv_sax)
     void saxXml() {
-        SaxDemo saxdemo = new SaxDemo();
         InputStream open = null;
         try {
             open = getAssets().open("userdemo.xml");
-            saxdemo.parserXml(open);
+            SaxDemo.getInstance().parserXml(open);
         } catch (IOException e) {
             LogUtils.e("IOException");
         } catch (ParserConfigurationException e) {
@@ -110,11 +106,10 @@ public class TestXmlActivity extends BaseActivity {
 
     @OnClick(R.id.tv_pull)
     void pullXml() {
-        PullDemo pullDemo = new PullDemo();
         InputStream open = null;
         try {
             open = getAssets().open("userdemo.xml");
-            pullDemo.parserXml(open);
+            PullDemo.getInstance().parserXml(open);
         } catch (IOException e) {
             LogUtils.e("IOException");
         } catch (XmlPullParserException e) {
@@ -126,9 +121,8 @@ public class TestXmlActivity extends BaseActivity {
 
     @OnClick(R.id.tv_createxml)
     void create() {
-        CreateXmlDemo createXmlDemo = new CreateXmlDemo();
         try {
-            createXmlDemo.createXml();
+            CreateXmlDemo.getInstance().createXml();
         } catch (IOException e) {
             LogUtils.e("IOException");
         }

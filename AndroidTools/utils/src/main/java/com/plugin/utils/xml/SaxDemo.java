@@ -22,6 +22,24 @@ import javax.xml.parsers.SAXParserFactory;
 public class SaxDemo {
     private SAXParserFactory saxfac = SAXParserFactory.newInstance();
     private SAXParser saxparser = null;
+    private static volatile SaxDemo mInstance = null;
+
+    private SaxDemo() {
+    }
+
+    public static SaxDemo getInstance() {
+        SaxDemo instance = mInstance;
+        if (instance == null) {
+            synchronized (SaxDemo.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new SaxDemo();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
 
     public void parserXml(String fileName) throws ParserConfigurationException, SAXException, IOException {
         saxparser = saxfac.newSAXParser();

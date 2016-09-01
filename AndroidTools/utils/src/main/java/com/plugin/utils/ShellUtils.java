@@ -1,23 +1,38 @@
 package com.plugin.utils;
 
+import com.plugin.utils.log.LogUtils;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import static com.plugin.utils.IOUtils.close;
+
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/8/7
- *     desc  : Shell操作工具类
- * </pre>
+ * @Description: Shell操作工具类
+ * @Author: zxl
+ * @Date: 1/9/16 上午11:05.
  */
 public class ShellUtils {
+    private static volatile ShellUtils mInstance = null;
 
     private ShellUtils() {
-        throw new UnsupportedOperationException("u can't fuck me...");
+    }
+
+    public static ShellUtils getInstance() {
+        ShellUtils instance = mInstance;
+        if (instance == null) {
+            synchronized (ShellUtils.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new ShellUtils();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
     }
 
     public static final String COMMAND_SU = "su";
@@ -28,7 +43,7 @@ public class ShellUtils {
     /**
      * 判断设备是否root
      */
-    public static boolean isRoot() {
+    public boolean isRoot() {
         return execCmd("echo root", true, false).result == 0;
     }
 
@@ -39,7 +54,7 @@ public class ShellUtils {
      * @param isRoot  是否root
      * @return CommandResult
      */
-    public static CommandResult execCmd(String command, boolean isRoot) {
+    public CommandResult execCmd(String command, boolean isRoot) {
         return execCmd(new String[]{command}, isRoot, true);
     }
 
@@ -50,7 +65,7 @@ public class ShellUtils {
      * @param isRoot   是否root
      * @return CommandResult
      */
-    public static CommandResult execCmd(List<String> commands, boolean isRoot) {
+    public CommandResult execCmd(List<String> commands, boolean isRoot) {
         return execCmd(commands == null ? null : commands.toArray(new String[]{}), isRoot, true);
     }
 
@@ -61,7 +76,7 @@ public class ShellUtils {
      * @param isRoot   是否root
      * @return CommandResult
      */
-    public static CommandResult execCmd(String[] commands, boolean isRoot) {
+    public CommandResult execCmd(String[] commands, boolean isRoot) {
         return execCmd(commands, isRoot, true);
     }
 
@@ -73,7 +88,7 @@ public class ShellUtils {
      * @param isNeedResultMsg 是否需要结果消息
      * @return CommandResult
      */
-    public static CommandResult execCmd(String command, boolean isRoot, boolean isNeedResultMsg) {
+    public CommandResult execCmd(String command, boolean isRoot, boolean isNeedResultMsg) {
         return execCmd(new String[]{command}, isRoot, isNeedResultMsg);
     }
 
@@ -85,7 +100,7 @@ public class ShellUtils {
      * @param isNeedResultMsg 是否需要结果消息
      * @return CommandResult
      */
-    public static CommandResult execCmd(List<String> commands, boolean isRoot, boolean isNeedResultMsg) {
+    public CommandResult execCmd(List<String> commands, boolean isRoot, boolean isNeedResultMsg) {
         return execCmd(commands == null ? null : commands.toArray(new String[]{}), isRoot, isNeedResultMsg);
     }
 
@@ -97,7 +112,7 @@ public class ShellUtils {
      * @param isNeedResultMsg 是否需要结果消息
      * @return CommandResult
      */
-    public static CommandResult execCmd(String[] commands, boolean isRoot, boolean isNeedResultMsg) {
+    public CommandResult execCmd(String[] commands, boolean isRoot, boolean isNeedResultMsg) {
         int result = -1;
         if (commands == null || commands.length == 0) {
             return new CommandResult(result, null, null);
@@ -136,23 +151,14 @@ public class ShellUtils {
                     errorMsg.append(s);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (InterruptedException e) {
+            LogUtils.e("InterruptedException");
+        } catch (IOException e) {
+            LogUtils.e("IOException");
         } finally {
-            try {
-                if (os != null) {
-                    os.close();
-                }
-                if (successResult != null) {
-                    successResult.close();
-                }
-                if (errorResult != null) {
-                    errorResult.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            close(os);
+            close(successResult);
+            close(errorResult);
             if (process != null) {
                 process.destroy();
             }

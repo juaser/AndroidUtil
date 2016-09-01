@@ -17,6 +17,24 @@ import java.io.StringWriter;
 public class CreateXmlDemo {
     private XmlSerializer serializer = Xml.newSerializer();
     private StringWriter writer = null;
+    private static volatile CreateXmlDemo mInstance = null;
+    
+    private CreateXmlDemo(){
+    }
+    
+    public static CreateXmlDemo getInstance() {
+        CreateXmlDemo instance=mInstance;
+        if(instance==null){
+            synchronized (CreateXmlDemo.class) {
+                instance =mInstance;
+                if (instance == null) {
+                    instance = new CreateXmlDemo();
+                    mInstance=instance;
+                }
+            }   
+        }
+        return instance;
+    }
 
     /**
      * startTag (String namespace, String name)这里的namespace用于唯一标识xml标签

@@ -12,9 +12,43 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.plugin.utils.manager.AppManager;
+
+/**
+ * @Description: 状态栏
+ * @Author: zxl
+ * @Date: 1/9/16 上午11:16.
+ */
 public class StatusBarUtil {
+    private static volatile StatusBarUtil mInstance = null;
+
+    private StatusBarUtil() {
+    }
+
+    public static StatusBarUtil getInstance() {
+        StatusBarUtil instance = mInstance;
+        if (instance == null) {
+            synchronized (StatusBarUtil.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new StatusBarUtil();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
 
     public static final int DEFAULT_STATUS_BAR_ALPHA = 112;
+
+    /**
+     * 获取上下文对象
+     *
+     * @return
+     */
+    public Context getContext() {
+        return AppManager.getInstance().getTop();
+    }
 
     /**
      * 设置状态栏颜色
@@ -80,7 +114,7 @@ public class StatusBarUtil {
 
     /**
      * 使状态栏半透明
-     *
+     * <p/>
      * 适用于图片作为背景的界面,此时需要图片填充到状态栏
      *
      * @param activity 需要设置的activity
@@ -99,7 +133,7 @@ public class StatusBarUtil {
 
     /**
      * 使状态栏半透明
-     *
+     * <p/>
      * 适用于图片作为背景的界面,此时需要图片填充到状态栏
      *
      * @param activity       需要设置的activity
@@ -128,7 +162,7 @@ public class StatusBarUtil {
 
     /**
      * 使状态栏透明(5.0以上半透明效果,不建议使用)
-     *
+     * <p/>
      * 适用于图片作为背景的界面,此时需要图片填充到状态栏
      *
      * @param activity 需要设置的activity

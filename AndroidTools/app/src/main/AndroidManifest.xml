@@ -40,6 +40,9 @@
         <activity
             android:name=".ui.TestHttpActivity"
             android:label="@string/label_http" />
+        <activity
+            android:name=".ui.CircleWaveActivity"
+            android:label="@string/label_circlewave" />
     </application>
 
 </manifest>

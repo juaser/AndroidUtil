@@ -15,6 +15,24 @@ import java.lang.reflect.ParameterizedType;
  * @Date: 31/8/16.
  */
 public class ReflectUtils {
+    private static volatile ReflectUtils mInstance = null;
+    
+    private ReflectUtils(){
+    }
+    
+    public static ReflectUtils getInstance() {
+        ReflectUtils instance=mInstance;
+        if(instance==null){
+            synchronized (ReflectUtils.class) {
+                instance =mInstance;
+                if (instance == null) {
+                    instance = new ReflectUtils();
+                    mInstance=instance;
+                }
+            }   
+        }
+        return instance;
+    }
     /**
      * 获取泛型中的实例
      *

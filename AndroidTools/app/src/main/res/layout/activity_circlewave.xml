@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:orientation="vertical">
+
+    <com.plugin.weight.wave.WaterWaveView
+        android:id="@+id/view_wave"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/tv_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_wave"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:text="确定" />
+
+    <EditText
+        android:id="@+id/et_wave_progress"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_submit"
+        android:layout_below="@id/view_wave"
+        android:layout_toLeftOf="@id/tv_submit"
+        android:gravity="bottom"
+        android:hint="0"
+        android:inputType="number"
+        android:padding="10dp" />
+</RelativeLayout>

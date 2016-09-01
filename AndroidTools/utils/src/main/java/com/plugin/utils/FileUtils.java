@@ -17,17 +17,35 @@ import java.util.Properties;
 import static com.plugin.utils.IOUtils.close;
 
 /**
- * Created by  mac133 .
- * Created on  16/8/1 上午10:32
- * Description ${文件操作工具类}
+ * @Description: 文件操作工具类
+ * @Author: zxl
+ * @Date: 1/9/16 上午10:38.
  */
 public class FileUtils {
+    private static volatile FileUtils mInstance = null;
+
+    private FileUtils() {
+    }
+
+    public static FileUtils getInstance() {
+        FileUtils instance = mInstance;
+        if (instance == null) {
+            synchronized (FileUtils.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new FileUtils();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
 
     /**
      * 复制文件，可以选择是否删除源文件
      */
-    public static boolean copyFile(String srcPath, String destPath,
-                                   boolean deleteSrc) {
+    public boolean copyFile(String srcPath, String destPath,
+                            boolean deleteSrc) {
         File srcFile = new File(srcPath);
         File destFile = new File(destPath);
         return copyFile(srcFile, destFile, deleteSrc);
@@ -36,8 +54,8 @@ public class FileUtils {
     /**
      * 复制文件，可以选择是否删除源文件
      */
-    public static boolean copyFile(File srcFile, File destFile,
-                                   boolean deleteSrc) {
+    public boolean copyFile(File srcFile, File destFile,
+                            boolean deleteSrc) {
         if (!srcFile.exists() || !srcFile.isFile()) {
             return false;
         }
@@ -71,7 +89,7 @@ public class FileUtils {
     /**
      * 判断文件是否可写
      */
-    public static boolean isWriteable(String path) {
+    public boolean isWriteable(String path) {
         File f = new File(path);
         if (f.exists() && f.isFile() && f.canRead()) {
             return true;
@@ -83,7 +101,7 @@ public class FileUtils {
     /**
      * 修改文件的权限,例如"777"等
      */
-    public static void chmod(String path, String mode) {
+    public void chmod(String path, String mode) {
         String command = "chmod " + mode + " " + path;
         Runtime runtime = Runtime.getRuntime();
         try {
@@ -101,8 +119,8 @@ public class FileUtils {
      * @param recreate 如果文件存在，是否需要删除重建
      * @return 是否写入成功
      */
-    public static boolean writeFile(InputStream is, String path,
-                                    boolean recreate) {
+    public boolean writeFile(InputStream is, String path,
+                             boolean recreate) {
         boolean res = false;
         File f = new File(path);
         FileOutputStream fos = null;
@@ -140,7 +158,7 @@ public class FileUtils {
      * @param append  是否以添加的模式写入
      * @return 是否写入成功
      */
-    public static boolean writeFile(byte[] content, String path, boolean append) {
+    public boolean writeFile(byte[] content, String path, boolean append) {
         boolean res = false;
         File f = new File(path);
         RandomAccessFile raf = null;
@@ -177,7 +195,7 @@ public class FileUtils {
      * @param append  是否以添加的模式写入
      * @return 是否写入成功
      */
-    public static boolean writeFile(String content, String path, boolean append) {
+    public boolean writeFile(String content, String path, boolean append) {
         return writeFile(content.getBytes(), path, append);
     }
 
@@ -189,9 +207,9 @@ public class FileUtils {
      * @param value    值
      * @param comment  该键值对的注释
      */
-    public static void writeProperties(String filePath, String key,
-                                       String value, String comment) {
-        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(filePath)) {
+    public void writeProperties(String filePath, String key,
+                                String value, String comment) {
+        if (StringUtils.getInstance().isEmpty(key) || StringUtils.getInstance().isEmpty(filePath)) {
             return;
         }
         FileInputStream fis = null;
@@ -220,9 +238,9 @@ public class FileUtils {
     /**
      * 根据值读取
      */
-    public static String readProperties(String filePath, String key,
-                                        String defaultValue) {
-        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(filePath)) {
+    public String readProperties(String filePath, String key,
+                                 String defaultValue) {
+        if (StringUtils.getInstance().isEmpty(key) || StringUtils.getInstance().isEmpty(filePath)) {
             return null;
         }
         String value = null;
@@ -247,9 +265,9 @@ public class FileUtils {
     /**
      * 把字符串键值对的map写入文件
      */
-    public static void writeMap(String filePath, Map<String, String> map,
-                                boolean append, String comment) {
-        if (map == null || map.size() == 0 || StringUtils.isEmpty(filePath)) {
+    public void writeMap(String filePath, Map<String, String> map,
+                         boolean append, String comment) {
+        if (map == null || map.size() == 0 || StringUtils.getInstance().isEmpty(filePath)) {
             return;
         }
         FileInputStream fis = null;
@@ -281,9 +299,9 @@ public class FileUtils {
      * 把字符串键值对的文件读入map
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static Map<String, String> readMap(String filePath,
-                                              String defaultValue) {
-        if (StringUtils.isEmpty(filePath)) {
+    public Map<String, String> readMap(String filePath,
+                                       String defaultValue) {
+        if (StringUtils.getInstance().isEmpty(filePath)) {
             return null;
         }
         Map<String, String> map = null;
@@ -310,7 +328,7 @@ public class FileUtils {
     /**
      * 改名
      */
-    public static boolean copy(String src, String des, boolean delete) {
+    public boolean copy(String src, String des, boolean delete) {
         File file = new File(src);
         if (!file.exists()) {
             return false;

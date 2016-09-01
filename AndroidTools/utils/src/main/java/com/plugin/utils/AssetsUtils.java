@@ -3,38 +3,62 @@ package com.plugin.utils;
 import android.content.Context;
 
 import com.plugin.utils.log.LogUtils;
+import com.plugin.utils.manager.AppManager;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.plugin.utils.IOUtils.close;
 
 /**
- * 操作安装包中的“assets”目录下的文件
+ * @description： 操作安装包中的“assets”目录下的文件
+ * @author：zxl
+ * @CreateTime 2016/8/22.
  */
 public class AssetsUtils {
+    private static volatile AssetsUtils mInstance = null;
+
+    private AssetsUtils() {
+    }
+
+    public static AssetsUtils getInstance() {
+        AssetsUtils instance = mInstance;
+        if (instance == null) {
+            synchronized (AssetsUtils.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new AssetsUtils();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
+
+    /**
+     * 获取上下文对象
+     *
+     * @return
+     */
+    public Context getContext() {
+        return AppManager.getInstance().getTop();
+    }
 
     /**
      * read file content
      *
-     * @param context   the context
      * @param assetPath the asset path
      * @return String string
      */
-    public static String readFile2String(Context context, String assetPath) {
+    public String readFile2String(String assetPath) {
         InputStream is = null;
         try {
-            is = context.getAssets().open(assetPath);
-            return StringUtils.toString(is);
+            is = getContext().getAssets().open(assetPath);
+            return StringUtils.getInstance().input2String(is);
         } catch (IOException e) {
             LogUtils.e("IOException");
         } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    LogUtils.e("IOException");
-                }
-            }
+            close(is);
         }
         return "";
     }
@@ -42,13 +66,12 @@ public class AssetsUtils {
     /**
      * read file content
      *
-     * @param context   the context
      * @param assetPath the asset path
      * @return String string
      */
-    public static InputStream readFile2InStream(Context context, String assetPath) {
+    public InputStream readFile2InStream(String assetPath) {
         try {
-            return context.getAssets().open(assetPath);
+            return getContext().getAssets().open(assetPath);
         } catch (IOException e) {
             LogUtils.e("IOException");
         }

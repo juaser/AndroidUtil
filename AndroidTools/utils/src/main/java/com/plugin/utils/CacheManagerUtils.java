@@ -3,6 +3,9 @@ package com.plugin.utils;
 import android.content.Context;
 import android.os.Environment;
 
+import com.plugin.utils.log.LogUtils;
+import com.plugin.utils.manager.AppManager;
+
 import java.io.File;
 import java.math.BigDecimal;
 
@@ -12,22 +15,71 @@ import java.math.BigDecimal;
  * @CreateTime 2016/8/12.
  */
 public class CacheManagerUtils {
-    public static String getTotalCacheSize(Context context) throws Exception {
-        long cacheSize = getFolderSize(context.getCacheDir());
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            cacheSize += getFolderSize(context.getExternalCacheDir());
-        }
-        return getFormatSize(cacheSize);
+    private static volatile CacheManagerUtils mInstance = null;
+
+    private CacheManagerUtils() {
     }
 
+    public static CacheManagerUtils getInstance() {
+        CacheManagerUtils instance = mInstance;
+        if (instance == null) {
+            synchronized (CacheManagerUtils.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new CacheManagerUtils();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
 
-    public static void clearAllCache(Context context) {
-        deleteDir(context.getCacheDir());
+    /**
+     * 获取上下文对象
+     *
+     * @return
+     */
+    public Context getContext() {
+        return AppManager.getInstance().getTop();
+    }
+
+    /**
+     * 获取整个缓存文件大小
+     *
+     * @param context
+     * @return
+     * @throws Exception
+     */
+    public String getTotalCacheSize(Context context) throws Exception {
+        long cacheSize = 0;
+        try {
+            cacheSize = getFolderSize(context.getCacheDir());
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                cacheSize += getFolderSize(context.getExternalCacheDir());
+            }
+        } catch (Exception e) {
+            LogUtils.e("Exception");
+        }
+
+        return cacheSize == 0 ? "" : getFormatSize(cacheSize);
+    }
+
+    /**
+     * 清空整个缓存
+     */
+    public void clearAllCache() {
+        deleteDir(getContext().getCacheDir());
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            deleteDir(context.getExternalCacheDir());
+            deleteDir(getContext().getExternalCacheDir());
         }
     }
 
+    /**
+     * 删除某个文件
+     *
+     * @param dir
+     * @return
+     */
     private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
@@ -48,7 +100,7 @@ public class CacheManagerUtils {
     // 获取文件
     //Context.getExternalFilesDir() --> SDCard/Android/data/你的应用的包名/files/ 目录，一般放一些长时间保存的数据
     //Context.getExternalCacheDir() --> SDCard/Android/data/你的应用包名/cache/目录，一般存放临时缓存数据
-    public static long getFolderSize(File file) throws Exception {
+    public static long getFolderSize(File file) {
         long size = 0;
         try {
             File[] fileList = file.listFiles();
@@ -61,7 +113,7 @@ public class CacheManagerUtils {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.e("Exception");
         }
         return size;
     }

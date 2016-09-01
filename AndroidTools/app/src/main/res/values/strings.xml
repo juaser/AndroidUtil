@@ -1,4 +1,5 @@
 <resources>
+    <!--activity标签-->
     <string name="app_name">AndroidTools</string>
     <string name="label_mian">主界面</string>
     <string name="label_test">测试</string>
@@ -7,10 +8,14 @@
     <string name="label_marquee">跑马灯效果</string>
     <string name="label_xml">xml解析</string>
     <string name="label_http">原生Http</string>
+    <string name="label_circlewave">水波纹控件</string>
+
+
     <string name="str_parser_dom">DOM解析</string>
     <string name="str_parser_dom4J">dom4j解析</string>
     <string name="str_parser_jdom">jdom解析</string>
     <string name="str_parser_sax">sax解析</string>
     <string name="str_parser_pull">pull解析</string>
     <string name="str_parser_create">xml创建</string>
+    <string name="str_submit">确定</string>
 </resources>

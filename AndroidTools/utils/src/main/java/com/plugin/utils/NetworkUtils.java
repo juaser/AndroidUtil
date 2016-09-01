@@ -6,18 +6,32 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
+import com.plugin.utils.manager.AppManager;
+
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/8/2
- *     desc  : 网络相关的工具类
- * </pre>
+ * @Description: 网络相关的工具类
+ * @Author: zxl
+ * @Date: 1/9/16 上午10:42.
  */
 public class NetworkUtils {
 
+    private static volatile NetworkUtils mInstance = null;
+
     private NetworkUtils() {
-        throw new UnsupportedOperationException("u can't fuck me...");
+    }
+
+    public static NetworkUtils getInstance() {
+        NetworkUtils instance = mInstance;
+        if (instance == null) {
+            synchronized (NetworkUtils.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new NetworkUtils();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
     }
 
     public static final int NETWORK_WIFI = 1;    // wifi network
@@ -32,27 +46,31 @@ public class NetworkUtils {
     private static final int NETWORK_TYPE_IWLAN = 18;
 
     /**
+     * @description: 获取上下文
+     */
+    public Context getContext() {
+        return AppManager.getInstance().getTop();
+    }
+
+    /**
      * 打开网络设置界面
      * <p>3.0以下打开设置界面</p>
-     *
-     * @param context 上下文
      */
-    public static void openWirelessSettings(Context context) {
+    public void openWirelessSettings() {
         if (android.os.Build.VERSION.SDK_INT > 10) {
-            context.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+            getContext().startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
         } else {
-            context.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+            getContext().startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
         }
     }
 
     /**
      * 获取活动网路信息
      *
-     * @param context 上下文
      * @return NetworkInfo
      */
-    private static NetworkInfo getActiveNetworkInfo(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context
+    private NetworkInfo getActiveNetworkInfo() {
+        ConnectivityManager cm = (ConnectivityManager) getContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo();
     }
@@ -61,8 +79,8 @@ public class NetworkUtils {
      * 判断网络是否可用
      * <p>需添加权限 android.permission.ACCESS_NETWORK_STATE</p>
      */
-    public static boolean isAvailable(Context context) {
-        NetworkInfo info = getActiveNetworkInfo(context);
+    public boolean isAvailable() {
+        NetworkInfo info = getActiveNetworkInfo();
         return info != null && info.isAvailable();
     }
 
@@ -70,11 +88,10 @@ public class NetworkUtils {
      * 判断网络是否连接
      * <p>需添加权限 android.permission.ACCESS_NETWORK_STATE</p>
      *
-     * @param context 上下文
      * @return true: 是<br>false: 否
      */
-    public static boolean isConnected(Context context) {
-        NetworkInfo info = getActiveNetworkInfo(context);
+    public boolean isConnected() {
+        NetworkInfo info = getActiveNetworkInfo();
         return info != null && info.isConnected();
     }
 
@@ -82,11 +99,10 @@ public class NetworkUtils {
      * 判断网络是否是4G
      * <p>需添加权限 android.permission.ACCESS_NETWORK_STATE</p>
      *
-     * @param context 上下文
      * @return true: 是<br>false: 不是
      */
-    public static boolean is4G(Context context) {
-        NetworkInfo info = getActiveNetworkInfo(context);
+    public boolean is4G() {
+        NetworkInfo info = getActiveNetworkInfo();
         return info != null && info.isAvailable() && info.getSubtype() == TelephonyManager.NETWORK_TYPE_LTE;
     }
 
@@ -95,11 +111,10 @@ public class NetworkUtils {
      * 获取移动网络运营商名称
      * <p>如中国联通、中国移动、中国电信</p>
      *
-     * @param context 上下文
      * @return 移动网络运营商名称
      */
-    public static String getNetworkOperatorName(Context context) {
-        TelephonyManager tm = (TelephonyManager) context
+    public String getNetworkOperatorName() {
+        TelephonyManager tm = (TelephonyManager) getContext()
                 .getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getNetworkOperatorName() : null;
     }
@@ -107,7 +122,6 @@ public class NetworkUtils {
     /**
      * 获取移动终端类型
      *
-     * @param context 上下文
      * @return 手机制式
      * <ul>
      * <li>PHONE_TYPE_NONE  : 0 手机制式未知</li>
@@ -116,8 +130,8 @@ public class NetworkUtils {
      * <li>PHONE_TYPE_SIP   : 3</li>
      * </ul>
      */
-    public static int getPhoneType(Context context) {
-        TelephonyManager tm = (TelephonyManager) context
+    public int getPhoneType() {
+        TelephonyManager tm = (TelephonyManager) getContext()
                 .getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getPhoneType() : -1;
     }
@@ -127,7 +141,6 @@ public class NetworkUtils {
      * 获取当前的网络类型(WIFI,2G,3G,4G)
      * <p>需添加权限 android.permission.ACCESS_NETWORK_STATE</p>
      *
-     * @param context 上下文
      * @return 网络类型
      * <ul>
      * <li>NETWORK_WIFI    = 1;</li>
@@ -138,9 +151,9 @@ public class NetworkUtils {
      * <li>NETWORK_NO      = -1;</li>
      * </ul>
      */
-    public static int getNetWorkType(Context context) {
+    public int getNetWorkType() {
         int netType = NETWORK_NO;
-        NetworkInfo info = getActiveNetworkInfo(context);
+        NetworkInfo info = getActiveNetworkInfo();
         if (info != null && info.isAvailable()) {
 
             if (info.getType() == ConnectivityManager.TYPE_WIFI) {
@@ -197,7 +210,6 @@ public class NetworkUtils {
      * 获取当前的网络类型(WIFI,2G,3G,4G)
      * <p>依赖上面的方法</p>
      *
-     * @param context 上下文
      * @return 网络类型名称
      * <ul>
      * <li>NETWORK_WIFI   </li>
@@ -208,8 +220,8 @@ public class NetworkUtils {
      * <li>NETWORK_NO     </li>
      * </ul>
      */
-    public static String getNetWorkTypeName(Context context) {
-        switch (getNetWorkType(context)) {
+    public String getNetWorkTypeName() {
+        switch (getNetWorkType()) {
             case NETWORK_WIFI:
                 return "NETWORK_WIFI";
             case NETWORK_4G:
@@ -228,8 +240,8 @@ public class NetworkUtils {
     /**
      * 检测网络是否连接
      */
-    public static boolean isNetConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public boolean isNetConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             NetworkInfo[] infos = cm.getAllNetworkInfo();
             if (infos != null) {
@@ -247,8 +259,8 @@ public class NetworkUtils {
      * 检测wifi是否连接
      * * <p>需添加权限 android.permission.ACCESS_NETWORK_STATE</p>
      */
-    public static boolean isWifiConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public boolean isWifiConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
@@ -261,8 +273,8 @@ public class NetworkUtils {
     /**
      * 检测3G是否连接
      */
-    public static boolean is3gConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public boolean is3gConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {

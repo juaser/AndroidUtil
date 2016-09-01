@@ -12,6 +12,24 @@ import java.util.Map;
  * @CreateTime 2016/8/22.
  */
 public class IdCardValidateUtils {
+    private static volatile IdCardValidateUtils mInstance = null;
+
+    private IdCardValidateUtils() {
+    }
+
+    public static IdCardValidateUtils getInstance() {
+        IdCardValidateUtils instance = mInstance;
+        if (instance == null) {
+            synchronized (IdCardValidateUtils.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new IdCardValidateUtils();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
 
     /**
      * 中国公民身份证号码最小长度。
@@ -130,7 +148,7 @@ public class IdCardValidateUtils {
      * @param idCard 15位身份编码
      * @return 18位身份编码
      */
-    public static String conver15CardTo18(String idCard) {
+    public String conver15CardTo18(String idCard) {
         String idCard18 = "";
         if (idCard.length() != CHINA_ID_MIN_LENGTH) {
             return null;
@@ -172,7 +190,7 @@ public class IdCardValidateUtils {
     /**
      * 验证身份证是否合法
      */
-    public static boolean validateCard(String idCard) {
+    public boolean validateCard(String idCard) {
         String card = idCard.trim();
         if (validateIdCard18(card)) {
             return true;
@@ -195,7 +213,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份编码
      * @return 是否合法
      */
-    public static boolean validateIdCard18(String idCard) {
+    public boolean validateIdCard18(String idCard) {
         boolean bTrue = false;
         if (idCard.length() == CHINA_ID_MAX_LENGTH) {
             // 前17位
@@ -226,7 +244,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份编码
      * @return 是否合法
      */
-    public static boolean validateIdCard15(String idCard) {
+    public boolean validateIdCard15(String idCard) {
         if (idCard.length() != CHINA_ID_MIN_LENGTH) {
             return false;
         }
@@ -264,7 +282,7 @@ public class IdCardValidateUtils {
      * [0] - 台湾、澳门、香港 [1] - 性别(男M,女F,未知N) [2] - 是否合法(合法true,不合法false) 若不是身份证件号码则返回null
      * </p>
      */
-    public static String[] validateIdCard10(String idCard) {
+    public String[] validateIdCard10(String idCard) {
         String[] info = new String[3];
         String card = idCard.replaceAll("[\\(|\\)]", "");
         if (card.length() != 8 && card.length() != 9 && idCard.length() != 10) {
@@ -307,7 +325,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份证号码
      * @return 验证码是否符合
      */
-    public static boolean validateTWCard(String idCard) {
+    public boolean validateTWCard(String idCard) {
         String start = idCard.substring(0, 1);
         String mid = idCard.substring(1, 9);
         String end = idCard.substring(9, 10);
@@ -334,7 +352,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份证号码
      * @return 验证码是否符合
      */
-    public static boolean validateHKCard(String idCard) {
+    public boolean validateHKCard(String idCard) {
         String card = idCard.replaceAll("[\\(|\\)]", "");
         Integer sum = 0;
         if (card.length() == 9) {
@@ -366,7 +384,7 @@ public class IdCardValidateUtils {
      * @param ca 字符数组
      * @return 数字数组
      */
-    public static int[] converCharToInt(char[] ca) {
+    public int[] converCharToInt(char[] ca) {
         int len = ca.length;
         int[] iArr = new int[len];
         try {
@@ -385,7 +403,7 @@ public class IdCardValidateUtils {
      * @param iArr
      * @return 身份证编码。
      */
-    public static int getPowerSum(int[] iArr) {
+    public int getPowerSum(int[] iArr) {
         int iSum = 0;
         if (power.length == iArr.length) {
             for (int i = 0; i < iArr.length; i++) {
@@ -405,7 +423,7 @@ public class IdCardValidateUtils {
      * @param iSum
      * @return 校验位
      */
-    public static String getCheckCode18(int iSum) {
+    public String getCheckCode18(int iSum) {
         String sCode = "";
         switch (iSum % 11) {
             case 10:
@@ -451,7 +469,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份编号
      * @return 年龄
      */
-    public static int getAgeByIdCard(String idCard) {
+    public int getAgeByIdCard(String idCard) {
         int iAge = 0;
         if (idCard.length() == CHINA_ID_MIN_LENGTH) {
             idCard = conver15CardTo18(idCard);
@@ -469,7 +487,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份编号
      * @return 生日(yyyyMMdd)
      */
-    public static String getBirthByIdCard(String idCard) {
+    public String getBirthByIdCard(String idCard) {
         Integer len = idCard.length();
         if (len < CHINA_ID_MIN_LENGTH) {
             return null;
@@ -485,7 +503,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份编号
      * @return 生日(yyyy)
      */
-    public static Short getYearByIdCard(String idCard) {
+    public Short getYearByIdCard(String idCard) {
         Integer len = idCard.length();
         if (len < CHINA_ID_MIN_LENGTH) {
             return null;
@@ -501,7 +519,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份编号
      * @return 生日(MM)
      */
-    public static Short getMonthByIdCard(String idCard) {
+    public Short getMonthByIdCard(String idCard) {
         Integer len = idCard.length();
         if (len < CHINA_ID_MIN_LENGTH) {
             return null;
@@ -517,7 +535,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份编号
      * @return 生日(dd)
      */
-    public static Short getDateByIdCard(String idCard) {
+    public Short getDateByIdCard(String idCard) {
         Integer len = idCard.length();
         if (len < CHINA_ID_MIN_LENGTH) {
             return null;
@@ -533,7 +551,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份编号
      * @return 性别(M-男，F-女，N-未知)
      */
-    public static String getGenderByIdCard(String idCard) {
+    public String getGenderByIdCard(String idCard) {
         String sGender = "N";
         if (idCard.length() == CHINA_ID_MIN_LENGTH) {
             idCard = conver15CardTo18(idCard);
@@ -553,7 +571,7 @@ public class IdCardValidateUtils {
      * @param idCard 身份编码
      * @return 省级编码。
      */
-    public static String getProvinceByIdCard(String idCard) {
+    public String getProvinceByIdCard(String idCard) {
         int len = idCard.length();
         String sProvince = null;
         String sProvinNum = "";
@@ -570,7 +588,7 @@ public class IdCardValidateUtils {
      * @param val
      * @return 提取的数字。
      */
-    public static boolean isNum(String val) {
+    public boolean isNum(String val) {
         return val == null || "".equals(val) ? false : val.matches("^[0-9]*$");
     }
 
@@ -582,7 +600,7 @@ public class IdCardValidateUtils {
      * @param iDate  待验证日期(日)
      * @return 是否有效
      */
-    public static boolean valiDate(int iYear, int iMonth, int iDate) {
+    public boolean valiDate(int iYear, int iMonth, int iDate) {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int datePerMonth;

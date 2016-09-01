@@ -16,9 +16,27 @@ import java.util.List;
  * @Author: zxl
  * @Date: 30/8/16.
  */
-public class JDomDemo{
+public class JDomDemo {
     private Document document = null;
     private SAXBuilder builder = new SAXBuilder();
+    private static volatile JDomDemo mInstance = null;
+
+    private JDomDemo() {
+    }
+
+    public static JDomDemo getInstance() {
+        JDomDemo instance = mInstance;
+        if (instance == null) {
+            synchronized (JDomDemo.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new JDomDemo();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
 
     public void parserXml(String fileName) throws JDOMException, IOException {
         document = builder.build(fileName);

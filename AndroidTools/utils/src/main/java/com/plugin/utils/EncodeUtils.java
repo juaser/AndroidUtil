@@ -4,18 +4,30 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
+
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/8/7
- *     desc  : 编码解码相关工具类
- * </pre>
+ * @Description: 编码解码相关工具类
+ * @Author: zxl
+ * @Date: 1/9/16 上午10:32.
  */
 public class EncodeUtils {
+    private static volatile EncodeUtils mInstance = null;
 
     private EncodeUtils() {
-        throw new UnsupportedOperationException("u can't fuck me...");
+    }
+
+    public static EncodeUtils getInstance() {
+        EncodeUtils instance = mInstance;
+        if (instance == null) {
+            synchronized (EncodeUtils.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new EncodeUtils();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
     }
 
     /**
@@ -25,7 +37,7 @@ public class EncodeUtils {
      * @param string 要编码的字符
      * @return 编码为UTF-8的字符串
      */
-    public static String encodeUTF8(String string) {
+    public String encodeUTF8(String string) {
         return encode(string, "UTF-8");
     }
 
@@ -37,7 +49,7 @@ public class EncodeUtils {
      * @param charset 字符集
      * @return 编码为字符集的字符串
      */
-    public static String encode(String string, String charset) {
+    public String encode(String string, String charset) {
         try {
             return URLEncoder.encode(string, charset);
         } catch (UnsupportedEncodingException e) {
@@ -52,7 +64,7 @@ public class EncodeUtils {
      * @param string 要解码的字符
      * @return 解码为UTF-8的字符串
      */
-    public static String decodeUTF8(String string) {
+    public String decodeUTF8(String string) {
         return decode(string, "UTF-8");
     }
 
@@ -64,7 +76,7 @@ public class EncodeUtils {
      * @param charset 字符集
      * @return 解码为字符集的字符串
      */
-    public static String decode(String string, String charset) {
+    public String decode(String string, String charset) {
         try {
             return URLDecoder.decode(string, charset);
         } catch (UnsupportedEncodingException e) {

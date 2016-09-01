@@ -1,5 +1,7 @@
 package com.plugin.utils;
 
+import com.plugin.utils.log.LogUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,19 +10,14 @@ import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static com.plugin.utils.IOUtils.close;
+
 /**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/8/2
- *     desc  : 加密相关的工具类
- * </pre>
+ * @Description: 加密相关的工具类
+ * @Author: zxl
+ * @Date: 1/9/16 上午10:34.
  */
 public class EncryptUtils {
-
-    private EncryptUtils() {
-        throw new UnsupportedOperationException("u can't fuck me...");
-    }
 
     /**
      * MD5加密
@@ -28,7 +25,7 @@ public class EncryptUtils {
      * @param data 明文字符串
      * @return 密文
      */
-    public static String getMD5(String data) {
+    public String getMD5(String data) {
         return getMD5(data.getBytes());
     }
 
@@ -39,7 +36,7 @@ public class EncryptUtils {
      * @param salt 盐
      * @return 密文
      */
-    public static String getMD5(String data, String salt) {
+    public String getMD5(String data, String salt) {
         return bytes2Hex(encryptMD5((data + salt).getBytes()));
     }
 
@@ -49,7 +46,7 @@ public class EncryptUtils {
      * @param data 明文字节数组
      * @return 密文
      */
-    public static String getMD5(byte[] data) {
+    public String getMD5(byte[] data) {
         return bytes2Hex(encryptMD5(data));
     }
 
@@ -60,7 +57,7 @@ public class EncryptUtils {
      * @param salt 盐字节数组
      * @return 密文
      */
-    public static String getMD5(byte[] data, byte[] salt) {
+    public String getMD5(byte[] data, byte[] salt) {
         byte[] dataSalt = new byte[data.length + salt.length];
         System.arraycopy(data, 0, dataSalt, 0, data.length);
         System.arraycopy(salt, 0, dataSalt, data.length, salt.length);
@@ -73,13 +70,13 @@ public class EncryptUtils {
      * @param data 明文字节数组
      * @return 密文字节数组
      */
-    public static byte[] encryptMD5(byte[] data) {
+    public byte[] encryptMD5(byte[] data) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(data);
             return md.digest();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LogUtils.e("NoSuchAlgorithmException");
         }
         return new byte[0];
     }
@@ -90,7 +87,7 @@ public class EncryptUtils {
      * @param filePath 文件路径
      * @return 文件的MD5校验码
      */
-    public static String getMD5File(String filePath) {
+    public String getMD5File(String filePath) {
         return getMD5File(new File(filePath));
     }
 
@@ -100,7 +97,7 @@ public class EncryptUtils {
      * @param file 文件
      * @return 文件的MD5校验码
      */
-    public static String getMD5File(File file) {
+    public String getMD5File(File file) {
         FileInputStream in = null;
         try {
             in = new FileInputStream(file);
@@ -110,14 +107,9 @@ public class EncryptUtils {
             md.update(buffer);
             return bytes2Hex(md.digest());
         } catch (NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
+            LogUtils.e("NoSuchAlgorithmException | IOException");
         } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ignored) {
-                }
-            }
+            close(in);
         }
         return "";
     }
@@ -128,7 +120,7 @@ public class EncryptUtils {
      * @param data 明文字符串
      * @return 密文
      */
-    public static String getSHA(String data) {
+    public String getSHA(String data) {
         return getSHA(data.getBytes());
     }
 
@@ -138,7 +130,7 @@ public class EncryptUtils {
      * @param data 明文字节数组
      * @return 密文
      */
-    public static String getSHA(byte[] data) {
+    public String getSHA(byte[] data) {
         return bytes2Hex(encryptSHA(data));
     }
 
@@ -148,13 +140,13 @@ public class EncryptUtils {
      * @param data 明文字节数组
      * @return 密文字节数组
      */
-    public static byte[] encryptSHA(byte[] data) {
+    public byte[] encryptSHA(byte[] data) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA");
             md.update(data);
             return md.digest();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LogUtils.e("NoSuchAlgorithmException");
         }
         return new byte[0];
     }
@@ -165,7 +157,7 @@ public class EncryptUtils {
      * @param src byte数组
      * @return 16进制大写字符串
      */
-    public static String bytes2Hex(byte[] src) {
+    public String bytes2Hex(byte[] src) {
         char[] res = new char[src.length << 1];
         final char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         for (int i = 0, j = 0; i < src.length; i++) {

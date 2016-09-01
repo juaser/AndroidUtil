@@ -18,6 +18,24 @@ import java.io.InputStream;
  */
 public class PullDemo {
     private XmlPullParser pullParser = Xml.newPullParser();
+    private static volatile PullDemo mInstance = null;
+
+    private PullDemo() {
+    }
+
+    public static PullDemo getInstance() {
+        PullDemo instance = mInstance;
+        if (instance == null) {
+            synchronized (PullDemo.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new PullDemo();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
 
     public void parserXml(InputStream is) throws XmlPullParserException, IOException {
         pullParser.setInput(is, "UTF-8");//为Pull解析器设置要解析的XML数据

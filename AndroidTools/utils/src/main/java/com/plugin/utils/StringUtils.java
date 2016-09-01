@@ -18,16 +18,37 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 
+import static com.plugin.utils.IOUtils.close;
+
 /**
  * @description：
  * @author：zxl
  * @CreateTime 2016/8/12.
  */
 public class StringUtils {
+    private static volatile StringUtils mInstance = null;
+
+    private StringUtils() {
+    }
+
+    public static StringUtils getInstance() {
+        StringUtils instance = mInstance;
+        if (instance == null) {
+            synchronized (StringUtils.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new StringUtils();
+                    mInstance = instance;
+                }
+            }
+        }
+        return instance;
+    }
+
     /**
      * 判断字符串是否有值，如果为null或者是空字符串或者只有空格或者为"null"字符串，则返回true，否则则返回false
      */
-    public static boolean isEmpty(String value) {
+    public boolean isEmpty(String value) {
         if (value != null && !"".equalsIgnoreCase(value.trim())
                 && !"null".equalsIgnoreCase(value.trim())) {
             return false;
@@ -39,7 +60,7 @@ public class StringUtils {
     /**
      * 判断多个字符串是否相等，如果其中有一个为空字符串或者null，则返回false，只有全相等才返回true
      */
-    public static boolean isEquals(String... agrs) {
+    public boolean isEquals(String... agrs) {
         String last = null;
         for (int i = 0; i < agrs.length; i++) {
             String str = agrs[i];
@@ -75,8 +96,8 @@ public class StringUtils {
      * @param end     结束位置
      * @return 高亮spannable
      */
-    public static CharSequence getHighLightText(String content, int color,
-                                                int start, int end) {
+    public CharSequence getHighLightText(String content, int color,
+                                         int start, int end) {
         if (TextUtils.isEmpty(content)) {
             return "";
         }
@@ -94,7 +115,7 @@ public class StringUtils {
      * @param resId 文字资源
      * @return 返回链接样式的字符串
      */
-    public static Spanned getHtmlStyleString(Context context, int resId) {
+    public Spanned getHtmlStyleString(Context context, int resId) {
         StringBuilder sb = new StringBuilder();
         sb.append("<a href=\"\"><u><b>").append(context.getResources().getString(resId))
                 .append(" </b></u></a>");
@@ -104,14 +125,14 @@ public class StringUtils {
     /**
      * 格式化文件大小，不保留末尾的0
      */
-    public static String formatFileSize(long len) {
+    public String formatFileSize(long len) {
         return formatFileSize(len, false);
     }
 
     /**
      * 格式化文件大小，保留末尾的0，达到长度一致
      */
-    public static String formatFileSize(long len, boolean keepZero) {
+    public String formatFileSize(long len, boolean keepZero) {
         String size;
         DecimalFormat formatKeepTwoZero = new DecimalFormat("#.00");
         DecimalFormat formatKeepOneZero = new DecimalFormat("#.0");
@@ -163,7 +184,7 @@ public class StringUtils {
      * @param is the is
      * @return the string
      */
-    public static String toString(InputStream is) {
+    public String input2String(InputStream is) {
         StringBuilder sb = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String result = "";
@@ -176,15 +197,25 @@ public class StringUtils {
         } catch (IOException e) {
             LogUtils.e("IOException");
         } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    LogUtils.e("IOException");
-                }
-
-            }
+            close(is);
         }
         return result;
+    }
+
+    /**
+     * HTML字符转义
+     * <p>对输入参数中的敏感字符进行过滤替换,防止用户利用JavaScript等方式输入恶意代码</p>
+     *
+     * @param html html文本
+     * @return 过滤后的文本
+     */
+    public String htmlEscape(String html) {
+        return html.replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll(" ", "&nbsp;")
+                .replaceAll("'", "&#39;")
+                .replaceAll("\"", "&quot;")
+                .replaceAll("\n", "<br/>");
     }
 }
