@@ -43,6 +43,9 @@
         <activity
             android:name=".ui.CircleWaveActivity"
             android:label="@string/label_circlewave" />
+        <activity
+            android:name=".ui.TestDialogActivity"
+            android:label="@string/label_testdialog" />
     </application>
 
 </manifest>
