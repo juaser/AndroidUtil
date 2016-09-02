@@ -51,6 +51,9 @@
         <activity
             android:name=".ui.TestFrescoActivity"
             android:label="@string/label_testfresco" />
+        <activity
+            android:name=".ui.AddCartAnimationActivity"
+            android:label="@string/label_add2cart" />
     </application>
 
 </manifest>
