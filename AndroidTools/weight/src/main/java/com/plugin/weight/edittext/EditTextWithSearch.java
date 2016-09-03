@@ -2,6 +2,7 @@ package com.plugin.weight.edittext;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -66,7 +67,7 @@ public class EditTextWithSearch extends EditText {
     }
 
     public void init() {
-        ic_search = context.getResources().getDrawable(R.mipmap.ic_search);
+        ic_search = ContextCompat.getDrawable(context, R.mipmap.ic_search);
         ic_search.setBounds(0, 0, ic_search.getIntrinsicWidth(), ic_search.getIntrinsicHeight());
         if (type == type_left) {
             setCompoundDrawables(ic_search, null, null, null);
