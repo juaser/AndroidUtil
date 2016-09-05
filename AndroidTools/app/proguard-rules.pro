@@ -279,3 +279,8 @@
 -dontnote io.rong.**
  -ignorewarnings
 -keep class com.mixin.daojia.receiver.MiXinPushMessageReceiver {*;}
+
+#dom4j
+-dontwarn org.dom4j.**
+#jdom
+-dontwarn org.jdom2.**
