@@ -52,8 +52,11 @@
             android:name=".ui.TestFrescoActivity"
             android:label="@string/label_testfresco" />
         <activity
-            android:name=".ui.AddCartAnimationActivity"
+            android:name=".ui.animations.Add2CartActivity"
             android:label="@string/label_add2cart" />
+        <activity
+            android:name=".ui.animations.JitterViewActivity"
+            android:label="@string/label_jitter" />
     </application>
 
 </manifest>

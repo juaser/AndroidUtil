@@ -1,4 +1,4 @@
-package com.zxl.androidtools.ui;
+package com.zxl.androidtools.ui.animations;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -20,7 +20,7 @@ import butterknife.OnClick;
  * @Author: zxl
  * @Date: 2/9/16 下午5:19.
  */
-public class AddCartAnimationActivity extends BaseActivity {
+public class Add2CartActivity extends BaseActivity {
     @Bind(R.id.iv)
     ImageView iv;
     @Bind(R.id.buy)

@@ -12,6 +12,7 @@
     <string name="label_testdialog">对话框</string>
     <string name="label_testfresco">Fresco的使用</string>
     <string name="label_add2cart">添加dao购物车动画</string>
+    <string name="label_jitter">抖动效果</string>
 
 
     <string name="str_parser_dom">DOM解析</string>
