@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--星期标题背景颜色-->
+    <color name="color_bg_week_title">#ffeeeeee</color>
+    <!--星期标题文字颜色-->
+    <color name="color_tx_week_title">#ff29c475</color>
+    <!--当前月日历数字颜色-->
+    <color name="color_tx_this_month_day">#aa564b4b</color>
+    <!--其他月日历数字颜色-->
+    <color name="color_tx_other_month_day">#ffcccccc</color>
+    <!--当天日历数字颜色-->
+    <color name="color_tx_this_day">#ff008000</color>
+    <!--当天日历背景颜色-->
+    <color name="color_bg_this_day">#ffcccccc</color>
+    <!--日历背景色-->
+    <color name="color_bg_calendar">#ffeeeeee</color>
+    <!--日历 标题颜色-->
+    <color name="color_title">#ff29c475</color>
+    <!--日历 完成颜色-->
+    <color name="color_complete">#ff29c475</color>
+    <!--日历 完成上面线颜色-->
+    <color name="color_line">#ff29c475</color>
+
+</resources>

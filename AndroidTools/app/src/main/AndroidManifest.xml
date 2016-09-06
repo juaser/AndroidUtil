@@ -33,6 +33,23 @@
         <activity
             android:name=".ui.CustomViewActivity"
             android:label="@string/label_customview" />
+
+        <activity
+            android:name=".ui.TestXmlActivity"
+            android:label="@string/label_xml" />
+        <activity
+            android:name=".ui.TestHttpActivity"
+            android:label="@string/label_http" />
+
+        <activity
+            android:name=".ui.TestDialogActivity"
+            android:label="@string/label_testdialog" />
+        <activity
+            android:name=".ui.TestFrescoActivity"
+            android:label="@string/label_testfresco" />
+
+
+        <!--自定义View-->
         <activity
             android:name=".ui.customviews.SwitchButtonActivity"
             android:label="@string/label_switch" />
@@ -43,26 +60,20 @@
             android:name=".ui.customviews.MarqueeActivity"
             android:label="@string/label_marquee" />
         <activity
-            android:name=".ui.TestXmlActivity"
-            android:label="@string/label_xml" />
-        <activity
-            android:name=".ui.TestHttpActivity"
-            android:label="@string/label_http" />
-        <activity
             android:name=".ui.customviews.CircleWaveActivity"
             android:label="@string/label_circlewave" />
         <activity
-            android:name=".ui.TestDialogActivity"
-            android:label="@string/label_testdialog" />
-        <activity
-            android:name=".ui.TestFrescoActivity"
-            android:label="@string/label_testfresco" />
+            android:name=".ui.customviews.CalendarActivity"
+            android:label="@string/label_calendar" />
+
+        <!--动画效果-->
         <activity
             android:name=".ui.animations.Add2CartActivity"
             android:label="@string/label_add2cart" />
         <activity
             android:name=".ui.animations.JitterViewActivity"
             android:label="@string/label_jitter" />
+
     </application>
 
 </manifest>

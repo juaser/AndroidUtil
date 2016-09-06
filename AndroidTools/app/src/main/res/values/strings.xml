@@ -6,18 +6,24 @@
     <string name="label_mian">主界面</string>
     <string name="label_animations">动画效果</string>
     <string name="label_customview">自定义View</string>
-
     <string name="label_test">测试</string>
-    <string name="label_switch">开关选择器</string>
-    <string name="label_flow">测量子布局的宽度，换行</string>
-    <string name="label_marquee">跑马灯效果</string>
     <string name="label_xml">xml解析</string>
     <string name="label_http">原生Http</string>
-    <string name="label_circlewave">水波纹控件</string>
     <string name="label_testdialog">对话框</string>
     <string name="label_testfresco">Fresco的使用</string>
-    <string name="label_add2cart">添加dao购物车动画</string>
+
+    <!--自定义View-->
+    <string name="label_switch">开关选择器</string>
+    <string name="label_flow">测量子布局的宽度，换行</string>
+    <string name="label_circlewave">水波纹控件</string>
+    <string name="label_marquee">跑马灯效果</string>
+    <string name="label_calendar">日历</string>
+
+    <!--动画效果-->
+    <string name="label_add2cart">添加到购物车动画</string>
     <string name="label_jitter">抖动效果</string>
+
+
 
 
     <string name="str_parser_dom">DOM解析</string>
