@@ -47,7 +47,20 @@
         <activity
             android:name=".ui.TestFrescoActivity"
             android:label="@string/label_testfresco" />
+        <activity
+            android:name=".ui.TestSchemeActivity"
+            android:label="@string/label_testscheme" />
 
+        <activity android:name=".ui.TestSchemeResultActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/str_scheme_testscheme" />
+            </intent-filter>
+        </activity>
 
         <!--自定义View-->
         <activity
@@ -73,6 +86,7 @@
         <activity
             android:name=".ui.animations.JitterViewActivity"
             android:label="@string/label_jitter" />
+
 
     </application>
 

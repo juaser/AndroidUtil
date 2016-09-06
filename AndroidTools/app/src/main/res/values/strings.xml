@@ -11,6 +11,7 @@
     <string name="label_http">原生Http</string>
     <string name="label_testdialog">对话框</string>
     <string name="label_testfresco">Fresco的使用</string>
+    <string name="label_testscheme">Scheme启动app</string>
 
     <!--自定义View-->
     <string name="label_switch">开关选择器</string>
@@ -24,8 +25,6 @@
     <string name="label_jitter">抖动效果</string>
 
 
-
-
     <string name="str_parser_dom">DOM解析</string>
     <string name="str_parser_dom4J">dom4j解析</string>
     <string name="str_parser_jdom">jdom解析</string>
@@ -34,4 +33,10 @@
     <string name="str_parser_create">xml创建</string>
     <string name="str_submit">确定</string>
     <string name="str_loadingdialog">加载对话框</string>
+    <string name="str_scheme_testscheme">zxl_tools</string>
+    <string name="str_jump">跳转</string>
+    <string name="str_scheme_authority">authority</string>
+    <string name="str_scheme_path">path</string>
+    <string name="str_scheme_query">query</string>
+    <string name="str_scheme_fragment">fragment</string>
 </resources>
