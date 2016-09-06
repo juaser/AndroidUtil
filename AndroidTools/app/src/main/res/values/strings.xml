@@ -1,7 +1,12 @@
 <resources>
+    <string name="group_activity_animations">animations</string>
+    <string name="group_activity_customview">customviews</string>
     <!--activity标签-->
     <string name="app_name">AndroidTools</string>
     <string name="label_mian">主界面</string>
+    <string name="label_animations">动画效果</string>
+    <string name="label_customview">自定义View</string>
+
     <string name="label_test">测试</string>
     <string name="label_switch">开关选择器</string>
     <string name="label_flow">测量子布局的宽度，换行</string>

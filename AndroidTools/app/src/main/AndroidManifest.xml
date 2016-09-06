@@ -28,13 +28,19 @@
             android:name=".TestActivity"
             android:label="@string/label_test" />
         <activity
-            android:name=".ui.SwitchButtonActivity"
+            android:name=".ui.AnimationActivity"
+            android:label="@string/label_animations" />
+        <activity
+            android:name=".ui.CustomViewActivity"
+            android:label="@string/label_customview" />
+        <activity
+            android:name=".ui.customviews.SwitchButtonActivity"
             android:label="@string/label_switch" />
         <activity
-            android:name=".ui.FlowLayoutActivty"
+            android:name=".ui.customviews.FlowLayoutActivty"
             android:label="@string/label_flow" />
         <activity
-            android:name=".ui.MarqueeActivity"
+            android:name=".ui.customviews.MarqueeActivity"
             android:label="@string/label_marquee" />
         <activity
             android:name=".ui.TestXmlActivity"
@@ -43,7 +49,7 @@
             android:name=".ui.TestHttpActivity"
             android:label="@string/label_http" />
         <activity
-            android:name=".ui.CircleWaveActivity"
+            android:name=".ui.customviews.CircleWaveActivity"
             android:label="@string/label_circlewave" />
         <activity
             android:name=".ui.TestDialogActivity"

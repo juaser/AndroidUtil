@@ -1,4 +1,4 @@
-package com.zxl.androidtools.ui;
+package com.zxl.androidtools.ui.customviews;
 
 import android.view.View;
 import android.widget.TextView;
