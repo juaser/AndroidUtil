@@ -22,7 +22,8 @@ public class EncryptMd5Utils {
     private static volatile EncryptMd5Utils mInstance = null;
     private static final String key = "EncryptMd5Utils";
     private static final String TYPE_MD5 = "MD5";
-    private static final String TYPE_SHA = "MD5";
+    private static final String TYPE_SHA_256 = "SHA-256";
+    private static final String TYPE_SHA_512 = "SHA-512";
 
     private EncryptMd5Utils() {
     }
@@ -42,16 +43,20 @@ public class EncryptMd5Utils {
     }
 
     /**
-     * 获取字符串的MD5校验码
+     * 获取MD5校验码
      *
-     * @param str
+     * @param data 校验数据
      * @return
      */
-    public String encryptMD5(String str) {
+    public String encryptMD5(byte[] data) {
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance(TYPE_MD5);
-            md.update((str + key).getBytes());
+            byte[] keyByte = key.getBytes();
+            byte[] resultByte = new byte[data.length + keyByte.length];
+            System.arraycopy(keyByte, 0, resultByte, 0, keyByte.length);
+            System.arraycopy(data, 0, resultByte, keyByte.length, data.length);
+            md.update(resultByte);
             return bytes2Hex(md.digest());
         } catch (NoSuchAlgorithmException e) {
             LogUtils.e("NoSuchAlgorithmException");
@@ -90,16 +95,20 @@ public class EncryptMd5Utils {
     }
 
     /**
-     * 获取字符串SHA
+     * 获取字符串SHA 256,512
      *
-     * @param str
+     * @param data 校验数据
      * @return
      */
-    public String encryptSHA(String str) {
+    public String encryptSHA(byte[] data) {
         MessageDigest md = null;
         try {
-            md = MessageDigest.getInstance(TYPE_MD5);
-            md.update((str + key).getBytes());
+            md = MessageDigest.getInstance(TYPE_SHA_256);
+            byte[] keyByte = key.getBytes();
+            byte[] resultByte = new byte[data.length + keyByte.length];
+            System.arraycopy(keyByte, 0, resultByte, 0, keyByte.length);
+            System.arraycopy(data, 0, resultByte, keyByte.length, data.length);
+            md.update(resultByte);
             return bytes2Hex(md.digest());
         } catch (NoSuchAlgorithmException e) {
             LogUtils.e("NoSuchAlgorithmException");
