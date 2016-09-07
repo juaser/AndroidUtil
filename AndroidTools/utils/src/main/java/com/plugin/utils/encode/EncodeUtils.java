@@ -1,4 +1,4 @@
-package com.plugin.utils;
+package com.plugin.utils.encode;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

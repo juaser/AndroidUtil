@@ -1,11 +1,15 @@
 package com.plugin.utils;
 
+import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -30,6 +34,11 @@ import java.util.List;
 public class PhoneUtils {
 
     private static volatile PhoneUtils mInstance = null;
+    private static final String[] CONTACTOR_ION = new String[]{
+            ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+            ContactsContract.Contacts.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.NUMBER
+    };
 
     private PhoneUtils() {
     }
@@ -257,9 +266,8 @@ public class PhoneUtils {
      * 获取手机短信并保存到xml中
      * <p>需添加权限 android.permission.READ_SMS</p>
      * <p>需添加权限 android.permission.WRITE_EXTERNAL_STORAGE</p>
-     *
      */
-    public  void getAllSMS() {
+    public void getAllSMS() {
         // 1.获取短信
         // 1.1获取内容解析者
         ContentResolver resolver = getContext().getContentResolver();
@@ -320,5 +328,107 @@ public class PhoneUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 获取1366个联系人只需0.5秒，读取本地联系人非常快！性能优化
+     * <p>
+     * 遍历方法
+     * Set<Map.Entry> entries = map.entrySet();
+     * for (Map.Entry entry : entries) {
+     * Object key=entry.getKey();//phone
+     * Object value=entry.getValue();//name
+     * }
+     *
+     * @param context
+     * @return 电话号码
+     */
+    public HashMap getContacts(Context context) {
+        HashMap map = new HashMap();
+        Cursor phones = null;
+        ContentResolver cr = context.getContentResolver();
+        try {
+            phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, CONTACTOR_ION, null, null, "sort_key");
+            if (phones != null) {
+                final int contactIdIndex = phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID);
+                final int displayNameIndex = phones.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                final int phoneIndex = phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                String phoneString, displayNameString, contactIdString;
+                while (phones.moveToNext()) {
+                    phoneString = phones.getString(phoneIndex);
+                    displayNameString = phones.getString(displayNameIndex);
+                    contactIdString = phones.getString(contactIdIndex);
+                    map.put(phoneString, displayNameString);
+                }
+                LogUtils.e("联系人总数=" + map.size());
+            }
+        } catch (Exception e) {
+            LogUtils.e("Exception");
+        } finally {
+            if (phones != null)
+                phones.close();
+        }
+
+        return map;
+    }
+
+    /**
+     * 把数据写入到系统的联系人 需要权限
+     *
+     * @param context
+     * @param name
+     * @param phone
+     */
+    public void insertContacts(Context context, String name, String phone) {
+
+        // 把数据写入到系统的联系人.
+        ContentResolver resolver = context.getContentResolver();
+        // ----------在raw_contant表中添加一条新的id---------------
+        Uri uri = Uri.parse("content://com.android.contacts/raw_contacts");
+        // 插入联系人 必须要知道 新的联系人的id
+        Cursor cursor = resolver.query(uri, new String[]{"contact_id"}, null, null, "contact_id");
+        int contact_id;
+        if (cursor.moveToLast()) {
+            contact_id = cursor.getInt(0) + 1; // 数据库里面有数据 最后一条联系人的id + 1
+        } else {// 原先数据库是空的 从第一个联系人开始
+            contact_id = 1;
+        }
+        ContentValues values = new ContentValues();
+        values.put("contact_id", contact_id);
+        resolver.insert(uri, values);
+
+        // ------------在data表里面 添加id对应的数据-------------
+        Uri dataUri = Uri.parse("content://com.android.contacts/data");
+
+        // 插入姓名
+        ContentValues nameValue = new ContentValues();
+        nameValue.put("data1", name);
+        nameValue.put("raw_contact_id", contact_id);
+        nameValue.put("mimetype", "vnd.android.cursor.item/name");
+        resolver.insert(dataUri, nameValue);
+
+        // 插入电话
+        ContentValues phoneValue = new ContentValues();
+        phoneValue.put("data1", phone);
+        phoneValue.put("raw_contact_id", contact_id);
+        phoneValue.put("mimetype", "vnd.android.cursor.item/phone_v2");
+        resolver.insert(dataUri, phoneValue);
+
+        LogUtils.e("插入数据成功=" + name);
+
+    }
+
+    public void openSetting(Context context) {
+        Intent intent;
+        if (Build.VERSION.SDK_INT > 10) {
+            intent = new Intent("android.settings.WIRELESS_SETTINGS");
+        } else {
+            intent = new Intent();
+            ComponentName component = new ComponentName("com.android.settings", "com.android.settings.WirelessSettings");
+            intent.setComponent(component);
+            intent.setAction("android.intent.action.VIEW");
+        }
+
+        context.startActivity(intent);
     }
 }
