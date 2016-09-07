@@ -7,12 +7,12 @@ import com.plugin.utils.bean.LoginUserBean;
 import com.plugin.utils.log.LogUtils;
 
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
@@ -23,6 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class EncriptAESUtils {
     private static final String TYPE_AES = "AES";
     private static final String TYPE_SHA1PRNG = "SHA1PRNG";
+    private static final String TYPE_Crypto = "Crypto";
     private static final String TYPE_MODE = "AES/CBC/PKCS5Padding";
     private static final String HEX = "0123456789ABCDEF";
     private static final String MAK = "com.plugin.utils";
@@ -48,31 +49,30 @@ public class EncriptAESUtils {
 
     /**
      * AES加密
-     * 结合密钥生成加密后的密文
+     * 结合密钥生成加密后的密文 返回字符串
      *
      * @param input
      * @return
      * @throws Exception
      */
-    public String encrypt(byte[] input) {
-        String result = "";
-        try {
-            byte[] rawKey = getRawKey(MAK.getBytes());
-            // 根据上一步生成的密匙指定一个密匙
-            SecretKeySpec skeySpec = new SecretKeySpec(rawKey, TYPE_AES);
-            // Cipher cipher = Cipher.getInstance("AES");
-            // 加密算法，加密模式和填充方式三部分或指定加密算
-            Cipher cipher = Cipher.getInstance(TYPE_MODE);
-            // 初始化模式为加密模式，并指定密匙
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, new IvParameterSpec(
-                    new byte[cipher.getBlockSize()]));
-            byte[] encrypted = cipher.doFinal(input);
-            result = toHex(encrypted);
-        } catch (Exception e) {
-            result = "";
-            LogUtils.e("Exception");
+    public String encrypt2String(byte[] input) {
+        return toHex(encrypt2Byte(input));
+    }
+
+    /**
+     * AES加密
+     * 结合密钥生成加密后的密文 返回byte数组
+     *
+     * @param input
+     * @return
+     */
+    public byte[] encrypt2Byte(byte[] input) {
+        byte[] encrypted = null;
+        if (input == null) {
+            return null;
         }
-        return result;
+        encrypted = encrypt(input);
+        return encrypted;
     }
 
     /**
@@ -80,22 +80,23 @@ public class EncriptAESUtils {
      *
      * @return
      */
-    public String decrypt(String encryptStr) {
-        String reuslt = "";
-        try {
-            byte[] rawKey = getRawKey(MAK.getBytes());
-            byte[] encrypted = toByte(encryptStr);
-            SecretKeySpec skeySpec = new SecretKeySpec(rawKey, TYPE_AES);
-            Cipher cipher = Cipher.getInstance(TYPE_MODE);
-            cipher.init(Cipher.DECRYPT_MODE, skeySpec, new IvParameterSpec(
-                    new byte[cipher.getBlockSize()]));
-            byte[] decrypted = cipher.doFinal(encrypted);
-            reuslt = new String(decrypted);
-        } catch (Exception e) {
-            reuslt = "";
-            LogUtils.e("Exception");
+    public String decrypt2String(String encryptStr) {
+        byte[] bytes = decrypt2Byte(encryptStr);
+        if (bytes == null) {
+            return "";
+        } else {
+            return new String(bytes);
         }
-        return reuslt;
+    }
+
+    /**
+     * 解密后的byte[]
+     *
+     * @param encryptStr
+     * @return
+     */
+    public byte[] decrypt2Byte(String encryptStr) {
+        return decrypt(toByte(encryptStr));
     }
 
     /**
@@ -105,15 +106,15 @@ public class EncriptAESUtils {
      * @return
      * @throws Exception
      */
-    public String encryptBean(LoginUserBean userBean) throws Exception {
+    public String encryptBean(LoginUserBean userBean) {
         if (userBean == null) {
             return "";
         }
         Parcel parcel = Parcel.obtain();
         parcel.setDataPosition(0);
         userBean.writeToParcel(parcel, 0);
-        parcel.marshall();
-        return encrypt(parcel.marshall());
+        byte[] result = encrypt(parcel.marshall());
+        return toHex(result);
     }
 
     /**
@@ -123,15 +124,59 @@ public class EncriptAESUtils {
      * @return
      * @throws Exception
      */
-    public LoginUserBean decryptBean(String encrypted) throws Exception {
+    public LoginUserBean decryptBean(String encrypted) {
         if (TextUtils.isEmpty(encrypted)) {
             return null;
         }
-        String result = decrypt(encrypted);
+        byte[] result = decrypt2Byte(encrypted);
         Parcel parcel = Parcel.obtain();
-        parcel.unmarshall(result.getBytes(), 0, result.getBytes().length);
+        parcel.unmarshall(result, 0, result.length);
         parcel.setDataPosition(0);
         return LoginUserBean.CREATOR.createFromParcel(parcel);
+    }
+
+    /**
+     * 加密
+     *
+     * @param input
+     * @return
+     */
+    private byte[] encrypt(byte[] input) {
+        if (input == null) {
+            return null;
+        }
+        try {
+            byte[] rawKey = getRawKey(MAK.getBytes());
+            SecretKeySpec skeySpec = new SecretKeySpec(rawKey, TYPE_AES);
+            Cipher cipher = Cipher.getInstance(TYPE_AES);
+            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+            return cipher.doFinal(input);
+        } catch (Exception e) {
+            LogUtils.e("Exception");
+            return null;
+        }
+    }
+
+    /**
+     * 解密
+     *
+     * @param encrypted
+     * @return
+     */
+    private byte[] decrypt(byte[] encrypted) {
+        if (encrypted == null) {
+            return null;
+        }
+        try {
+            byte[] rawKey = getRawKey(MAK.getBytes());
+            SecretKeySpec skeySpec = new SecretKeySpec(rawKey, TYPE_AES);
+            Cipher cipher = Cipher.getInstance(TYPE_AES);
+            cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+            return cipher.doFinal(encrypted);
+        } catch (Exception e) {
+            LogUtils.e("Exception");
+            return null;
+        }
     }
 
     /**
@@ -141,9 +186,14 @@ public class EncriptAESUtils {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    private byte[] getRawKey(byte[] seed) throws NoSuchAlgorithmException {
+    private byte[] getRawKey(byte[] seed) throws NoSuchAlgorithmException, NoSuchProviderException {
         // 获得一个随机数，传入的参数为默认方式。
-        SecureRandom sr = SecureRandom.getInstance(TYPE_SHA1PRNG);
+        SecureRandom sr;
+        if (android.os.Build.VERSION.SDK_INT >= 17) {
+            sr = SecureRandom.getInstance(TYPE_SHA1PRNG, TYPE_Crypto);
+        } else {
+            sr = SecureRandom.getInstance(TYPE_SHA1PRNG);
+        }
         // 设置一个种子,一般是用户设定的密码
         sr.setSeed(seed);
         // 获得一个key生成器（AES加密模式）

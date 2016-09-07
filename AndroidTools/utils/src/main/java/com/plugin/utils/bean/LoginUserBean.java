@@ -11,6 +11,8 @@ public class LoginUserBean implements Parcelable {
     private String mobile_no;
     private String nickname;
 
+    public LoginUserBean() {
+    }
 
     @Override
     public int describeContents() {
