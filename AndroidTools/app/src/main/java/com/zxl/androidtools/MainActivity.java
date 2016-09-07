@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.plugin.utils.SystemInfoUtils;
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.adapter.MainRecyclerAdapter;
 import com.zxl.androidtools.inter.OnClickPositonListerner;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseActivity implements OnClickPositonListerner {
+public class MainActivity extends BaseAppCompatActivity implements OnClickPositonListerner {
 
     @Bind(R.id.recycler)
     RecyclerView recycler;
