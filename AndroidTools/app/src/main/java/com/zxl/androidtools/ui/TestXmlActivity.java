@@ -1,7 +1,7 @@
 package com.zxl.androidtools.ui;
 
 import com.plugin.utils.IOUtils;
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.plugin.utils.log.LogUtils;
 import com.plugin.utils.xml.CreateXmlDemo;
 import com.plugin.utils.xml.Dom4jDemo;
@@ -28,7 +28,7 @@ import butterknife.OnClick;
  * @Author: zxl
  * @Date: 30/8/16.
  */
-public class TestXmlActivity extends BaseActivity {
+public class TestXmlActivity extends BaseAppCompatActivity {
 
     @Override
     public int getLayoutId() {

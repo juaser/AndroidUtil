@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.zxl.androidtools.R;
 
 import butterknife.Bind;
@@ -20,7 +20,7 @@ import butterknife.OnClick;
  * @Author: zxl
  * @Date: 2/9/16 下午5:19.
  */
-public class Add2CartActivity extends BaseActivity {
+public class Add2CartActivity extends BaseAppCompatActivity {
     @Bind(R.id.iv)
     ImageView iv;
     @Bind(R.id.buy)

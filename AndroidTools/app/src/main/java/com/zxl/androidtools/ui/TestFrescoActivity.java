@@ -5,7 +5,7 @@ import android.net.Uri;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.zxl.androidtools.R;
 
 import butterknife.Bind;
@@ -15,7 +15,7 @@ import butterknife.Bind;
  * @Author: zxl
  * @Date: 1/9/16 下午5:50.
  */
-public class TestFrescoActivity extends BaseActivity {
+public class TestFrescoActivity extends BaseAppCompatActivity {
     @Bind(R.id.simpleview_1)
     SimpleDraweeView simpleview1;
 

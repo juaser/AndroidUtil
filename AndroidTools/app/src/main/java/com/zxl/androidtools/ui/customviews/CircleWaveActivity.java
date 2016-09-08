@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.plugin.weight.wave.WaterWaveView;
 import com.zxl.androidtools.R;
 
@@ -16,7 +16,7 @@ import butterknife.OnClick;
  * @Author: zxl
  * @Date: 1/9/16 上午11:34.
  */
-public class CircleWaveActivity extends BaseActivity {
+public class CircleWaveActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.view_wave)
     WaterWaveView viewWave;

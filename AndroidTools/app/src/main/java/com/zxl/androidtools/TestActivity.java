@@ -2,7 +2,7 @@ package com.zxl.androidtools;
 
 import android.widget.TextView;
 
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 
 import butterknife.Bind;
 
@@ -11,7 +11,7 @@ import butterknife.Bind;
  * @Author: zxl
  * @Date: 26/8/16.
  */
-public class TestActivity extends BaseActivity {
+public class TestActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_test)
     TextView tvTest;
 

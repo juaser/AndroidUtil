@@ -21,4 +21,6 @@
     <!--日历 完成上面线颜色-->
     <color name="color_line">#ff29c475</color>
 
+    <color name="color_green_29c475">#29c475</color>
+
 </resources>

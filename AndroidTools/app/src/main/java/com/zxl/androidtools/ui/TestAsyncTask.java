@@ -2,14 +2,14 @@ package com.zxl.androidtools.ui;
 
 import android.os.AsyncTask;
 
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 
 /**
  * @Description:
  * @Author: zxl
  * @Date: 30/8/16.
  */
-public class TestAsyncTask extends BaseActivity {
+public class TestAsyncTask extends BaseAppCompatActivity {
     
     @Override
     public int getLayoutId() {

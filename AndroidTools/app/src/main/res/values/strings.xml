@@ -19,6 +19,7 @@
     <string name="label_circlewave">水波纹控件</string>
     <string name="label_marquee">跑马灯效果</string>
     <string name="label_calendar">日历</string>
+    <string name="label_progress">进度条</string>
 
     <!--动画效果-->
     <string name="label_add2cart">添加到购物车动画</string>
@@ -39,4 +40,6 @@
     <string name="str_scheme_path">path</string>
     <string name="str_scheme_query">query</string>
     <string name="str_scheme_fragment">fragment</string>
+    <string name="str_start_timer">开启计时器</string>
+    <string name="str_stop_timer">关闭计时器</string>
 </resources>

@@ -3,7 +3,7 @@ package com.zxl.androidtools.ui.customviews;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.plugin.utils.toast.T;
 import com.plugin.weight.layout.FlowLayout;
 import com.plugin.weight.textview.PigeonTextView;
@@ -16,7 +16,7 @@ import butterknife.Bind;
  * @author：zxl
  * @CreateTime 2016/8/22.
  */
-public class FlowLayoutActivty extends BaseActivity {
+public class FlowLayoutActivty extends BaseAppCompatActivity {
     @Bind(R.id.layout_flow)
     FlowLayout layoutFlow;
 

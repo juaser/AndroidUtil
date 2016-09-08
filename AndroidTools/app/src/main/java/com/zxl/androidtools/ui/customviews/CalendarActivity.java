@@ -2,7 +2,7 @@ package com.zxl.androidtools.ui.customviews;
 
 import android.widget.TextView;
 
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.plugin.weight.calendar.KCalendarPop;
 import com.zxl.androidtools.R;
 
@@ -14,7 +14,7 @@ import butterknife.OnClick;
  * @Author: zxl
  * @Date: 6/9/16 上午10:40.
  */
-public class CalendarActivity extends BaseActivity {
+public class CalendarActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_calendar)
     TextView tvCalendar;
     @Bind(R.id.tv_calendar_date)

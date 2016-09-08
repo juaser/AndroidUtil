@@ -78,6 +78,9 @@
         <activity
             android:name=".ui.customviews.CalendarActivity"
             android:label="@string/label_calendar" />
+        <activity
+            android:name=".ui.customviews.ProgessActivity"
+            android:label="@string/label_progress" />
 
         <!--动画效果-->
         <activity

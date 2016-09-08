@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.zxl.androidtools.R;
 
 import butterknife.Bind;
@@ -15,7 +15,7 @@ import butterknife.Bind;
  * @Author: zxl
  * @Date: 6/9/16 上午11:02.
  */
-public class TestSchemeResultActivity extends BaseActivity {
+public class TestSchemeResultActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_text)
     TextView tvText;
 

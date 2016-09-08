@@ -3,7 +3,7 @@ package com.zxl.androidtools.ui.animations;
 import android.widget.TextView;
 
 import com.plugin.utils.JitterUtils;
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.zxl.androidtools.R;
 
 import butterknife.Bind;
@@ -14,7 +14,7 @@ import butterknife.OnClick;
  * @Author: zxl
  * @Date: 5/9/16 下午6:02.
  */
-public class JitterViewActivity extends BaseActivity {
+public class JitterViewActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_jitter1)
     TextView tvJitter1;
     @Bind(R.id.tv_jitter1_btn1)

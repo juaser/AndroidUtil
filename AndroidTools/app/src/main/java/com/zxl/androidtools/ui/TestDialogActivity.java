@@ -1,7 +1,7 @@
 package com.zxl.androidtools.ui;
 
 import com.plugin.utils.DialogUtils;
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.zxl.androidtools.R;
 
 import butterknife.OnClick;
@@ -11,7 +11,7 @@ import butterknife.OnClick;
  * @Author: zxl
  * @Date: 1/9/16 下午12:29.
  */
-public class TestDialogActivity extends BaseActivity {
+public class TestDialogActivity extends BaseAppCompatActivity {
 
 
     @Override

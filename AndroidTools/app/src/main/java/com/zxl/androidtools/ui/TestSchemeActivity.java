@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.zxl.androidtools.R;
 
 import butterknife.Bind;
@@ -16,7 +16,7 @@ import butterknife.OnClick;
  * @Author: zxl
  * @Date: 6/9/16 上午11:17.
  */
-public class TestSchemeActivity extends BaseActivity {
+public class TestSchemeActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.tv_jump)
     TextView tvJump;

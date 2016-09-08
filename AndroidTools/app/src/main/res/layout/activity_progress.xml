@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/shape_retangle_white"
+            android:padding="10dp"
+            android:text="@string/str_start_timer"
+            android:textColor="@color/color_black" />
+
+        <com.plugin.weight.progressbar.HorizontalProgressView
+            android:id="@+id/numperBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_timer" />
+
+    </RelativeLayout>
+
+    <!--style="?android:attr/progressBarStyleHorizontal"-->
+    <ProgressBar
+        android:id="@+id/progress_horizontal"
+        style="@style/StyleProgressBarMini"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="5dp"
+        android:max="100"
+        android:progress="0" />
+</LinearLayout>

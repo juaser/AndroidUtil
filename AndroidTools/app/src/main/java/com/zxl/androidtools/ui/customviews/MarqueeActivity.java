@@ -3,7 +3,7 @@ package com.zxl.androidtools.ui.customviews;
 import android.view.View;
 import android.widget.TextView;
 
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.plugin.utils.toast.T;
 import com.plugin.weight.textview.UPMarqueeView;
 import com.plugin.weight.textview.VerticalSwitchTextView;
@@ -19,7 +19,7 @@ import butterknife.Bind;
  * @author：zxl
  * @CreateTime 2016/8/23.
  */
-public class MarqueeActivity extends BaseActivity {
+public class MarqueeActivity extends BaseAppCompatActivity {
     @Bind(R.id.upMarquee)
     UPMarqueeView upMarquee;
     List<View> views;

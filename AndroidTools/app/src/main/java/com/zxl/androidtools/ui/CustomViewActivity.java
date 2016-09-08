@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.plugin.utils.SystemInfoUtils;
-import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.base.BaseAppCompatActivity;
 import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.R;
 import com.zxl.androidtools.adapter.MainRecyclerAdapter;
@@ -22,7 +22,7 @@ import butterknife.Bind;
  * @Author: zxl
  * @Date: 6/9/16 上午9:53.
  */
-public class CustomViewActivity extends BaseActivity implements OnClickPositonListerner {
+public class CustomViewActivity extends BaseAppCompatActivity implements OnClickPositonListerner {
 
     @Bind(R.id.recycler)
     RecyclerView recycler;
