@@ -32,18 +32,16 @@ public class HorizontalProgressView extends View {
      * 当前进度
      */
     private int progress_current = 0;
-    /**
-     * 进度字体颜色
-     */
-    private final int progress_text_color = 0xff4291F1;
+
+
     /**
      * 进度的颜色
      */
-    private final int progress_reached_color = 0xff4291F1;
+    private int progress_reached_color = 0xff4291F1;
     /**
      * 进度的背景颜色
      */
-    private final int progress_unreached_color = 0xffcccccc;
+    private int progress_unreached_color = 0xffcccccc;
     /**
      * 进度的高
      */
@@ -212,6 +210,14 @@ public class HorizontalProgressView extends View {
     public float sp2px(float sp) {
         final float scale = getResources().getDisplayMetrics().scaledDensity;
         return sp * scale;
+    }
+
+    public void setProgress_reached_color(int progress_reached_color) {
+        this.progress_reached_color = progress_reached_color;
+    }
+
+    public void setProgress_unreached_color(int progress_unreached_color) {
+        this.progress_unreached_color = progress_unreached_color;
     }
 
     public int getProgress_max() {

@@ -81,6 +81,9 @@
         <activity
             android:name=".ui.customviews.ProgessActivity"
             android:label="@string/label_progress" />
+        <activity
+            android:name=".ui.customviews.TestWebViewActivity"
+            android:label="@string/label_testwebview" />
 
         <!--动画效果-->
         <activity
