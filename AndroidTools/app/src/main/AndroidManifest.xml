@@ -86,6 +86,10 @@
             android:label="@string/label_testwebview" />
 
         <!--动画效果-->
+
+        <activity
+            android:name=".ui.animations.BaseAnimationActivity"
+            android:label="@string/label_base_animation" />
         <activity
             android:name=".ui.animations.Add2CartActivity"
             android:label="@string/label_add2cart" />

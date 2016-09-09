@@ -25,6 +25,7 @@
     <!--动画效果-->
     <string name="label_add2cart">添加到购物车动画</string>
     <string name="label_jitter">抖动效果</string>
+    <string name="label_base_animation">基本的动画</string>
 
 
     <string name="str_parser_dom">DOM解析</string>
@@ -43,4 +44,15 @@
     <string name="str_scheme_fragment">fragment</string>
     <string name="str_start_timer">开启计时器</string>
     <string name="str_stop_timer">关闭计时器</string>
+    <string name="str_viewanimation">视图动画</string>
+    <string name="str_drawablenimation">Frame动画(帧动画)</string>
+    <string name="str_propertyanimation"> 属性动画</string>
+
+    <string name="str_viewanimation_alpha">透明度</string>
+    <string name="str_viewanimation_rotate">旋转</string>
+    <string name="str_viewanimation_scale">尺寸伸缩</string>
+    <string name="str_viewanimation_translate">位置移动</string>
+    <string name="str_start">开始</string>
+    <string name="str_stop">结束</string>
+
 </resources>
