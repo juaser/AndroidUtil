@@ -47,10 +47,66 @@
             android:background="@drawable/shape_retangle_white"
             android:gravity="center"
             android:padding="10dp"
-            android:text="抖动控件1" />
+            android:text="抖动控件2" />
 
         <TextView
             android:id="@+id/tv_jitter1_btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_retangle_white"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="抖动" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_jitter3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_retangle_white"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="抖动控件3" />
+
+        <TextView
+            android:id="@+id/tv_jitter1_btn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_retangle_white"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="抖动" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_jitter4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_retangle_white"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="抖动控件4" />
+
+        <TextView
+            android:id="@+id/tv_jitter1_btn4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

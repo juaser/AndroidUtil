@@ -23,6 +23,14 @@ public class JitterViewActivity extends BaseAppCompatActivity {
     TextView tvJitter2;
     @Bind(R.id.tv_jitter1_btn2)
     TextView tvJitter1Btn2;
+    @Bind(R.id.tv_jitter3)
+    TextView tvJitter3;
+    @Bind(R.id.tv_jitter1_btn3)
+    TextView tvJitter1Btn3;
+    @Bind(R.id.tv_jitter4)
+    TextView tvJitter4;
+    @Bind(R.id.tv_jitter1_btn4)
+    TextView tvJitter1Btn4;
 
     @Override
     public int getLayoutId() {
@@ -36,12 +44,22 @@ public class JitterViewActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.tv_jitter1_btn1)
     void btn1() {
-        JitterUtils.getInstance().tada(tvJitter1);
+        JitterUtils.getInstance().jitter_Y(tvJitter1);
     }
 
     @OnClick(R.id.tv_jitter1_btn2)
     void btn2() {
-        JitterUtils.getInstance().nope(tvJitter2);
+        JitterUtils.getInstance().jitter_X(tvJitter2);
+    }
+
+    @OnClick(R.id.tv_jitter1_btn3)
+    void btn3() {
+        JitterUtils.getInstance().jitter1(tvJitter3);
+    }
+
+    @OnClick(R.id.tv_jitter1_btn4)
+    void btn4() {
+        JitterUtils.getInstance().jitter2(tvJitter4);
     }
 
 }

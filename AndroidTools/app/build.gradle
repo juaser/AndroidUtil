@@ -38,16 +38,8 @@ android {
         }
     }
     android.applicationVariants.all { variant ->
-
         variant.outputs.each { output ->
-            if (variant.buildType.zipAlignEnabled) {
-                def fileName = "androidtools" + "_" + defaultConfig.versionCode + "_" + buildTime() + ".apk"
-                output.outputFile = new File(output.outputFile.parent, fileName)
-            } else {
-                def fileName = "androidtools" + "_" + defaultConfig.versionCode + "_" + buildTime() + "_unsigned.apk"
-                output.outputFile = new File(output.outputFile.parent, fileName)
-            }
-
+            output.outputFile = new File(output.outputFile.parent, "androidtools" + "_" + defaultConfig.versionCode + "_" + buildTime() + ".apk")
         }
     }
 

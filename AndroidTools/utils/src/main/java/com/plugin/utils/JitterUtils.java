@@ -5,6 +5,11 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
+
+import java.util.Random;
 
 /**
  * @Description:
@@ -31,20 +36,14 @@ public class JitterUtils {
         return instance;
     }
 
-    public void tada(View view) {
-        ObjectAnimator animator = tada(view, 1f);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.start();
-    }
-
-    public void nope(View view) {
-        ObjectAnimator nopeAnimator = nope(view, 10);
-        nopeAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        nopeAnimator.start();
-    }
-
-    public static ObjectAnimator tada(View view, float shakeFactor) {
-
+    /**
+     * 上下抖动
+     * 对view的x轴和y轴进行0.9倍到1.1倍的缩放，同时对view进行一定角度的上下旋转。
+     *
+     * @param view
+     */
+    public void jitter_Y(View view) {
+        float shakeFactor = 1f;
         PropertyValuesHolder pvhScaleX = PropertyValuesHolder.ofKeyframe(View.SCALE_X,
                 Keyframe.ofFloat(0f, 1f),
                 Keyframe.ofFloat(.1f, .9f),
@@ -86,12 +85,20 @@ public class JitterUtils {
                 Keyframe.ofFloat(.9f, 3f * shakeFactor),
                 Keyframe.ofFloat(1f, 0)
         );
-
-        return ObjectAnimator.ofPropertyValuesHolder(view, pvhScaleX, pvhScaleY, pvhRotate).
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, pvhScaleX, pvhScaleY, pvhRotate).
                 setDuration(1000);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.start();
     }
 
-    public static ObjectAnimator nope(View view, int delta) {
+    /**
+     * 左右抖动
+     * 对view进行x轴的平移。
+     *
+     * @param view
+     */
+    public void jitter_X(View view) {
+        int delta = 10;
         PropertyValuesHolder pvhTranslateX = PropertyValuesHolder.ofKeyframe(View.TRANSLATION_X,
                 Keyframe.ofFloat(0f, 0),
                 Keyframe.ofFloat(.10f, -delta),
@@ -102,9 +109,41 @@ public class JitterUtils {
                 Keyframe.ofFloat(.90f, delta),
                 Keyframe.ofFloat(1f, 0f)
         );
-
-        return ObjectAnimator.ofPropertyValuesHolder(view, pvhTranslateX).
+        ObjectAnimator nopeAnimator = ObjectAnimator.ofPropertyValuesHolder(view, pvhTranslateX).
                 setDuration(500);
+        nopeAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        nopeAnimator.start();
     }
 
+    public void jitter1(final View view) {
+        int startDelay = 100;
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f).setDuration(150);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            Random random = new Random();
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                view.setTranslationX((random.nextFloat() - 0.5f) * view.getWidth() * 0.05f);
+                view.setTranslationY((random.nextFloat() - 0.5f) * view.getHeight() * 0.05f);
+
+            }
+        });
+        animator.start();
+        view.animate().setDuration(150).setStartDelay(startDelay).scaleX(0f).scaleY(0f).alpha(0f).start();
+    }
+
+    /**
+     * 左右摇摆
+     *
+     * @param view
+     */
+    public void jitter2(View view) {
+        TranslateAnimation animation = new TranslateAnimation(0, -10, 0, 0);
+        animation.setInterpolator(new OvershootInterpolator());
+        animation.setDuration(100);
+        animation.setRepeatCount(3);
+        animation.setRepeatMode(Animation.REVERSE);
+        view.startAnimation(animation);
+    }
 }
