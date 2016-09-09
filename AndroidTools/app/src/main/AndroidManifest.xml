@@ -96,6 +96,9 @@
         <activity
             android:name=".ui.animations.JitterViewActivity"
             android:label="@string/label_jitter" />
+        <activity
+            android:name=".ui.animations.ExplosionParticleActivity"
+            android:label="@string/label_explosionparticle" />
 
 
     </application>

@@ -13,6 +13,7 @@
     <string name="label_testfresco">Fresco的使用</string>
     <string name="label_testscheme">Scheme启动app</string>
     <string name="label_testwebview">自定义Webview</string>
+    <string name="label_explosionparticle">粒子爆炸效果</string>
 
     <!--自定义View-->
     <string name="label_switch">开关选择器</string>
@@ -54,5 +55,7 @@
     <string name="str_viewanimation_translate">位置移动</string>
     <string name="str_start">开始</string>
     <string name="str_stop">结束</string>
+    <string name="str_explosion">爆炸</string>
+    <string name="str_recover">恢复</string>
 
 </resources>
