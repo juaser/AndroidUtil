@@ -87,7 +87,7 @@ public class JitterUtils {
         );
         ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, pvhScaleX, pvhScaleY, pvhRotate).
                 setDuration(1000);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatCount(ValueAnimator.INFINITE);//无限循环
         animator.start();
     }
 
@@ -111,7 +111,7 @@ public class JitterUtils {
         );
         ObjectAnimator nopeAnimator = ObjectAnimator.ofPropertyValuesHolder(view, pvhTranslateX).
                 setDuration(500);
-        nopeAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        nopeAnimator.setRepeatCount(3);
         nopeAnimator.start();
     }
 
@@ -130,7 +130,7 @@ public class JitterUtils {
             }
         });
         animator.start();
-        view.animate().setDuration(150).setStartDelay(startDelay).scaleX(0f).scaleY(0f).alpha(0f).start();
+        view.animate().setDuration(150).setStartDelay(startDelay).scaleX(0f).scaleY(0f).alpha(0f).start();//view消失
     }
 
     /**
