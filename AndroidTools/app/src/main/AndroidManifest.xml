@@ -110,6 +110,10 @@
         <activity
             android:name=".ui.systemviews.TabLayoutActivity"
             android:label="@string/label_tablayout" />
+        <activity
+            android:name=".ui.systemviews.DrawerLayoutActivity"
+            android:label="@string/label_drawerlayout" />
+
     </application>
 
 </manifest>

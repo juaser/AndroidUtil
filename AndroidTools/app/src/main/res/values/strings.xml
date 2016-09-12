@@ -33,6 +33,7 @@
 
     <!-- 系统的View-->
     <string name="label_tablayout">TabLayout的使用</string>
+    <string name="label_drawerlayout">DrawerLayout的使用</string>
 
 
     <string name="str_parser_dom">DOM解析</string>
@@ -68,6 +69,7 @@
     <string name="str_tablayouy_top_noscroll">顶部不滑动</string>
     <string name="str_tablayouy_bottom_noscroll">居于底部</string>
     <string name="str_page">页面</string>
-
+    <string name="str_open">打开</string>
+    <string name="str_close">关闭</string>
 
 </resources>
