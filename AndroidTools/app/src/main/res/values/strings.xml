@@ -14,6 +14,7 @@
     <string name="label_testscheme">Scheme启动app</string>
     <string name="label_testwebview">自定义Webview</string>
     <string name="label_explosionparticle">粒子爆炸效果</string>
+    <string name="label_shadow">阴影效果</string>
 
     <!--自定义View-->
     <string name="label_switch">开关选择器</string>

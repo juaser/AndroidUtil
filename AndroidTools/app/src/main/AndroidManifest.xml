@@ -50,6 +50,9 @@
         <activity
             android:name=".ui.TestSchemeActivity"
             android:label="@string/label_testscheme" />
+        <activity
+            android:name=".ui.TestShadowActivity"
+            android:label="@string/label_shadow" />
 
         <activity android:name=".ui.TestSchemeResultActivity">
             <intent-filter>

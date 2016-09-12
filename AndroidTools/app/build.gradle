@@ -39,7 +39,8 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            output.outputFile = new File(output.outputFile.parent, "androidtools" + "_" + defaultConfig.versionCode + "_" + buildTime() + ".apk")
+            //output.outputFile = new File(output.outputFile.parent, "androidtools" + "_" + defaultConfig.versionCode + "_" + buildTime() + ".apk")
+            output.outputFile = new File(output.outputFile.parent, "androidtools.apk")
         }
     }
 
