@@ -7,4 +7,5 @@
     <color name="color_wihte">#ffffff</color>
     <color name="color_black">#333</color>
     <color name="color_bg">#f0f0f0</color>
+    <color name="color_gray_a5">#a5a5a5</color>
 </resources>

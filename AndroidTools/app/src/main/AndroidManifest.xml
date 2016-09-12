@@ -53,6 +53,9 @@
         <activity
             android:name=".ui.TestShadowActivity"
             android:label="@string/label_shadow" />
+        <activity
+            android:name=".ui.SystemViewActivity"
+            android:label="@string/label_systemview" />
 
         <activity android:name=".ui.TestSchemeResultActivity">
             <intent-filter>
@@ -103,7 +106,10 @@
             android:name=".ui.animations.ExplosionParticleActivity"
             android:label="@string/label_explosionparticle" />
 
-
+        <!--系统的View-->
+        <activity
+            android:name=".ui.systemviews.TabLayoutActivity"
+            android:label="@string/label_tablayout" />
     </application>
 
 </manifest>

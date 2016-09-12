@@ -1,6 +1,7 @@
 <resources>
     <string name="group_activity_animations">animations</string>
     <string name="group_activity_customview">customviews</string>
+    <string name="group_activity_systemview">systemviews</string>
     <!--activity标签-->
     <string name="app_name">AndroidTools</string>
     <string name="label_mian">主界面</string>
@@ -15,6 +16,7 @@
     <string name="label_testwebview">自定义Webview</string>
     <string name="label_explosionparticle">粒子爆炸效果</string>
     <string name="label_shadow">阴影效果</string>
+    <string name="label_systemview">系统的View</string>
 
     <!--自定义View-->
     <string name="label_switch">开关选择器</string>
@@ -28,6 +30,9 @@
     <string name="label_add2cart">添加到购物车动画</string>
     <string name="label_jitter">抖动效果</string>
     <string name="label_base_animation">基本的动画</string>
+
+    <!-- 系统的View-->
+    <string name="label_tablayout">TabLayout的使用</string>
 
 
     <string name="str_parser_dom">DOM解析</string>
@@ -58,5 +63,11 @@
     <string name="str_stop">结束</string>
     <string name="str_explosion">爆炸</string>
     <string name="str_recover">恢复</string>
+
+    <string name="str_tablayouy_top_scroll">顶部可以滑动</string>
+    <string name="str_tablayouy_top_noscroll">顶部不滑动</string>
+    <string name="str_tablayouy_bottom_noscroll">居于底部</string>
+    <string name="str_page">页面</string>
+
 
 </resources>
