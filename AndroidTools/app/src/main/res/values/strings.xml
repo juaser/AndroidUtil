@@ -34,6 +34,7 @@
     <!-- 系统的View-->
     <string name="label_tablayout">TabLayout的使用</string>
     <string name="label_drawerlayout">DrawerLayout的使用</string>
+    <string name="label_coordinatorlayout">CoordinatorLayout的使用</string>
 
 
     <string name="str_parser_dom">DOM解析</string>
@@ -71,5 +72,6 @@
     <string name="str_page">页面</string>
     <string name="str_open">打开</string>
     <string name="str_close">关闭</string>
+    <string name="str_scroll_text">A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY\nZA\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY\nZ</string>
 
 </resources>

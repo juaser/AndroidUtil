@@ -113,6 +113,10 @@
         <activity
             android:name=".ui.systemviews.DrawerLayoutActivity"
             android:label="@string/label_drawerlayout" />
+        <activity
+            android:name=".ui.systemviews.CoordinatorLayoutActivity"
+            android:label="@string/label_coordinatorlayout"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

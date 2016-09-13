@@ -8,4 +8,9 @@
     <color name="color_black">#333</color>
     <color name="color_bg">#f0f0f0</color>
     <color name="color_gray_a5">#a5a5a5</color>
+    <color name="color_red_fe4365">#fe4365</color>
+    <color name="color_red_fc9d9a">#fc9d9a</color>
+    <color name="color_yellow_f9cdad">#f9cdad</color>
+    <color name="color_green_f9cdad">#c8c8a9</color>
+    <color name="color_green_83af9b">#83af9b</color>
 </resources>
