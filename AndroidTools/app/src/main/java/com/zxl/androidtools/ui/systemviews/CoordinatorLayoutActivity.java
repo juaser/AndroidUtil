@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -67,6 +68,7 @@ public class CoordinatorLayoutActivity extends BaseAppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 LogUtils.e("小箭头");
+                Snackbar.make(recyclerview, "返回", Snackbar.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
