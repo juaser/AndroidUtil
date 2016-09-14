@@ -10,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
+import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.plugin.utils.base.BaseAppCompatActivity;
 import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.R;
@@ -43,6 +45,11 @@ public class CoordinatorLayoutActivity extends BaseAppCompatActivity {
     private List<String> data;
     private ListView lv;
 
+    private int type = 0;
+    private List<MaterialMenuDrawable.IconState> states;
+
+    private MaterialMenuDrawable materialMenu;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_coordinatorlayout;
@@ -51,10 +58,28 @@ public class CoordinatorLayoutActivity extends BaseAppCompatActivity {
 
     @Override
     public void initView() {
+        states = new ArrayList<>();
+        states.add(MaterialMenuDrawable.IconState.BURGER);//三条线条样式
+        states.add(MaterialMenuDrawable.IconState.ARROW);//箭头样式
+        states.add(MaterialMenuDrawable.IconState.X);//X样式
+        states.add(MaterialMenuDrawable.IconState.CHECK);//对号样式
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);//显示左上角箭头
-        actionBar.setHomeButtonEnabled(true);//能够点击
+        materialMenu = new MaterialMenuDrawable(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN);
+        toolbar.setNavigationIcon(materialMenu);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                type++;
+                if (type > 3) {
+                    type = 0;
+                }
+                materialMenu.animateIconState(states.get(type));//线条线样式
+                Snackbar.make(recyclerview, "使用的material-menu", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+//        actionBar.setDisplayHomeAsUpEnabled(true);//显示左上角箭头
+//        actionBar.setHomeButtonEnabled(true);//能够点击
         collapsingToolbarLayout.setTitle("标题");
         collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);//设置还没收缩时状态下字体颜色
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.GREEN);//设置收缩后Toolbar上字体的颜色
