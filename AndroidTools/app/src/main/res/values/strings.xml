@@ -35,6 +35,7 @@
     <string name="label_tablayout">TabLayout的使用</string>
     <string name="label_drawerlayout">DrawerLayout的使用</string>
     <string name="label_coordinatorlayout">CoordinatorLayout的使用</string>
+    <string name="label_vector">矢量图</string>
 
 
     <string name="str_parser_dom">DOM解析</string>

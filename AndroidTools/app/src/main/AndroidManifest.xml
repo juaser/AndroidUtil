@@ -117,6 +117,9 @@
             android:name=".ui.systemviews.CoordinatorLayoutActivity"
             android:label="@string/label_coordinatorlayout"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.systemviews.VectorActivity"
+            android:label="@string/label_vector" />
 
     </application>
 
