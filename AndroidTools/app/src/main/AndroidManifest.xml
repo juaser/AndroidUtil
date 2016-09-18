@@ -68,6 +68,7 @@
             android:label="@string/label_ripple" />
 
 
+
         <!--动画效果-->
         <activity
             android:name=".ui.animations.BaseAnimationActivity"
@@ -99,6 +100,9 @@
         <activity
             android:name=".ui.systemviews.ImmersiveActivity"
             android:label="@string/label_immersive" />
+        <activity
+            android:name=".ui.systemviews.CardViewPagerActivity"
+            android:label="@string/label_card_viewpager" />
 
         <!--测试组-->
         <activity

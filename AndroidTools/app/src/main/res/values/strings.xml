@@ -41,6 +41,7 @@
     <string name="label_coordinatorlayout">CoordinatorLayout的使用</string>
     <string name="label_vector">矢量图</string>
     <string name="label_immersive">沉浸式模式</string>
+    <string name="label_card_viewpager">ViewPager卡片效果</string>
 
 
     <string name="str_parser_dom">DOM解析</string>
