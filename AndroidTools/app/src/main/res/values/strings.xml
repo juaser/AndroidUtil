@@ -27,6 +27,8 @@
     <string name="label_marquee">跑马灯效果</string>
     <string name="label_calendar">日历</string>
     <string name="label_progress">进度条</string>
+    <string name="label_ripple">涟漪效果</string>
+
 
     <!--动画效果-->
     <string name="label_add2cart">添加到购物车动画</string>
