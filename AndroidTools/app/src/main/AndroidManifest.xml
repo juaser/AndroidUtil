@@ -24,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".TestActivity"
             android:label="@string/label_test" />
@@ -33,40 +34,12 @@
         <activity
             android:name=".ui.CustomViewActivity"
             android:label="@string/label_customview" />
-
-        <activity
-            android:name=".ui.TestXmlActivity"
-            android:label="@string/label_xml" />
-        <activity
-            android:name=".ui.TestHttpActivity"
-            android:label="@string/label_http" />
-
-        <activity
-            android:name=".ui.TestDialogActivity"
-            android:label="@string/label_testdialog" />
-        <activity
-            android:name=".ui.TestFrescoActivity"
-            android:label="@string/label_testfresco" />
-        <activity
-            android:name=".ui.TestSchemeActivity"
-            android:label="@string/label_testscheme" />
-        <activity
-            android:name=".ui.TestShadowActivity"
-            android:label="@string/label_shadow" />
         <activity
             android:name=".ui.SystemViewActivity"
             android:label="@string/label_systemview" />
-
-        <activity android:name=".ui.TestSchemeResultActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="@string/str_scheme_testscheme" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".ui.TestGroupActivity"
+            android:label="@string/label_testgroup" />
 
         <!--自定义View-->
         <activity
@@ -92,7 +65,6 @@
             android:label="@string/label_testwebview" />
 
         <!--动画效果-->
-
         <activity
             android:name=".ui.animations.BaseAnimationActivity"
             android:label="@string/label_base_animation" />
@@ -120,7 +92,41 @@
         <activity
             android:name=".ui.systemviews.VectorActivity"
             android:label="@string/label_vector" />
+        <activity
+            android:name=".ui.systemviews.ImmersiveActivity"
+            android:label="@string/label_immersive" />
 
+        <!--测试组-->
+        <activity
+            android:name=".ui.testgroup.TestXmlActivity"
+            android:label="@string/label_xml" />
+        <activity
+            android:name=".ui.testgroup.TestHttpActivity"
+            android:label="@string/label_http" />
+
+        <activity
+            android:name=".ui.testgroup.TestDialogActivity"
+            android:label="@string/label_testdialog" />
+        <activity
+            android:name=".ui.testgroup.TestFrescoActivity"
+            android:label="@string/label_testfresco" />
+        <activity
+            android:name=".ui.testgroup.TestSchemeActivity"
+            android:label="@string/label_testscheme" />
+        <activity
+            android:name=".ui.testgroup.TestShadowActivity"
+            android:label="@string/label_shadow" />
+
+        <activity android:name=".ui.testgroup.TestSchemeResultActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/str_scheme_testscheme" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

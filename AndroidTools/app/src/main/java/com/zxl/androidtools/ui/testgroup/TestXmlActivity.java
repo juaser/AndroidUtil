@@ -1,4 +1,4 @@
-package com.zxl.androidtools.ui;
+package com.zxl.androidtools.ui.testgroup;
 
 import com.plugin.utils.IOUtils;
 import com.plugin.utils.base.BaseAppCompatActivity;

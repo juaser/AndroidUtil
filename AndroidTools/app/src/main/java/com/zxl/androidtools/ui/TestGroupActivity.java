@@ -1,4 +1,4 @@
-package com.zxl.androidtools;
+package com.zxl.androidtools.ui;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import com.plugin.utils.SystemInfoUtils;
 import com.plugin.utils.base.BaseAppCompatActivity;
 import com.plugin.utils.log.LogUtils;
+import com.zxl.androidtools.R;
 import com.zxl.androidtools.adapter.MainRecyclerAdapter;
 import com.zxl.androidtools.inter.OnClickPositonListerner;
 
@@ -16,7 +17,12 @@ import java.util.List;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseAppCompatActivity implements OnClickPositonListerner {
+/**
+ * @Description:
+ * @Author: zxl
+ * @Date: 18/9/16 PM1:36.
+ */
+public class TestGroupActivity extends BaseAppCompatActivity implements OnClickPositonListerner {
 
     @Bind(R.id.recycler)
     RecyclerView recycler;
@@ -47,10 +53,7 @@ public class MainActivity extends BaseAppCompatActivity implements OnClickPosito
         if (activities != null) {
             for (ActivityInfo activityInfo : activities) {
                 if (activityInfo.labelRes != 0) {
-                    if (!activityInfo.name.contains(getString(R.string.group_activity_animations))
-                            && !activityInfo.name.contains(getString(R.string.group_activity_customview))
-                            && !activityInfo.name.contains(getString(R.string.group_activity_testgroup))
-                            && !activityInfo.name.contains(getString(R.string.group_activity_systemview))) {
+                    if (activityInfo.name.contains(getString(R.string.group_activity_testgroup))) {
                         activity_labname.add(getString(activityInfo.labelRes));
                         activity_packagename.add(activityInfo.name);
                     }

@@ -2,6 +2,7 @@
     <string name="group_activity_animations">animations</string>
     <string name="group_activity_customview">customviews</string>
     <string name="group_activity_systemview">systemviews</string>
+    <string name="group_activity_testgroup">testgroup</string>
     <!--activity标签-->
     <string name="app_name">AndroidTools</string>
     <string name="label_mian">主界面</string>
@@ -17,6 +18,7 @@
     <string name="label_explosionparticle">粒子爆炸效果</string>
     <string name="label_shadow">阴影效果</string>
     <string name="label_systemview">系统的View</string>
+    <string name="label_testgroup">测试组</string>
 
     <!--自定义View-->
     <string name="label_switch">开关选择器</string>
@@ -36,6 +38,7 @@
     <string name="label_drawerlayout">DrawerLayout的使用</string>
     <string name="label_coordinatorlayout">CoordinatorLayout的使用</string>
     <string name="label_vector">矢量图</string>
+    <string name="label_immersive">沉浸式模式</string>
 
 
     <string name="str_parser_dom">DOM解析</string>
