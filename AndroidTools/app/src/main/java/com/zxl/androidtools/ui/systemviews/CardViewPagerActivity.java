@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.plugin.utils.base.BaseAppCompatActivity;
+import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.R;
 import com.zxl.androidtools.adapter.CardViewpagerAdapter;
 
@@ -42,11 +43,12 @@ public class CardViewPagerActivity extends BaseAppCompatActivity implements View
         }
         adapter = new CardViewpagerAdapter(this, views, datas);
         cardViewpager.setAdapter(adapter);
+        cardViewpager.addOnPageChangeListener(this);
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+        LogUtils.e("position==" + position + "   positionOffset==" + positionOffset + "   positionOffsetPixels" + positionOffsetPixels);
     }
 
     @Override
