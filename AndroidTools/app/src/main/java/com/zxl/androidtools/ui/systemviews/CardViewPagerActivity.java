@@ -18,7 +18,7 @@ import butterknife.Bind;
  * @Author: zxl
  * @Date: 18/9/16 PM4:23.
  */
-public class CardViewPagerActivity extends BaseAppCompatActivity {
+public class CardViewPagerActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
     @Bind(R.id.card_viewpager)
     ViewPager cardViewpager;
 
@@ -42,5 +42,20 @@ public class CardViewPagerActivity extends BaseAppCompatActivity {
         }
         adapter = new CardViewpagerAdapter(this, views, datas);
         cardViewpager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }
