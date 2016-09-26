@@ -27,6 +27,12 @@ public class CardViewPagerActivity extends BaseAppCompatActivity implements View
     private List<View> views;
     private List<String> datas;
 
+    private float mLastOffset;
+    private boolean goingLeft = false;//向左滑动
+    private int nowPagePosition;//当前页面
+    private int targetPagePosition;//目标页面
+    private float realOffset;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_card_viewpager;
@@ -48,12 +54,28 @@ public class CardViewPagerActivity extends BaseAppCompatActivity implements View
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        LogUtils.e("position==" + position + "   positionOffset==" + positionOffset + "   positionOffsetPixels" + positionOffsetPixels);
+        boolean goingLeft = mLastOffset < positionOffset;
+        mLastOffset = positionOffset;
+        if (goingLeft) {
+            nowPagePosition = position;
+            targetPagePosition = position + 1;
+            realOffset = positionOffset;
+        } else {
+            nowPagePosition = position;
+            targetPagePosition = position - 1;
+            realOffset = 1 - positionOffset;
+        }
+        if (targetPagePosition < 0) {
+            return;
+        }
+        LogUtils.e((goingLeft ? "   向左滑动" : "   向右滑动") + "   当前页面==" + nowPagePosition + "   目标页面==" + targetPagePosition + "    滑动的距离==" + realOffset);
     }
 
     @Override
     public void onPageSelected(int position) {
-
+        View view = views.get(position);
+        view.animate().scaleY(1.1f);
+        view.animate().scaleX(1.1f);
     }
 
     @Override

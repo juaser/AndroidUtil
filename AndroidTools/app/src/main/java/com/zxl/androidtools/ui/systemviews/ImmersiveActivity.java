@@ -3,6 +3,7 @@ package com.zxl.androidtools.ui.systemviews;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.plugin.utils.base.BaseAppCompatActivity;
 import com.zxl.androidtools.R;
@@ -20,7 +21,12 @@ public class ImmersiveActivity extends BaseAppCompatActivity {
 
     @Override
     public void initView() {
-
+        if (Build.VERSION.SDK_INT >= 19) {//沉浸式 4.4+
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
     }
 
     /**
