@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
@@ -127,6 +129,19 @@ public class ScreenUtils {
             result = getContext().getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    /**
+     * 获取虚拟导航栏的高度
+     *
+     * @return
+     */
+    private int getNavigationBarHeight() {
+        Resources resources = getContext().getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        LogUtils.e("Navi height:" + height);
+        return height;
     }
 
     /**
