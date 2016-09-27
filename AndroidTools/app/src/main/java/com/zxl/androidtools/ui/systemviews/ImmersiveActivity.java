@@ -5,7 +5,7 @@ import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.plugin.utils.base.BaseAppCompatActivity;
+import com.plugin.utils.base.BaseActivity;
 import com.zxl.androidtools.R;
 
 /**
@@ -13,7 +13,7 @@ import com.zxl.androidtools.R;
  * @Author: zxl
  * @Date: 18/9/16 PM12:06.
  */
-public class ImmersiveActivity extends BaseAppCompatActivity {
+public class ImmersiveActivity extends BaseActivity {
     @Override
     public int getLayoutId() {
         return R.layout.activity_immersive;
@@ -44,16 +44,16 @@ public class ImmersiveActivity extends BaseAppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus && Build.VERSION.SDK_INT >= 19) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
+//        if (hasFocus && Build.VERSION.SDK_INT >= 19) {
+//            View decorView = getWindow().getDecorView();
+//            decorView.setSystemUiVisibility(
+//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//        }
     }
 
     /**
