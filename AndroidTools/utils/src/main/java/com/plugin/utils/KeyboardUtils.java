@@ -60,8 +60,7 @@ public class KeyboardUtils {
     public void hideSoftInput() {
         View view = getActivity().getWindow().peekDecorView();
         if (view != null) {
-            InputMethodManager inputmanger = (InputMethodManager) getActivity()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputmanger = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
@@ -73,9 +72,18 @@ public class KeyboardUtils {
      */
     public void hideSoftInput(EditText edit) {
         edit.clearFocus();
-        InputMethodManager inputmanger = (InputMethodManager) getContext()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputmanger = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputmanger.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+    }
+
+    /**
+     * 判断输入法是否打开
+     *
+     * @return
+     */
+    public boolean getKeyBoardStatus() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        return imm.isActive();//isOpen若返回true，则表示输入法打开
     }
 
     /**
@@ -159,8 +167,7 @@ public class KeyboardUtils {
     /**
      * 切换键盘显示与否状态
      *
-     * @param context 上下文
-     * @param edit    输入框
+     * @param edit 输入框
      */
     public void toggleSoftInput(EditText edit) {
         edit.setFocusable(true);
