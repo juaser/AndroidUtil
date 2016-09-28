@@ -349,6 +349,16 @@ public class TimeUtils {
     }
 
     /**
+     * 返回当前时间的格式为 yyyy-MM-dd HH:mm:ss
+     *
+     * @return
+     */
+    public  String getCurrentTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        return sdf.format(System.currentTimeMillis());
+    }
+
+    /**
      * 判断两个时间差距
      *
      * @param startDate 秒 时间戳
