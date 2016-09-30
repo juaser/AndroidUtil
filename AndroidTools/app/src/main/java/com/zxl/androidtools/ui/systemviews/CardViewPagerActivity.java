@@ -5,7 +5,6 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 
 import com.plugin.utils.base.BaseAppCompatActivity;
-import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.R;
 import com.zxl.androidtools.adapter.CardViewpagerAdapter;
 
@@ -51,39 +50,56 @@ public class CardViewPagerActivity extends BaseAppCompatActivity implements View
      */
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        boolean goingLeft = mLastOffset < positionOffset;//是否向左滑动，是指手指向左 页面的话是从0-->1
+        int realCurrentPosition;
+        int nextPosition;
         float baseElevation = adapter.getBaseElevation();
-        if (goingLeft) {
-            nowPagePosition = position;
-            targetPagePosition = position + 1;
-            realOffset = positionOffset;
-        } else {
-            nowPagePosition = position + 1;
-            targetPagePosition = position;
-            realOffset = 1 - positionOffset;
-        }
-        view_now_scale = (float) (1 + 0.1 * (1 - realOffset));
-        view_target_scale = (float) (1 + 0.1 * realOffset);
+        float realOffset;
+        boolean goingLeft = mLastOffset > positionOffset;
 
-        if (targetPagePosition > adapter.getCount() - 1 || nowPagePosition > adapter.getCount() - 1) {
+        // If we're going backwards, onPageScrolled receives the last position
+        // instead of the current one
+        if (goingLeft) {
+            realCurrentPosition = position + 1;
+            nextPosition = position;
+            realOffset = 1 - positionOffset;
+        } else {
+            nextPosition = position + 1;
+            realCurrentPosition = position;
+            realOffset = positionOffset;
+        }
+
+        // Avoid crash on overscroll
+        if (nextPosition > adapter.getCount() - 1
+                || realCurrentPosition > adapter.getCount() - 1) {
             return;
         }
-        LogUtils.i((goingLeft ? "   向左滑动" : "   向右滑动")
-                + "页面" + nowPagePosition + "---->页面" + targetPagePosition + "    滑动的距离==" + realOffset
-                + "   当前页面缩放比例==" + view_now_scale + "  目标页面缩放比例==" + view_target_scale);
-        CardView view_now = adapter.getCardViewAt(position);
-        CardView view_target = adapter.getCardViewAt(targetPagePosition);
 
-        if (view_now != null) {
-            view_now.setScaleX(view_now_scale);
-            view_now.setScaleY(view_now_scale);
-            view_now.setCardElevation((baseElevation + baseElevation * (adapter.MAX_ELEVATION_FACTOR - 1) * (1 - realOffset)));
+        CardView currentCard = adapter.getCardViewAt(realCurrentPosition);
+
+        // This might be null if a fragment is being used
+        // and the views weren't created yet
+        if (currentCard != null) {
+            if (true) {
+                currentCard.setScaleX((float) (1 + 0.1 * (1 - realOffset)));
+                currentCard.setScaleY((float) (1 + 0.1 * (1 - realOffset)));
+            }
+            currentCard.setCardElevation( (baseElevation + baseElevation
+                    * (adapter.MAX_ELEVATION_FACTOR - 1) * (1 - realOffset)));
         }
-        if (view_target != null) {
-            view_target.setScaleX(view_target_scale);
-            view_target.setScaleY(view_target_scale);
-            view_target.setCardElevation((baseElevation + baseElevation * (adapter.MAX_ELEVATION_FACTOR - 1) * realOffset));
+
+        CardView nextCard = adapter.getCardViewAt(nextPosition);
+
+        // We might be scrolling fast enough so that the next (or previous) card
+        // was already destroyed or a fragment might not have been created yet
+        if (nextCard != null) {
+            if (true) {
+                nextCard.setScaleX((float) (1 + 0.1 * (realOffset)));
+                nextCard.setScaleY((float) (1 + 0.1 * (realOffset)));
+            }
+            nextCard.setCardElevation((baseElevation + baseElevation
+                    * (adapter.MAX_ELEVATION_FACTOR - 1) * (realOffset)));
         }
+
         mLastOffset = positionOffset;
     }
 
