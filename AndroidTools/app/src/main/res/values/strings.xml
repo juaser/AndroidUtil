@@ -28,6 +28,7 @@
     <string name="label_calendar">日历</string>
     <string name="label_progress">进度条</string>
     <string name="label_ripple">涟漪效果</string>
+    <string name="label_drawboard">画板</string>
 
 
     <!--动画效果-->

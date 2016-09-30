@@ -66,6 +66,10 @@
         <activity
             android:name=".ui.customviews.RippleActivity"
             android:label="@string/label_ripple" />
+        <activity
+            android:name=".ui.customviews.DrawBoardActivity"
+            android:label="@string/label_drawboard"
+            android:screenOrientation="landscape" />
 
 
         <!--动画效果-->
