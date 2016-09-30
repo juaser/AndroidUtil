@@ -22,6 +22,7 @@ public class CardViewpagerAdapter extends PagerAdapter {
     private List<String> datas;
     private List<CardView> cardViews;
     private float mBaseElevation;
+    public int MAX_ELEVATION_FACTOR = 10;
 
     public CardViewpagerAdapter(Context mContext) {
         this.mContext = mContext;
@@ -52,6 +53,7 @@ public class CardViewpagerAdapter extends PagerAdapter {
         if (mBaseElevation == 0) {
             mBaseElevation = cardView.getCardElevation();
         }
+        cardView.setMaxCardElevation(mBaseElevation * MAX_ELEVATION_FACTOR);
         cardViews.set(position, cardView);
         return view;
     }
