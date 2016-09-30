@@ -2,9 +2,14 @@ package com.zxl.androidtools.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.CardView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.zxl.androidtools.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,13 +19,18 @@ import java.util.List;
  */
 public class CardViewpagerAdapter extends PagerAdapter {
     private Context mContext;
-    private List<View> views;
     private List<String> datas;
+    private List<CardView> cardViews;
+    private float mBaseElevation;
 
-    public CardViewpagerAdapter(Context mContext, List<View> views, List<String> datas) {
+    public CardViewpagerAdapter(Context mContext) {
         this.mContext = mContext;
-        this.views = views;
-        this.datas = datas;
+        datas = new ArrayList<>();
+        cardViews = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            datas.add("i==" + i);
+            cardViews.add(null);
+        }
     }
 
     @Override
@@ -35,13 +45,28 @@ public class CardViewpagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = views.get(position);
-        container.addView(views.get(position));
+        View view = LayoutInflater.from(container.getContext())
+                .inflate(R.layout.item_card_viewpager, container, false);
+        container.addView(view);
+        CardView cardView = (CardView) view.findViewById(R.id.cardView);
+        if (mBaseElevation == 0) {
+            mBaseElevation = cardView.getCardElevation();
+        }
+        cardViews.set(position, cardView);
         return view;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(views.get(position));
+        container.removeView((View) object);
+        cardViews.set(position, null);
+    }
+
+    public CardView getCardViewAt(int position) {
+        return cardViews.get(position);
+    }
+
+    public float getBaseElevation() {
+        return mBaseElevation;
     }
 }

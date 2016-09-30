@@ -1,16 +1,12 @@
 package com.zxl.androidtools.ui.systemviews;
 
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.support.v7.widget.CardView;
 
 import com.plugin.utils.base.BaseAppCompatActivity;
 import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.R;
 import com.zxl.androidtools.adapter.CardViewpagerAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 
@@ -24,8 +20,6 @@ public class CardViewPagerActivity extends BaseAppCompatActivity implements View
     ViewPager cardViewpager;
 
     private CardViewpagerAdapter adapter;
-    private List<View> views;
-    private List<String> datas;
 
     private float mLastOffset;
     private boolean goingLeft = false;//向左滑动
@@ -40,40 +34,58 @@ public class CardViewPagerActivity extends BaseAppCompatActivity implements View
 
     @Override
     public void initView() {
-        datas = new ArrayList<>();
-        views = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            datas.add("i==" + i);
-            View view = LayoutInflater.from(this).inflate(R.layout.item_card_viewpager, null);
-            views.add(view);
-        }
-        adapter = new CardViewpagerAdapter(this, views, datas);
+        adapter = new CardViewpagerAdapter(this);
         cardViewpager.setAdapter(adapter);
         cardViewpager.addOnPageChangeListener(this);
     }
 
+    private float view_now_scale;
+    private float view_target_scale;
+
+    /**
+     * @param position             向左滑的话，position就是当前的页面，如果不是的话 position就是要滑到的界面
+     * @param positionOffset
+     * @param positionOffsetPixels
+     */
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        boolean goingLeft = mLastOffset < positionOffset;
+        boolean goingLeft = mLastOffset < positionOffset;//是否向左滑动，是指手指向左 页面的话是从0-->1
         mLastOffset = positionOffset;
+        float baseElevation = adapter.getBaseElevation();
         if (goingLeft) {
             nowPagePosition = position;
             targetPagePosition = position + 1;
             realOffset = positionOffset;
         } else {
-            nowPagePosition = position;
-            targetPagePosition = position - 1;
+            nowPagePosition = position + 1;
+            targetPagePosition = position;
             realOffset = 1 - positionOffset;
         }
-        if (targetPagePosition < 0) {
+        view_now_scale = (float) (1 + 0.1 * (1 - realOffset));
+        view_target_scale = (float) (1 + 0.1 * realOffset);
+
+        LogUtils.e((goingLeft ? "   向左滑动" : "   向右滑动")
+                + "页面" + nowPagePosition + "---->页面" + targetPagePosition + "    滑动的距离==" + realOffset
+                + "   当前页面缩放比例==" + view_now_scale + "  目标页面缩放比例==" + view_target_scale);
+        if (position == cardViewpager.getChildCount()) {
             return;
         }
-        LogUtils.e((goingLeft ? "   向左滑动" : "   向右滑动") + "   当前页面==" + nowPagePosition + "   目标页面==" + targetPagePosition + "    滑动的距离==" + realOffset);
+        CardView view_now = adapter.getCardViewAt(position);
+        CardView view_target = adapter.getCardViewAt(targetPagePosition);
+
+
+        view_now.animate().scaleX(view_now_scale);
+        view_now.animate().scaleY(view_now_scale);
+        view_now.setCardElevation((baseElevation + baseElevation * (1 - realOffset)));
+
+        view_target.animate().scaleX(view_target_scale);
+        view_target.animate().scaleY(view_target_scale);
+        view_target.setCardElevation((baseElevation + baseElevation * realOffset));
     }
 
     @Override
     public void onPageSelected(int position) {
-        View view = views.get(position);
+        CardView view = adapter.getCardViewAt(position);
         view.animate().scaleY(1.1f);
         view.animate().scaleX(1.1f);
     }
