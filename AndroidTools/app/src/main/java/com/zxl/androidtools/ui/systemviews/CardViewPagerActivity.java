@@ -2,7 +2,6 @@ package com.zxl.androidtools.ui.systemviews;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
-import android.view.View;
 
 import com.plugin.utils.base.BaseAppCompatActivity;
 import com.zxl.androidtools.R;
@@ -15,17 +14,13 @@ import butterknife.Bind;
  * @Author: zxl
  * @Date: 18/9/16 PM4:23.
  */
-public class CardViewPagerActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
+public class CardViewPagerActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener{
     @Bind(R.id.card_viewpager)
     ViewPager cardViewpager;
 
     private CardViewpagerAdapter adapter;
 
     private float mLastOffset;
-    private boolean goingLeft = false;//向左滑动
-    private int nowPagePosition;//当前页面
-    private int targetPagePosition;//目标页面
-    private float realOffset;
 
     @Override
     public int getLayoutId() {
@@ -36,12 +31,8 @@ public class CardViewPagerActivity extends BaseAppCompatActivity implements View
     public void initView() {
         adapter = new CardViewpagerAdapter(this);
         cardViewpager.setAdapter(adapter);
-        cardViewpager.setPageTransformer(false, this);
         cardViewpager.addOnPageChangeListener(this);
     }
-
-    private float view_now_scale;
-    private float view_target_scale;
 
     /**
      * @param position             向左滑的话，position就是当前的页面，如果不是的话 position就是要滑到的界面
@@ -109,11 +100,6 @@ public class CardViewPagerActivity extends BaseAppCompatActivity implements View
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
-    }
-
-    @Override
-    public void transformPage(View page, float position) {
 
     }
 }
