@@ -1,4 +1,4 @@
-package com.plugin.weight;
+package com.plugin.weight.arc;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,7 +14,6 @@ import android.graphics.SweepGradient;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.accessibility.AccessibilityNodeInfo;
 
 /**
  * @Description
@@ -42,10 +41,6 @@ public class ArcRingView extends View {
 
     private int progress = 0;
 
-    @Override
-    public AccessibilityNodeInfo createAccessibilityNodeInfo() {
-        return super.createAccessibilityNodeInfo();
-    }
 
     public ArcRingView(Context context) {
         this(context, null, 0);

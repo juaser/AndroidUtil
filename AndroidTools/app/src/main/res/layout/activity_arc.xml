@@ -9,8 +9,22 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.plugin.weight.ArcRingView
+        <com.plugin.weight.arc.ArcRingView
             android:id="@+id/arc_1"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp" />
+
+        <com.plugin.weight.arc.ArcRing2View
+            android:id="@+id/arc_2"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp" />
+
+        <com.plugin.weight.arc.ArcRing3View
+            android:id="@+id/arc_3"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
