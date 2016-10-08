@@ -29,7 +29,7 @@
     <string name="label_progress">进度条</string>
     <string name="label_ripple">涟漪效果</string>
     <string name="label_drawboard">画板</string>
-
+    <string name="label_arcring">圆环效果</string>
 
     <!--动画效果-->
     <string name="label_add2cart">添加到购物车动画</string>
