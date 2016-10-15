@@ -34,4 +34,9 @@ public class ArcActivity extends BaseActivity {
     void start() {
         arc4.start();
     }
+
+    @OnClick(R.id.arc_4)
+    void arc4Click() {
+
+    }
 }

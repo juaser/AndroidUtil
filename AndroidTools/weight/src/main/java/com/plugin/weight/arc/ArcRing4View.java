@@ -96,6 +96,18 @@ public class ArcRing4View extends TextView {
         paint_text.setTextAlign(Paint.Align.CENTER);
     }
 
+    @Override
+    public void setPressed(boolean pressed) {
+        super.setPressed(pressed);
+        Log.e("TAg", "press==" + pressed);
+        if (pressed) {
+            paint_circle_in.setColor(Color.RED);
+        } else {
+            paint_circle_in.setColor(Color.GREEN);
+        }
+        invalidate();
+    }
+
     /**
      * 给View设置宽高
      *
