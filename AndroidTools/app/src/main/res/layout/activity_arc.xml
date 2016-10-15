@@ -30,24 +30,36 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp" />
 
-        <TextView
-            android:id="@+id/tv_start"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/shape_retangle_white"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="点击"
-            android:textColor="#333"
-            android:textSize="16sp" />
+            android:layout_marginBottom="50dp">
 
-        <com.plugin.weight.arc.ArcRing4View
-            android:id="@+id/arc_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp" />
+            <TextView
+                android:id="@+id/tv_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_retangle_white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="点击"
+                android:textColor="#333"
+                android:textSize="16sp" />
+
+            <com.plugin.weight.arc.ArcRing4View
+                android:id="@+id/arc_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:layout_marginRight="20dp" />
+        </RelativeLayout>
+
     </LinearLayout>
 
 </ScrollView>
