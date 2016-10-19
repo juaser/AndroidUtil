@@ -2,10 +2,14 @@ package com.zxl.androidtools.ui.systemviews;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.plugin.utils.base.BaseActivity;
+import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.R;
 
 /**
@@ -14,6 +18,13 @@ import com.zxl.androidtools.R;
  * @Date: 18/9/16 PM12:06.
  */
 public class ImmersiveActivity extends BaseActivity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        hideNvigation(getWindow());
+        setHideListener();
+        super.onCreate(savedInstanceState);
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_immersive;
@@ -68,5 +79,29 @@ public class ImmersiveActivity extends BaseActivity {
             decorView.setSystemUiVisibility(option);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+    }
+
+    public void setHideListener() {
+        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int i) {
+                LogUtils.e("TAG" + "setHideListener==" + i);
+                hideNvigation(getWindow());
+            }
+        });
+    }
+
+    public void hideNvigation(Window window) {
+        //保持布局状态
+        int uiOptions =
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        if (Build.VERSION.SDK_INT >= 19) {
+            uiOptions |= 0x00001000;
+        } else {
+            uiOptions |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
+        }
+        window.getDecorView().setSystemUiVisibility(uiOptions);
     }
 }
