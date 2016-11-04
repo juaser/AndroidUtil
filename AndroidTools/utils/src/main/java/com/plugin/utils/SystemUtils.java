@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import static android.R.attr.name;
-import static android.R.attr.permission;
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 import static com.plugin.utils.BuildConfig.VERSION_CODE;
 import static com.plugin.utils.BuildConfig.VERSION_NAME;
@@ -194,11 +192,7 @@ public class SystemUtils {
         return Build.MANUFACTURER;
     }
 
-    /**
-     * 获取设备型号，如MI2SC
-     *
-     * @return 设备型号
-     */
+    //TODO 获取设备型号，如MI2SC
     public String getDeviceType() {
         String model = Build.MODEL;
         if (model != null) {
