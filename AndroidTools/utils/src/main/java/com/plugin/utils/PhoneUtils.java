@@ -16,7 +16,6 @@ import android.text.TextUtils;
 import android.util.Xml;
 
 import com.plugin.utils.log.LogUtils;
-import com.plugin.utils.manager.AppManager;
 
 import org.xmlpull.v1.XmlSerializer;
 
@@ -58,36 +57,26 @@ public class PhoneUtils {
     }
 
     /**
-     * @description: 获取上下文
-     */
-    public Context getContext() {
-        return AppManager.getInstance().getTop();
-    }
-
-    /**
      * 判断设备是否是手机
-     *
-     * @return true: 是<br>false: 否
      */
-    public boolean isPhone() {
-        TelephonyManager tm = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+    public boolean isPhone(Context context) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
     }
 
     /**
-     * 获取当前设备的IMIE
-     * <p>需与上面的isPhone一起使用</p>
+     * 获取当前设备的IMIE 唯一标识码
      * <p>需添加权限 android.permission.READ_PHONE_STATE</p>
      *
      * @return IMIE码
      */
-    public String getDeviceIMEI() {
+    public String getDeviceIMEI(Context context) {
         String deviceId;
-        if (isPhone()) {
-            TelephonyManager tm = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        if (isPhone(context)) {
+            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             deviceId = tm.getDeviceId();
         } else {
-            deviceId = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+            deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         }
         return deviceId;
     }
@@ -112,9 +101,8 @@ public class PhoneUtils {
      * SubscriberId(IMSI) = 460030419724900<br>
      * VoiceMailNumber = *86<br>
      */
-    public String getPhoneStatus() {
-        TelephonyManager tm = (TelephonyManager) getContext()
-                .getSystemService(Context.TELEPHONY_SERVICE);
+    public String getPhoneStatus(Context context) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String str = "";
         str += "DeviceId(IMEI) = " + tm.getDeviceId() + "\n";
         str += "DeviceSoftwareVersion = " + tm.getDeviceSoftwareVersion() + "\n";
@@ -139,8 +127,8 @@ public class PhoneUtils {
      *
      * @param phoneNumber 电话号码
      */
-    public void dial(String phoneNumber) {
-        getContext().startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber)));
+    public void dial(Context context, String phoneNumber) {
+        context.startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber)));
     }
 
     /**
@@ -149,8 +137,8 @@ public class PhoneUtils {
      *
      * @param phoneNumber 电话号码
      */
-    public void call(String phoneNumber) {
-        getContext().startActivity(new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNumber)));
+    public void call(Context context, String phoneNumber) {
+        context.startActivity(new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNumber)));
     }
 
     /**
@@ -159,11 +147,11 @@ public class PhoneUtils {
      * @param phoneNumber 电话号码
      * @param content     内容
      */
-    public void sendSms(String phoneNumber, String content) {
+    public void sendSms(Context context, String phoneNumber, String content) {
         Uri uri = Uri.parse("smsto:" + (TextUtils.isEmpty(phoneNumber) ? "" : phoneNumber));
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
         intent.putExtra("sms_body", TextUtils.isEmpty(content) ? "" : content);
-        getContext().startActivity(intent);
+        context.startActivity(intent);
     }
 
     /**
@@ -173,11 +161,11 @@ public class PhoneUtils {
      *
      * @return 联系人链表
      */
-    public List<HashMap<String, String>> getAllContactInfo() {
+    public List<HashMap<String, String>> getAllContactInfo(Context context) {
         SystemClock.sleep(3000);
         ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
         // 1.获取内容解析者
-        ContentResolver resolver = getContext().getContentResolver();
+        ContentResolver resolver = context.getContentResolver();
         // 2.获取内容提供者的地址:com.android.contacts
         // raw_contacts表的地址 :raw_contacts
         // view_data表的地址 : data
@@ -267,10 +255,10 @@ public class PhoneUtils {
      * <p>需添加权限 android.permission.READ_SMS</p>
      * <p>需添加权限 android.permission.WRITE_EXTERNAL_STORAGE</p>
      */
-    public void getAllSMS() {
+    public void getAllSMS(Context context) {
         // 1.获取短信
         // 1.1获取内容解析者
-        ContentResolver resolver = getContext().getContentResolver();
+        ContentResolver resolver = context.getContentResolver();
         // 1.2获取内容提供者地址   sms,sms表的地址:null  不写
         // 1.3获取查询路径
         Uri uri = Uri.parse("content://sms");
@@ -428,7 +416,6 @@ public class PhoneUtils {
             intent.setComponent(component);
             intent.setAction("android.intent.action.VIEW");
         }
-
         context.startActivity(intent);
     }
 }
