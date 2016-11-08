@@ -1,5 +1,6 @@
 package com.zxl.androidtools.ui.systemviews;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,12 +8,16 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.plugin.utils.DialogUtils;
 import com.plugin.utils.base.BaseActivity;
 import com.zxl.androidtools.R;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import butterknife.OnClick;
 
@@ -88,5 +93,63 @@ public class EditStatusColorActivity extends BaseActivity {
         statusBarView.setLayoutParams(params);
         statusBarView.setBackgroundColor(color);
         return statusBarView;
+    }
+
+    /**
+     * 小米手机状态栏 为小米官方提供的解决方案，主要为MIUI内置了可以修改状态栏的模式，支持Dark和Light两种模式。
+     *  网上摘抄 未实验 http://blog.csdn.net/kongbaidepao/article/details/52137677
+     * @param activity
+     * @param darkmode
+     * @return
+     */
+    public static boolean setMiuiStatusBarDarkMode(Activity activity, boolean darkmode) {
+        Class<? extends Window> clazz = activity.getWindow().getClass();
+        try {
+            int darkModeFlag = 0;
+            Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+            darkModeFlag = field.getInt(layoutParams);
+            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+            extraFlagField.invoke(activity.getWindow(), darkmode ? darkModeFlag : 0, darkModeFlag);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * 魅族手机状态栏
+     *
+     * @param activity
+     * @param dark
+     * @return
+     */
+    public static boolean setMeizuStatusBarDarkIcon(Activity activity, boolean dark) {
+        boolean result = false;
+        if (activity != null) {
+            try {
+                WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+                Field darkFlag = WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+                Field meizuFlags = WindowManager.LayoutParams.class.getDeclaredField("meizuFlags");
+                darkFlag.setAccessible(true);
+                meizuFlags.setAccessible(true);
+                int bit = darkFlag.getInt(null);
+                int value = meizuFlags.getInt(lp);
+                if (dark) {
+                    value |= bit;
+                } else {
+                    value &= ~bit;
+                }
+                meizuFlags.setInt(lp, value);
+                activity.getWindow().setAttributes(lp);
+                result = true;
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 }
