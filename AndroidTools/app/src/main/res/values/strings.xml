@@ -44,6 +44,7 @@
     <string name="label_immersive">沉浸式模式</string>
     <string name="label_card_viewpager">ViewPager卡片效果</string>
     <string name="label_fullscreen">全屏(去除下方导航栏)</string>
+    <string name="label_statuscolor">状态栏颜色修改(API>=19)</string>
 
     <string name="str_parser_dom">DOM解析</string>
     <string name="str_parser_dom4J">dom4j解析</string>

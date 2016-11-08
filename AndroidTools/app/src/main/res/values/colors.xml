@@ -13,4 +13,5 @@
     <color name="color_yellow_f9cdad">#f9cdad</color>
     <color name="color_green_f9cdad">#c8c8a9</color>
     <color name="color_green_83af9b">#83af9b</color>
+    <color name="color_status_green">#43cb75</color>
 </resources>
