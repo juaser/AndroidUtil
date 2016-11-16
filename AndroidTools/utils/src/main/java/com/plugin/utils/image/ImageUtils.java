@@ -13,9 +13,12 @@ import android.util.Log;
 
 import com.plugin.utils.PathUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * @Description: 图片处理的工具类
@@ -144,6 +147,22 @@ public class ImageUtils {
     }
 
     /**
+     * 放大或缩小图片
+     *
+     * @param bitmap 源图片
+     * @param ratio  放大或缩小的倍数，大于1表示放大，小于1表示缩小
+     * @return Bitmap
+     */
+    public Bitmap zoomBitmap(Bitmap bitmap, float ratio) {
+        if (ratio < 0f) {
+            return bitmap;
+        }
+        Matrix matrix = new Matrix();
+        matrix.postScale(ratio, ratio);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    /**
      * 创建一个带文字的bitmap
      *
      * @param width
@@ -268,5 +287,57 @@ public class ImageUtils {
                 }
             }
         }
+    }
+
+    /**
+     * 根据bitmap压缩图片质量
+     *
+     * @param bitmap 未压缩的bitmap
+     * @return 压缩后的bitmap
+     */
+    public Bitmap cQuality(Bitmap bitmap) {
+        ByteArrayOutputStream bOut = new ByteArrayOutputStream();
+        int beginRate = 100;
+        //第一个参数 ：图片格式 ，第二个参数： 图片质量，100为最高，0为最差  ，第三个参数：保存压缩后的数据的流
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bOut);
+        while (bOut.size() / 1024 / 1024 > 100) {  //如果压缩后大于100Kb，则提高压缩率，重新压缩
+            beginRate -= 10;
+            bOut.reset();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, beginRate, bOut);
+        }
+        ByteArrayInputStream bInt = new ByteArrayInputStream(bOut.toByteArray());
+        Bitmap newBitmap = BitmapFactory.decodeStream(bInt);
+        if (newBitmap != null) {
+            return newBitmap;
+        } else {
+            return bitmap;
+        }
+    }
+
+    /**
+     * 压缩图片
+     *
+     * @param bitmap   源图片
+     * @param width    想要的宽度
+     * @param height   想要的高度
+     * @param isAdjust 是否自动调整尺寸, true图片就不会拉伸，false严格按照你的尺寸压缩
+     * @return Bitmap
+     */
+    public Bitmap reduce(Bitmap bitmap, int width, int height, boolean isAdjust) {
+        // 如果想要的宽度和高度都比源图片小，就不压缩了，直接返回原图
+        if (bitmap.getWidth() < width && bitmap.getHeight() < height) {
+            return bitmap;
+        }
+        // 根据想要的尺寸精确计算压缩比例, 方法详解：public BigDecimal divide(BigDecimal divisor, int scale, int roundingMode);
+        // scale表示要保留的小数位, roundingMode表示如何处理多余的小数位，BigDecimal.ROUND_DOWN表示自动舍弃
+        float sx = new BigDecimal(width).divide(new BigDecimal(bitmap.getWidth()), 4, BigDecimal.ROUND_DOWN).floatValue();
+        float sy = new BigDecimal(height).divide(new BigDecimal(bitmap.getHeight()), 4, BigDecimal.ROUND_DOWN).floatValue();
+        if (isAdjust) {// 如果想自动调整比例，不至于图片会拉伸
+            sx = (sx < sy ? sx : sy);
+            sy = sx;// 哪个比例小一点，就用哪个比例
+        }
+        Matrix matrix = new Matrix();
+        matrix.postScale(sx, sy);// 调用api中的方法进行压缩，就大功告成了
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 }
