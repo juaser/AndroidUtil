@@ -137,6 +137,7 @@
             android:background="@color/color_black">
 
             <ImageView
+                android:src="@drawable/drawable_animation_sapi"
                 android:id="@+id/tv_drawablenimation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

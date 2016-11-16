@@ -1,7 +1,6 @@
 package com.zxl.androidtools.ui.animations;
 
 import android.graphics.drawable.AnimationDrawable;
-import android.support.v4.content.ContextCompat;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -67,8 +66,11 @@ public class BaseAnimationActivity extends BaseAppCompatActivity {
      */
     @Override
     public void initView() {
-        frameAnim = (AnimationDrawable) ContextCompat.getDrawable(this, R.drawable.drawable_animation_sapi);
-        tvDrawablenimation.setBackgroundDrawable(frameAnim);
+//        //如果当前的I妈个View没有设置src
+//        frameAnim = (AnimationDrawable) ContextCompat.getDrawable(this, R.drawable.drawable_animation_sapi);
+//        tvDrawablenimation.setBackgroundDrawable(frameAnim);
+        frameAnim = (AnimationDrawable) tvDrawablenimation.getDrawable();
+        frameAnim.start();
     }
 
     @OnClick(R.id.tv_view_alpha)
