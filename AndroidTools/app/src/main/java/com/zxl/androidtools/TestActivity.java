@@ -1,20 +1,18 @@
 package com.zxl.androidtools;
 
-import android.graphics.Bitmap;
-import android.widget.ImageView;
+import android.graphics.Color;
 import android.widget.TextView;
 
-import com.plugin.utils.PathUtils;
 import com.plugin.utils.base.BaseAppCompatActivity;
-import com.plugin.utils.image.ImageUtils;
+import com.plugin.weight.image.HeartView;
 
-import java.io.File;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * @Description:
+ * @Description: 制作一个可以颜色变化的心http://www.jianshu.com/p/9423ca99c303
  * @Author: zxl
  * @Date: 26/8/16.
  */
@@ -22,9 +20,10 @@ public class TestActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_test)
     TextView tvTest;
     @Bind(R.id.iv_test)
-    ImageView ivTest;
+    HeartView ivTest;
 
     float scale = 1;
+    private Random random = new Random();
 
     @Override
     public int getLayoutId() {
@@ -33,9 +32,7 @@ public class TestActivity extends BaseAppCompatActivity {
 
     @Override
     public void initView() {
-        Bitmap bitmap2 = ImageUtils.getInstance().getSmallBitmapFromResourse(this, R.drawable.ic_antumn_leaves);
-        ImageUtils.getInstance().saveSimpleBitmap(bitmap2, PathUtils.getInstance().getImageDir() + File.separator + System.currentTimeMillis() + ".png");
-        ivTest.setImageBitmap(bitmap2);
+        ivTest.addHeart();
     }
 
     @OnClick(R.id.tv_test)
@@ -47,6 +44,21 @@ public class TestActivity extends BaseAppCompatActivity {
         }
         tvTest.animate().scaleX(scale);
         tvTest.animate().scaleY(scale);
+    }
 
+    @OnClick(R.id.iv_test)
+    void heartClick() {
+        ivTest.addHeart();
+    }
+
+    /**
+     * 获得一个随机的颜色
+     *
+     * @param rate
+     * @return
+     */
+    public int randomColor(int rate) {
+        int red = random.nextInt(256) / rate, green = random.nextInt(256) / rate, blue = random.nextInt(256) / rate;
+        return Color.rgb(red, green, blue);
     }
 }

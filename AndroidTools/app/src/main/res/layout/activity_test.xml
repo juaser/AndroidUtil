@@ -19,9 +19,8 @@
             android:text="测试" />
     </RelativeLayout>
 
-    <ImageView
+    <com.plugin.weight.image.HeartView
         android:id="@+id/iv_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_antumn_leaves" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
