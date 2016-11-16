@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.plugin.utils.image.ImageUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

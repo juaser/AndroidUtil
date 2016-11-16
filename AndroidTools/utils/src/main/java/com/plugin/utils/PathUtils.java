@@ -203,11 +203,10 @@ public class PathUtils {
      * 判断文件是否存在
      *
      * @param path     文件的路径
-     * @param isCreate 如果不存在是否创建
      * @return
      */
 
-    public boolean isFileExits(String path, boolean isCreate) {
+    public boolean isFileExits(String path) {
         File file = new File(path);
         if (!file.exists()) {
             try {
