@@ -86,7 +86,10 @@ public class HeartView extends RelativeLayout {
                 point2y = -new Random().nextInt(point1y) + point1y;
                 int endX = new Random().nextInt(dp2px(context, 100)) + (width / 2 - dp2px(context, 100));
                 int endY = -new Random().nextInt(point2y) + point2y;
-                ValueAnimator translateAnimator = ValueAnimator.ofObject(new HeartEvaluator(new PointF(point1x, point1y), new PointF(point2x, point2y)), new PointF(width / 2 - imageView.getWidth() / 2, height - imageView.getHeight()), new PointF(endX, endY));
+                ValueAnimator translateAnimator = ValueAnimator.ofObject(
+                        new HeartEvaluator(new PointF(point1x, point1y), new PointF(point2x, point2y)),
+                        new PointF(width / 2 - imageView.getWidth() / 2, height - imageView.getHeight()),
+                        new PointF(endX, endY));
                 translateAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {

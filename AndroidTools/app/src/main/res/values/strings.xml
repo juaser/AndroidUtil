@@ -35,6 +35,7 @@
     <string name="label_add2cart">添加到购物车动画</string>
     <string name="label_jitter">抖动效果</string>
     <string name="label_base_animation">基本的动画</string>
+    <string name="label_bubble">点赞冒泡效果</string>
 
     <!-- 系统的View-->
     <string name="label_tablayout">TabLayout的使用</string>

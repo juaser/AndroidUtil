@@ -87,6 +87,9 @@
         <activity
             android:name=".ui.animations.ExplosionParticleActivity"
             android:label="@string/label_explosionparticle" />
+        <activity
+            android:name=".ui.animations.BubbleActivity"
+            android:label="@string/label_bubble" />
 
         <!--系统的View-->
         <activity
