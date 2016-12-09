@@ -2,36 +2,28 @@ package com.plugin.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
- * @Description: 时间相关的工具类
+ * @Description: 时间相关的工具类  此时的时间戳为毫秒数
  * @Author: zxl
  * @Date: 1/9/16 上午11:19.
+ * yyyy-MM-dd 1969-12-31
+ * yyyy-MM-dd 1970-01-01
+ * yyyy-MM-dd HH:mm 1969-12-31 16:00
+ * yyyy-MM-dd HH:mm 1970-01-01 00:00
+ * yyyy-MM-dd HH:mmZ 1969-12-31 16:00-0800
+ * yyyy-MM-dd HH:mmZ 1970-01-01 00:00+0000
+ * yyyy-MM-dd HH:mm:ss.SSSZ 1969-12-31 16:00:00.000-0800
+ * yyyy-MM-dd HH:mm:ss.SSSZ 1970-01-01 00:00:00.000+0000
+ * yyyy-MM-dd'T'HH:mm:ss.SSSZ 1969-12-31T16:00:00.000-0800
+ * yyyy-MM-dd'T'HH:mm:ss.SSSZ 1970-01-01T00:00:00.000+0000
  */
 public class TimeUtils {
-
-
-    /**
-     * <p>在工具类中经常使用到工具类的格式化描述，这个主要是一个日期的操作类，所以日志格式主要使用 SimpleDateFormat的定义格式.</p>
-     * 格式的意义如下： 日期和时间模式 <br>
-     * <p>日期和时间格式由日期和时间模式字符串指定。在日期和时间模式字符串中，未加引号的字母 'A' 到 'Z' 和 'a' 到 'z'
-     * 被解释为模式字母，用来表示日期或时间字符串元素。文本可以使用单引号 (') 引起来，以免进行解释。"''"
-     * 表示单引号。所有其他字符均不解释；只是在格式化时将它们简单复制到输出字符串，或者在分析时与输入字符串进行匹配。
-     * </p>
-     * 定义了以下模式字母（所有其他字符 'A' 到 'Z' 和 'a' 到 'z' 都被保留）： <br>
-     * yyyy-MM-dd 1969-12-31
-     * yyyy-MM-dd 1970-01-01
-     * yyyy-MM-dd HH:mm 1969-12-31 16:00
-     * yyyy-MM-dd HH:mm 1970-01-01 00:00
-     * yyyy-MM-dd HH:mmZ 1969-12-31 16:00-0800
-     * yyyy-MM-dd HH:mmZ 1970-01-01 00:00+0000
-     * yyyy-MM-dd HH:mm:ss.SSSZ 1969-12-31 16:00:00.000-0800
-     * yyyy-MM-dd HH:mm:ss.SSSZ 1970-01-01 00:00:00.000+0000
-     * yyyy-MM-dd'T'HH:mm:ss.SSSZ 1969-12-31T16:00:00.000-0800
-     * yyyy-MM-dd'T'HH:mm:ss.SSSZ 1970-01-01T00:00:00.000+0000
-     * </pre>
-     */
+    private static volatile TimeUtils mInstance = null;
+    //默认的输出类型
     public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     /**
      * 各时间单位与毫秒的倍数
@@ -42,137 +34,27 @@ public class TimeUtils {
     public static final int UNIT_HOUR = 3600000;
     public static final int UNIT_DAY = 86400000;
 
-    /**
-     * 将时间戳转为时间字符串
-     * <p>格式为yyyy-MM-dd HH:mm:ss</p>
-     *
-     * @param milliseconds 毫秒时间戳
-     * @return 时间字符串
-     */
-    public String milliseconds2String(long milliseconds) {
-        return milliseconds2String(milliseconds, DEFAULT_SDF);
+    private TimeUtils() {
     }
 
-    /**
-     * 将时间戳转为时间字符串
-     * <p>格式为用户自定义</p>
-     *
-     * @param milliseconds 毫秒时间戳
-     * @param format       时间格式
-     * @return 时间字符串
-     */
-    public String milliseconds2String(long milliseconds, SimpleDateFormat format) {
-        return format.format(new Date(milliseconds));
-    }
-
-    /**
-     * 将时间字符串转为时间戳
-     * <p>格式为yyyy-MM-dd HH:mm:ss</p>
-     *
-     * @param time 时间字符串
-     * @return 毫秒时间戳
-     */
-    public long string2Milliseconds(String time) {
-        return string2Milliseconds(time, DEFAULT_SDF);
-    }
-
-    /**
-     * 将时间字符串转为时间戳
-     * <p>格式为用户自定义</p>
-     *
-     * @param time   时间字符串
-     * @param format 时间格式
-     * @return 毫秒时间戳
-     */
-    public long string2Milliseconds(String time, SimpleDateFormat format) {
-        try {
-            return format.parse(time).getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
+    public static TimeUtils getInstance() {
+        TimeUtils instance = mInstance;
+        if (instance == null) {
+            synchronized (TimeUtils.class) {
+                instance = mInstance;
+                if (instance == null) {
+                    instance = new TimeUtils();
+                    mInstance = instance;
+                }
+            }
         }
-        return -1;
+        return instance;
     }
 
     /**
-     * 将时间字符串转为Date类型
-     * <p>格式为yyyy-MM-dd HH:mm:ss</p>
-     *
-     * @param time 时间字符串
-     * @return Date类型
+     * 毫秒时间戳单位转换（单位：unit） 毫秒转换秒，分，时，天
      */
-    public Date string2Date(String time) {
-        return string2Date(time, DEFAULT_SDF);
-    }
-
-    /**
-     * 将时间字符串转为Date类型
-     * <p>格式为用户自定义</p>
-     *
-     * @param time   时间字符串
-     * @param format 时间格式
-     * @return Date类型
-     */
-    public Date string2Date(String time, SimpleDateFormat format) {
-        return new Date(string2Milliseconds(time, format));
-    }
-
-    /**
-     * 将Date类型转为时间字符串
-     * <p>格式为yyyy-MM-dd HH:mm:ss</p>
-     *
-     * @param time Date类型时间
-     * @return 时间字符串
-     */
-    public String date2String(Date time) {
-        return date2String(time, DEFAULT_SDF);
-    }
-
-    /**
-     * 将Date类型转为时间字符串
-     * <p>格式为用户自定义</p>
-     *
-     * @param time   Date类型时间
-     * @param format 时间格式
-     * @return 时间字符串
-     */
-    public String date2String(Date time, SimpleDateFormat format) {
-        return format.format(time);
-    }
-
-    /**
-     * 将Date类型转为时间戳
-     *
-     * @param time Date类型时间
-     * @return 毫秒时间戳
-     */
-    public long date2Milliseconds(Date time) {
-        return time.getTime();
-    }
-
-    /**
-     * 将时间戳转为Date类型
-     *
-     * @param milliseconds 毫秒时间戳
-     * @return Date类型时间
-     */
-    public Date milliseconds2Date(long milliseconds) {
-        return new Date(milliseconds);
-    }
-
-    /**
-     * 毫秒时间戳单位转换（单位：unit）
-     *
-     * @param milliseconds 毫秒时间戳
-     * @param unit         <ul>
-     *                     <li>UNIT_MSEC:毫秒</li>
-     *                     <li>UNIT_SEC :秒</li>
-     *                     <li>UNIT_MIN :分</li>
-     *                     <li>UNIT_HOUR:小时</li>
-     *                     <li>UNIT_DAY :天</li>
-     *                     </ul>
-     * @return unit时间戳
-     */
-    private long milliseconds2Unit(long milliseconds, int unit) {
+    private long convertTimeStamp2Unit(long milliseconds, int unit) {
         switch (unit) {
             case UNIT_MSEC:
             case UNIT_SEC:
@@ -185,214 +67,212 @@ public class TimeUtils {
     }
 
     /**
-     * 获取两个时间差（单位：unit）
-     * <p>time1和time2格式都为yyyy-MM-dd HH:mm:ss</p>
-     *
-     * @param time1 时间字符串1
-     * @param time2 时间字符串2
-     * @param unit  <ul>
-     *              <li>UNIT_MSEC:毫秒</li>
-     *              <li>UNIT_SEC :秒</li>
-     *              <li>UNIT_MIN :分</li>
-     *              <li>UNIT_HOUR:小时</li>
-     *              <li>UNIT_DAY :天</li>
-     *              </ul>
-     * @return unit时间戳
+     * 将时间戳转为时间字符串 format==null 格式默认 否则 格式自定义
      */
-    public long getIntervalTime(String time1, String time2, int unit) {
-        return getIntervalTime(time1, time2, unit, DEFAULT_SDF);
+    public String convertTimeStamp2String(long timestamp, SimpleDateFormat format) {
+        if (format == null) {
+            return DEFAULT_SDF.format(new Date(timestamp));
+        }
+        return format.format(new Date(timestamp));
     }
 
     /**
-     * 获取两个时间差（单位：unit）
-     * <p>time1和time2格式都为format</p>
-     *
-     * @param time1  时间字符串1
-     * @param time2  时间字符串2
-     * @param unit   <ul>
-     *               <li>UNIT_MSEC:毫秒</li>
-     *               <li>UNIT_SEC :秒</li>
-     *               <li>UNIT_MIN :分</li>
-     *               <li>UNIT_HOUR:小时</li>
-     *               <li>UNIT_DAY :天</li>
-     *               </ul>
-     * @param format 时间格式
-     * @return unit时间戳
+     * 将字符串转为时间戳  format==null 格式为yyyy-MM-dd HH:mm:ss  否则 格式自定义
      */
-    public long getIntervalTime(String time1, String time2, int unit, SimpleDateFormat format) {
-        return milliseconds2Unit(string2Milliseconds(time1, format)
-                - string2Milliseconds(time2, format), unit);
+    public long convertString2TimeStamp(String date, SimpleDateFormat format) {
+        try {
+            if (format == null) {
+                return format.parse(date).getTime();
+            }
+            return format.parse(date).getTime();
+        } catch (ParseException e) {
+            return 0;
+        }
     }
 
     /**
-     * 获取两个时间差（单位：unit）
-     * <p>time1和time2都为Date类型</p>
-     *
-     * @param time1 Date类型时间1
-     * @param time2 Date类型时间2
-     * @param unit  <ul>
-     *              <li>UNIT_MSEC:毫秒</li>
-     *              <li>UNIT_SEC :秒</li>
-     *              <li>UNIT_MIN :分</li>
-     *              <li>UNIT_HOUR:小时</li>
-     *              <li>UNIT_DAY :天</li>
-     *              </ul>
-     * @return unit时间戳
+     * 将时间字符串转为Date类型
      */
-    public long getIntervalTime(Date time1, Date time2, int unit) {
-        return milliseconds2Unit(date2Milliseconds(time2) - date2Milliseconds(time1), unit);
+    public Date convertString2Date(String timeStr, SimpleDateFormat format) {
+        return new Date(convertString2TimeStamp(timeStr, format));
     }
 
     /**
-     * 获取当前时间
-     *
-     * @return 毫秒时间戳
+     * 将Date类型转为时间字符串  format==null 格式默认 否则 格式自定义
      */
-    public long getCurTimeMills() {
+    public String convertDate2String(Date timeDate, SimpleDateFormat format) {
+        if (format == null) {
+            return DEFAULT_SDF.format(timeDate);
+        }
+        return format.format(timeDate);
+    }
+
+    /**
+     * 将Date类型转为时间戳
+     */
+    public long convertDate2TimeStamp(Date timeDate) {
+        return timeDate.getTime();
+    }
+
+    /**
+     * 将时间戳转为Date类型
+     */
+    public Date convertTimeStamp2Date(long timestamp) {
+        return new Date(timestamp);
+    }
+
+    /**
+     * 获取当前的时间戳
+     */
+    public long getCurrentTimeStamp() {
         return System.currentTimeMillis();
     }
 
     /**
-     * 获取当前时间
-     * <p>格式为yyyy-MM-dd HH:mm:ss</p>
-     *
-     * @return 时间字符串
+     * 获取当前时间的字符串
      */
-    public String getCurTimeString() {
-        return milliseconds2String(getCurTimeMills());
+    public String getCurrentString(SimpleDateFormat format) {
+        return convertTimeStamp2String(getCurrentTimeStamp(), format);
     }
 
     /**
-     * 获取当前时间
-     * <p>格式为用户自定义</p>
-     *
-     * @param format 时间格式
-     * @return 时间字符串
+     * 获取时间戳timestamp的零点时间的时间戳
      */
-    public String getCurTimeString(SimpleDateFormat format) {
-        return milliseconds2String(getCurTimeMills(), format);
+    public long getTimeStampZeroTime(long timestamp) {
+        return timestamp / UNIT_DAY * UNIT_DAY - TimeZone.getDefault().getRawOffset();
     }
 
     /**
-     * 获取当前时间
-     * <p>Date类型</p>
-     *
-     * @return Date类型时间
+     * 获取时间戳timestamp的零点时间的时间字符串
      */
-    public Date getCurTimeDate() {
-        return new Date();
+    public String getTimeStampZeroTime2String(long timestamp, SimpleDateFormat format) {
+        return convertTimeStamp2String(getTimeStampZeroTime(timestamp), format);
     }
 
     /**
-     * 获取与当前时间的差（单位：unit）
-     * <p>time格式为yyyy-MM-dd HH:mm:ss</p>
-     *
-     * @param time 时间字符串
-     * @param unit <ul>
-     *             <li>UNIT_MSEC:毫秒</li>
-     *             <li>UNIT_SEC :秒</li>
-     *             <li>UNIT_MIN :分</li>
-     *             <li>UNIT_HOUR:小时</li>
-     *             <li>UNIT_DAY :天</li>
-     *             </ul>
-     * @return unit时间戳
+     * 两个时间戳的时间差
      */
-    public long getIntervalByNow(String time, int unit) {
-        return getIntervalByNow(time, unit, DEFAULT_SDF);
+    public long getTimeDifference(String timeStr1, String timeStr2, SimpleDateFormat format) {
+        return convertString2TimeStamp(timeStr1, format) - convertString2TimeStamp(timeStr2, format);
     }
 
     /**
-     * 获取与当前时间的差（单位：unit）
-     * <p>time格式为format</p>
-     *
-     * @param time   时间字符串
-     * @param unit   <ul>
-     *               <li>UNIT_MSEC:毫秒</li>
-     *               <li>UNIT_SEC :秒</li>
-     *               <li>UNIT_MIN :分</li>
-     *               <li>UNIT_HOUR:小时</li>
-     *               <li>UNIT_DAY :天</li>
-     *               </ul>
-     * @param format 时间格式
-     * @return unit时间戳
+     * 两个时间戳相差多少天
      */
-    public long getIntervalByNow(String time, int unit, SimpleDateFormat format) {
-        return getIntervalTime(getCurTimeString(), time, unit, format);
-    }
-
-    /**
-     * 获取与当前时间的差（单位：unit）
-     * <p>time为Date类型</p>
-     *
-     * @param time Date类型时间
-     * @param unit <ul>
-     *             <li>UNIT_MSEC:毫秒</li>
-     *             <li>UNIT_SEC :秒</li>
-     *             <li>UNIT_MIN :分</li>
-     *             <li>UNIT_HOUR:小时</li>
-     *             <li>UNIT_DAY :天</li>
-     *             </ul>
-     * @return unit时间戳
-     */
-    public long getIntervalByNow(Date time, int unit) {
-        return getIntervalTime(getCurTimeDate(), time, unit);
+    public int getTimeDifference2Day(long timeStamp1, long timeStamp2) {
+        //计算两个时间戳的零点差
+        long defference = getTimeStampZeroTime(timeStamp1) - getTimeStampZeroTime(timeStamp2);
+        return (int) defference / UNIT_DAY;
     }
 
     /**
      * 判断闰年
-     *
-     * @param year 年份
-     * @return true: 闰年<br>false: 平年
      */
     public boolean isLeapYear(int year) {
         return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
     }
 
     /**
-     * 返回当前时间的格式为 yyyy-MM-dd HH:mm:ss
+     * 判断两个时间差距
      *
      * @return
      */
-    public  String getCurrentTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        return sdf.format(System.currentTimeMillis());
+    public String getTimeStampDifference(long startDate, long endDate) {
+        long difference = Math.abs(startDate - endDate);
+        int day, hour, minute, second = 0;
+
+        day = (int) difference / UNIT_DAY;
+        if (day > 0) {
+            difference = difference - day * UNIT_DAY;
+        }
+        hour = (int) difference / UNIT_HOUR;
+        if (hour > 0) {
+            difference = difference - hour * UNIT_MIN;
+        }
+        minute = (int) difference / UNIT_MIN;
+        if (minute > 0) {
+            difference = difference - minute * UNIT_MIN;
+        }
+        second = (int) difference / UNIT_SEC;
+        return day + "天" + hour + "小时" + minute + "分" + second + "秒";
     }
 
     /**
-     * 判断两个时间差距
-     *
-     * @param startDate 秒 时间戳
-     * @param endDate   秒 时间戳
-     * @return
+     * 本周开始时间戳     获取星期日开始时间戳
      */
-    public String twoTimestampMinus(int startDate, int endDate) {
-        int minus = Math.abs(startDate - endDate);
-        int day = 0;
-        int hour = 0;
-        int minute = 0;
-        int second = 0;
-        day = minus / (24 * 60 * 60);
-        if (day > 0) {
-            minus = minus - day * (24 * 60 * 60);
+    public long getWeekSundayStartTime() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        return getTimeStampZeroTime(convertDate2TimeStamp(cal.getTime()));
+    }
+
+    /**
+     * 本周结束时间戳  获取星期六结束时间戳
+     */
+    public long getWeekStaurdayEndTime() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        return getTimeStampZeroTime(convertDate2TimeStamp(cal.getTime())) + UNIT_DAY - 1;
+    }
+
+    /**
+     * 本周结束时间戳 - 以星期一为本周的第一天 也就是周日的时间
+     */
+    public long getWeekMondayEndTime() {
+        Calendar cal = Calendar.getInstance();
+        int day_of_week = cal.get(Calendar.DAY_OF_WEEK) - 1;// 0是周日，6是周六
+        if (day_of_week == 0) {
+            day_of_week = 7;
         }
-        hour = minus / (60 * 60);
-        if (hour > 0) {
-            minus = minus - hour * (60 * 60);
+        cal.add(Calendar.DATE, 7 - day_of_week);
+        return getTimeStampZeroTime(convertDate2TimeStamp(cal.getTime())) + UNIT_DAY - 1;
+    }
+
+    /**
+     * 今天星期几
+     */
+    public String getCurrentWeekDay() {
+        Calendar cal = Calendar.getInstance();
+        int day_of_week = cal.get(Calendar.DAY_OF_WEEK) - 1;// 0是周日，6是周六
+        return getWeekDay(day_of_week);
+    }
+
+    /**
+     * 获取时间戳对应的星期
+     */
+    public String converTimeStamp2WeekDay(long timestamp) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date(timestamp));
+        int day_of_week = cal.get(Calendar.DAY_OF_WEEK) - 1;// 0是周日，6是周六
+        return getWeekDay(day_of_week);
+    }
+
+    public String getWeekDay(int day_of_week) {
+        String dayStr = "";
+        switch (day_of_week) {
+            case 0:
+                dayStr = "星期日";
+                break;
+            case 1:
+                dayStr = "星期一";
+                break;
+            case 2:
+                dayStr = "星期二";
+                break;
+            case 3:
+                dayStr = "星期三";
+                break;
+            case 4:
+                dayStr = "星期四";
+                break;
+            case 5:
+                dayStr = "星期五";
+                break;
+            case 6:
+                dayStr = "星期六";
+                break;
         }
-        minute = minus / 60;
-        if (minute > 0) {
-            minus = minus - minute * 60;
-        }
-        second = minus;
-        String str = "";
-        if (hour > 0) {
-            str = "剩余" + day + "天" + hour + "小时";
-        } else if (minute > 0) {
-            str = "剩余" + hour + "小时" + minute + "分";
-        } else {
-            str = "剩余" + minute + "分" + second + "秒";
-        }
-        return str;
+        return dayStr;
     }
 }
 
