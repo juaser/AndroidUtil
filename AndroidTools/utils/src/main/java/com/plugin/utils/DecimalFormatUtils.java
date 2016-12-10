@@ -53,4 +53,23 @@ public class DecimalFormatUtils {
     public String getPermillage(float value) {
         return getFormat(pattern_permillage, new BigDecimal(value));
     }
+
+    /**
+     * 保留n个有效数字
+     */
+    public float convertFloat2Decimal(float f1, int n) {
+        return new BigDecimal(f1).setScale(n, BigDecimal.ROUND_HALF_UP).floatValue();
+    }
+
+    /**
+     * 保留n个有效数字
+     */
+    public float convertString2Decimal(String str, int n) {
+        try {
+            BigDecimal bigDecimal = new BigDecimal(str);
+            return bigDecimal.setScale(n, BigDecimal.ROUND_HALF_UP).floatValue();
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 }

@@ -218,4 +218,18 @@ public class StringUtils {
                 .replaceAll("\"", "&quot;")
                 .replaceAll("\n", "<br/>");
     }
+
+    /**
+     * 截取第一个字符+"..."+最后一个字符
+     */
+    public static String strfor2size(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return "";
+        }
+        int length = str.length();
+        if (length <= 2) {
+            return str;
+        }
+        return str.substring(0, 1) + "..." + str.substring(length - 1);
+    }
 }
