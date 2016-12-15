@@ -2,6 +2,7 @@ package com.zxl.androidtools;
 
 import android.widget.TextView;
 
+import com.plugin.utils.AppUtils;
 import com.plugin.utils.base.BaseAppCompatActivity;
 
 import butterknife.Bind;
@@ -36,5 +37,6 @@ public class TestActivity extends BaseAppCompatActivity {
         }
         tvTest.animate().scaleX(scale);
         tvTest.animate().scaleY(scale);
+        AppUtils.getInstance().shareAppInfo("测试");
     }
 }

@@ -1,21 +1,38 @@
 package com.plugin.utils;
 
 import android.app.ActivityManager;
+import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
+import android.content.pm.Signature;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 
+import com.plugin.utils.bean.AppInfoBean;
 import com.plugin.utils.log.LogUtils;
 import com.plugin.utils.manager.AppManager;
 
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
+import static com.plugin.utils.BuildConfig.VERSION_CODE;
+import static com.plugin.utils.BuildConfig.VERSION_NAME;
 
 /**
  * @description： app的信息
@@ -25,6 +42,7 @@ import java.util.List;
 public class AppUtils {
 
     private static volatile AppUtils mInstance = null;
+    private AppInfoBean currentAppInfoBean = null;
 
     private AppUtils() {
     }
@@ -88,167 +106,84 @@ public class AppUtils {
     }
 
     /**
-     * 封装App信息的Bean类
+     * 获取当前App信息（名称，图标，包名，版本名，版本号,权限，activity集合，设备厂商，设备型号,签名）
      */
-    public static class AppInfo {
-
-        private String name;
-        private Drawable icon;
-        private String packageName;
-        private String versionName;
-        private int versionCode;
-        private boolean isSD;
-        private boolean isUser;
-
-        public Drawable getIcon() {
-            return icon;
+    public AppInfoBean getAppInfo() {
+        if (currentAppInfoBean != null) {
+            LogUtils.e("currentAppInfoBean != null");
+            return currentAppInfoBean;
         }
-
-        public void setIcon(Drawable icon) {
-            this.icon = icon;
-        }
-
-        public boolean isSD() {
-            return isSD;
-        }
-
-        public void setSD(boolean SD) {
-            isSD = SD;
-        }
-
-        public boolean isUser() {
-            return isUser;
-        }
-
-        public void setUser(boolean user) {
-            isUser = user;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getPackageName() {
-            return packageName;
-        }
-
-        public void setPackageName(String packagName) {
-            this.packageName = packagName;
-        }
-
-        public int getVersionCode() {
-            return versionCode;
-        }
-
-        public void setVersionCode(int versionCode) {
-            this.versionCode = versionCode;
-        }
-
-        public String getVersionName() {
-            return versionName;
-        }
-
-        public void setVersionName(String versionName) {
-            this.versionName = versionName;
-        }
-
-        /**
-         * @param name        名称
-         * @param icon        图标
-         * @param packageName 包名
-         * @param versionName 版本号
-         * @param versionCode 版本Code
-         * @param isSD        是否安装在SD卡
-         * @param isUser      是否是用户程序
-         */
-        public AppInfo(String name, Drawable icon, String packageName,
-                       String versionName, int versionCode, boolean isSD, boolean isUser) {
-            this.setName(name);
-            this.setIcon(icon);
-            this.setPackageName(packageName);
-            this.setVersionName(versionName);
-            this.setVersionCode(versionCode);
-            this.setSD(isSD);
-            this.setUser(isUser);
-        }
-
-    /*@Override
-    public String toString() {
-        return getName() + "\n"
-                + getIcon() + "\n"
-                + getPackagName() + "\n"
-                + getVersionName() + "\n"
-                + getVersionCode() + "\n"
-                + isSD() + "\n"
-                + isUser() + "\n";
-    }*/
-    }
-
-    /**
-     * 获取当前App信息
-     * <p>AppInfo（名称，图标，包名，版本号，版本Code，是否安装在SD卡，是否是用户程序）</p>
-     *
-     * @return 当前应用的AppInfo
-     */
-    public AppInfo getAppInfo() {
-        PackageManager pm = getContext().getPackageManager();
-        PackageInfo pi = null;
+        PackageManager packageManager = getContext().getPackageManager();
+        PackageInfo packageInfo = null;
         try {
-            pi = pm.getPackageInfo(getContext().getApplicationContext().getPackageName(), 0);
+            packageInfo = packageManager.getPackageInfo(getContext().getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             LogUtils.e("PackageManager.NameNotFoundException");
         }
-        return pi != null ? getBean(pm, pi) : null;
+        currentAppInfoBean = saveAppInfo(packageManager, packageInfo);
+        return currentAppInfoBean;
     }
 
     /**
-     * 得到AppInfo的Bean
-     *
-     * @param pm 包的管理
-     * @param pi 包的信息
-     * @return AppInfo类
+     * 封装根据包管理器获取到的app信息
      */
-    private AppInfo getBean(PackageManager pm, PackageInfo pi) {
-        ApplicationInfo ai = pi.applicationInfo;
-        String name = ai.loadLabel(pm).toString();
-        Drawable icon = ai.loadIcon(pm);
-        String packageName = pi.packageName;
-        String versionName = pi.versionName;
-        int versionCode = pi.versionCode;
-        boolean isSD = (ApplicationInfo.FLAG_SYSTEM & ai.flags) != ApplicationInfo.FLAG_SYSTEM;
-        boolean isUser = (ApplicationInfo.FLAG_SYSTEM & ai.flags) != ApplicationInfo.FLAG_SYSTEM;
-        return new AppInfo(name, icon, packageName, versionName, versionCode, isSD, isUser);
+    public AppInfoBean saveAppInfo(PackageManager packageManager, PackageInfo packageInfo) {
+        if (packageManager != null && packageInfo != null) {
+            AppInfoBean appInfoBean = new AppInfoBean();
+            ApplicationInfo applicationInfo = packageInfo.applicationInfo;
+            appInfoBean.setApp_name(applicationInfo.loadLabel(packageManager).toString());//app名称
+            appInfoBean.setApp_icon(applicationInfo.loadIcon(packageManager));//app图标
+            appInfoBean.setApp_packageName(applicationInfo.packageName);//app包名
+            appInfoBean.setApp_versionCode(packageInfo.versionCode);//app版本号
+            appInfoBean.setApp_versionName(packageInfo.versionName);//appa版本名
+            appInfoBean.setDevice_manufacture(Build.MANUFACTURER);//厂商
+            appInfoBean.setDevice_type(Build.MODEL == null ? "" : Build.MODEL.trim().replaceAll("\\s*", ""));//设备类型
+            appInfoBean.setDevice_unique_id(getDeviceUniqueId());//设备唯一标志吗
+            try {
+                PackageInfo packageInfo_activity = packageManager.getPackageInfo(applicationInfo.packageName, PackageManager.GET_ACTIVITIES);
+                appInfoBean.setApp_activityInfos(packageInfo_activity.activities);//app的所有activity
+            } catch (PackageManager.NameNotFoundException e) {
+                LogUtils.e("PackageManager.NameNotFoundException----GET_ACTIVITIES");
+            }
+            try {
+                PackageInfo packageInfo_permissions = packageManager.getPackageInfo(applicationInfo.packageName, PackageManager.GET_PERMISSIONS);
+                appInfoBean.setApp_premissions(packageInfo_permissions.requestedPermissions);//app需要的权限
+            } catch (PackageManager.NameNotFoundException e) {
+                LogUtils.e("PackageManager.NameNotFoundException----GET_PERMISSIONS");
+            }
+            try {
+                PackageInfo packageInfo_signatures = packageManager.getPackageInfo(applicationInfo.packageName, PackageManager.GET_SIGNATURES);
+                Signature[] signatures = packageInfo_signatures.signatures;
+                if (signatures != null && signatures[0] != null) {
+                    appInfoBean.setApp_signature(signatures[0].toCharsString());//app的签名
+                } else {
+                    appInfoBean.setApp_signature("no signature");
+                }
+                signatures = null;
+            } catch (PackageManager.NameNotFoundException e) {
+                LogUtils.e("PackageManager.NameNotFoundException----GET_SIGNATURES");
+            }
+            return appInfoBean;
+        }
+        return null;
     }
 
     /**
      * 获取所有已安装App信息
-     * <p>AppInfo（名称，图标，包名，版本号，版本Code，是否安装在SD卡，是否是用户程序）</p>
-     * <p>依赖上面的getBean方法</p>
-     *
-     * @return 所有已安装的AppInfo列表
      */
-    public List<AppInfo> getAllAppsInfo() {
-        List<AppInfo> list = new ArrayList<>();
-        PackageManager pm = getContext().getPackageManager();
+    public List<AppInfoBean> getAllAppsInfo() {
+        List<AppInfoBean> list = new ArrayList<>();
+        PackageManager packageManager = getContext().getPackageManager();
         // 获取系统中安装的所有软件信息
-        List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
-        for (PackageInfo pi : installedPackages) {
-            if (pi != null) {
-                list.add(getBean(pm, pi));
-            }
+        List<PackageInfo> installedPackages = packageManager.getInstalledPackages(0);
+        for (PackageInfo packageInfo : installedPackages) {
+            list.add(saveAppInfo(packageManager, packageInfo));
         }
         return list;
     }
 
     /**
      * 根据包名获取意图
-     *
-     * @param packageName 包名
-     * @return 意图
      */
     private Intent getIntentByPackageName(String packageName) {
         return getContext().getPackageManager().getLaunchIntentForPackage(packageName);
@@ -256,9 +191,6 @@ public class AppUtils {
 
     /**
      * 根据包名判断App是否安装
-     *
-     * @param packageName 包名
-     * @return true: 已安装<br>false: 未安装
      */
     public boolean isInstallApp(String packageName) {
         return getIntentByPackageName(packageName) != null;
@@ -266,9 +198,6 @@ public class AppUtils {
 
     /**
      * 打开指定包名的App
-     *
-     * @param packageName 包名
-     * @return true: 打开成功<br>false: 打开失败
      */
     public boolean openAppByPackageName(String packageName) {
         Intent intent = getIntentByPackageName(packageName);
@@ -281,8 +210,6 @@ public class AppUtils {
 
     /**
      * 打开指定包名的App应用信息界面
-     *
-     * @param packageName 包名
      */
     public void openAppInfo(String packageName) {
         Intent intent = new Intent();
@@ -293,8 +220,6 @@ public class AppUtils {
 
     /**
      * 可用来做App信息分享
-     *
-     * @param info 分享信息
      */
     public void shareAppInfo(String info) {
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -304,15 +229,10 @@ public class AppUtils {
     }
 
     /**
-     * 判断当前App处于前台还是后台
-     * <p>需添加权限 android.permission.GET_TASKS</p>
-     * <p>并且必须是系统应用该方法才有效</p>
-     *
-     * @return true: 后台<br>false: 前台
+     * 判断当前App是否处于后台 需添加权限 android.permission.GET_TASKS 并且必须是系统应用该方法才有效
      */
     public boolean isAppBackground() {
         ActivityManager am = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
-        @SuppressWarnings("deprecation")
         List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
         if (!tasks.isEmpty()) {
             ComponentName topActivity = tasks.get(0).topActivity;
@@ -321,5 +241,120 @@ public class AppUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * 主动回到Home，后台运行
+     */
+    public void goHome(Context context) {
+        Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
+        mHomeIntent.addCategory(Intent.CATEGORY_HOME);
+        mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        context.startActivity(mHomeIntent);
+    }
+
+    /**
+     * 获取服务是否开启
+     */
+    public boolean isRunningService(Context context, String className) {
+        // 进程的管理者,活动的管理者
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        // 获取正在运行的服务，最多获取1000个
+        List<ActivityManager.RunningServiceInfo> runningServices = activityManager.getRunningServices(1000);
+        // 遍历集合
+        for (ActivityManager.RunningServiceInfo runningServiceInfo : runningServices) {
+            ComponentName service = runningServiceInfo.service;
+            if (className.equals(service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断当前手机是否处于锁屏(睡眠)状态
+     */
+    public boolean isSleeping(Context context) {
+        KeyguardManager kgMgr = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        return kgMgr.inKeyguardRestrictedInputMode();
+    }
+
+    /**
+     * 获取设备MAC地址
+     */
+    public String getMacAddress(Context context) {
+        //需添加权限 android.permission.ACCESS_WIFI_STATE
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifi.getConnectionInfo();
+        String macAddress = info.getMacAddress().replace(":", "");
+        return macAddress == null ? "" : macAddress;
+    }
+
+    /**
+     * 获取设备MAC地址
+     */
+    public String getMacAddressProcess() {
+        //需添加权限 android.permission.ACCESS_WIFI_STATE
+        String macAddress = null;
+        try {
+            Process pp = Runtime.getRuntime().exec("cat /sys/class/net/wlan0/address");
+            InputStreamReader ir = new InputStreamReader(pp.getInputStream());
+            LineNumberReader reader = new LineNumberReader(ir);
+            macAddress = reader.readLine().replace(":", "");
+        } catch (Exception ex) {
+            LogUtils.e("Exception");
+        }
+        return macAddress == null ? "" : macAddress;
+    }
+
+    /**
+     * 收集设备信息，用于信息统计分析
+     */
+    public String collectDeviceInfoStr(Context context) {
+        Properties prop = collectDeviceInfo(context);
+        Set deviceInfos = prop.keySet();
+        StringBuilder deviceInfoStr = new StringBuilder("{\n");
+        for (Iterator iter = deviceInfos.iterator(); iter.hasNext(); ) {
+            Object item = iter.next();
+            deviceInfoStr.append("\t\t\t" + item + ":" + prop.get(item) + ", \n");
+        }
+        deviceInfoStr.append("}");
+        return deviceInfoStr.toString();
+    }
+
+    /**
+     * 设备唯一ID
+     */
+    public String getDeviceUniqueId() {
+        try {
+            TelephonyManager tm = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+            return tm.getDeviceId();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public Properties collectDeviceInfo(Context context) {
+        Properties mDeviceCrashInfo = new Properties();
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
+            if (pi != null) {
+                mDeviceCrashInfo.put(VERSION_NAME, pi.versionName == null ? "not set" : pi.versionName);
+                mDeviceCrashInfo.put(VERSION_CODE, pi.versionCode);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Error while collect package info", e);
+        }
+        Field[] fields = Build.class.getDeclaredFields();
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                mDeviceCrashInfo.put(field.getName(), field.get(null));
+            } catch (Exception e) {
+                Log.e(TAG, "Error while collect crash info", e);
+            }
+        }
+        return mDeviceCrashInfo;
     }
 }

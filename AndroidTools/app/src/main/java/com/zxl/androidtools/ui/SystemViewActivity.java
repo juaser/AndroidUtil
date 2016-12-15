@@ -5,8 +5,9 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.plugin.utils.SystemUtils;
+import com.plugin.utils.AppUtils;
 import com.plugin.utils.base.BaseAppCompatActivity;
+import com.plugin.utils.bean.AppInfoBean;
 import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.R;
 import com.zxl.androidtools.adapter.MainRecyclerAdapter;
@@ -48,9 +49,13 @@ public class SystemViewActivity extends BaseAppCompatActivity implements OnClick
     public void getList() {
         activity_labname = new ArrayList<>();
         activity_packagename = new ArrayList<>();
-        ActivityInfo[] activities = SystemUtils.getInstance().getAppActivityInfo(this);
-        LogUtils.e("activity.size==" + activities.length);
+        AppInfoBean appInfo = AppUtils.getInstance().getAppInfo();
+        if (appInfo == null) {
+            return;
+        }
+        ActivityInfo[] activities = appInfo.getApp_activityInfos();
         if (activities != null) {
+            LogUtils.e("activities.length==" + activities.length);
             for (ActivityInfo activityInfo : activities) {
                 if (activityInfo.labelRes != 0) {
                     if (activityInfo.name.contains(getString(R.string.group_activity_systemview))) {
