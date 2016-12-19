@@ -35,7 +35,6 @@ public class MainActivity extends BaseAppCompatActivity implements OnClickPosito
     public void initView() {
         getList();
         setRecycler();
-        LogUtils.e(AppUtils.getInstance().getMacAddressProcess());
     }
 
     /**
