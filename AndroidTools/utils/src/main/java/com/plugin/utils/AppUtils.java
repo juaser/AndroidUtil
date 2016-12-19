@@ -280,10 +280,9 @@ public class AppUtils {
     }
 
     /**
-     * 获取设备MAC地址
+     * 获取设备MAC地址   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
      */
     public String getMacAddress(Context context) {
-        //需添加权限 android.permission.ACCESS_WIFI_STATE
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = wifi.getConnectionInfo();
         String macAddress = info.getMacAddress().replace(":", "");
@@ -323,11 +322,12 @@ public class AppUtils {
     }
 
     /**
-     * 设备唯一ID
+     * 设备唯一ID  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
      */
     public String getDeviceUniqueId() {
         try {
             TelephonyManager tm = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+            LogUtils.e(tm.getDeviceId());
             return tm.getDeviceId();
         } catch (Exception e) {
             return "";
