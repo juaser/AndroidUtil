@@ -1,7 +1,6 @@
 package com.plugin.utils;
 
 import android.app.ActivityManager;
-import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -265,14 +264,6 @@ public class AppUtils {
             }
         }
         return false;
-    }
-
-    /**
-     * 判断当前手机是否处于锁屏(睡眠)状态
-     */
-    public boolean isSleeping(Context context) {
-        KeyguardManager kgMgr = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-        return kgMgr.inKeyguardRestrictedInputMode();
     }
 
     /**

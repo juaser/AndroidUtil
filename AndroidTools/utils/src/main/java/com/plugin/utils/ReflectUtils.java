@@ -1,5 +1,6 @@
 package com.plugin.utils;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -7,7 +8,10 @@ import android.widget.LinearLayout;
 import com.plugin.utils.log.LogUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+
+import static java.security.AccessController.getContext;
 
 /**
  * @Description: 通过反射做些操作
@@ -16,23 +20,24 @@ import java.lang.reflect.ParameterizedType;
  */
 public class ReflectUtils {
     private static volatile ReflectUtils mInstance = null;
-    
-    private ReflectUtils(){
+
+    private ReflectUtils() {
     }
-    
+
     public static ReflectUtils getInstance() {
-        ReflectUtils instance=mInstance;
-        if(instance==null){
+        ReflectUtils instance = mInstance;
+        if (instance == null) {
             synchronized (ReflectUtils.class) {
-                instance =mInstance;
+                instance = mInstance;
                 if (instance == null) {
                     instance = new ReflectUtils();
-                    mInstance=instance;
+                    mInstance = instance;
                 }
-            }   
+            }
         }
         return instance;
     }
+
     /**
      * 获取泛型中的实例
      *
@@ -57,6 +62,7 @@ public class ReflectUtils {
 
     /**
      * 通过反射来设置 tanLayout IndicatorWidth的宽度
+     *
      * @param width
      * @param tl
      */
@@ -80,6 +86,22 @@ public class ReflectUtils {
             LogUtils.e("NoSuchFieldException异常");
         } catch (IllegalAccessException e) {
             LogUtils.e("IllegalAccessException异常");
+        }
+    }
+
+    /**
+     * 反射唤醒通知栏
+     *
+     * @param methodName 方法名
+     */
+    public void invokePanels(Context context, String methodName) {
+        try {
+            Object service = context.getSystemService("statusbar");
+            Class<?> statusBarManager = Class.forName("android.app.StatusBarManager");
+            Method expand = statusBarManager.getMethod(methodName);
+            expand.invoke(service);
+        } catch (Exception e) {
+            LogUtils.e("Exception");
         }
     }
 }
