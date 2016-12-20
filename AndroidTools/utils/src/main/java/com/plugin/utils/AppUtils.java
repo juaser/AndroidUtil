@@ -10,8 +10,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -21,8 +19,6 @@ import com.plugin.utils.log.LogUtils;
 import com.plugin.utils.manager.AppManager;
 
 import java.io.File;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -277,33 +273,6 @@ public class AppUtils {
     public boolean isSleeping(Context context) {
         KeyguardManager kgMgr = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         return kgMgr.inKeyguardRestrictedInputMode();
-    }
-
-    /**
-     * 获取设备MAC地址   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-     */
-    public String getMacAddress(Context context) {
-        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        WifiInfo info = wifi.getConnectionInfo();
-        String macAddress = info.getMacAddress().replace(":", "");
-        return macAddress == null ? "" : macAddress;
-    }
-
-    /**
-     * 获取设备MAC地址
-     */
-    public String getMacAddressProcess() {
-        //需添加权限 android.permission.ACCESS_WIFI_STATE
-        String macAddress = null;
-        try {
-            Process pp = Runtime.getRuntime().exec("cat /sys/class/net/wlan0/address");
-            InputStreamReader ir = new InputStreamReader(pp.getInputStream());
-            LineNumberReader reader = new LineNumberReader(ir);
-            macAddress = reader.readLine().replace(":", "");
-        } catch (Exception ex) {
-            LogUtils.e("Exception");
-        }
-        return macAddress == null ? "" : macAddress;
     }
 
     /**
