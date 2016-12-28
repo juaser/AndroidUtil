@@ -68,7 +68,7 @@ public class FlowCharPathManager {
      * @param scale            缩放比例
      * @param gapBetweenLetter 两个字符之间的宽度
      */
-    public ArrayList<float[]> getPathList(String str, int scale, int gapBetweenLetter) {
+    public ArrayList<float[]> getPathList(String str, float scale, float gapBetweenLetter) {
         ArrayList<float[]> list = new ArrayList<>();
         if (TextUtils.isEmpty(str)) {
             return list;
@@ -106,15 +106,42 @@ public class FlowCharPathManager {
         return list;
     }
 
-    public Path getSrcPath(String mStr, int scale, int gapBetweenLetter) {
-        ArrayList<float[]> pathList = getPathList(mStr, scale, gapBetweenLetter);
+    /**
+     * 根据集合拼凑路径
+     */
+    public Path getSrcPath(ArrayList<float[]> pathList) {
         Path path_src = new Path();
+        if (pathList == null) {
+            return path_src;
+        }
         for (int i = 0; i < pathList.size(); i++) {
             float[] floats = pathList.get(i);
             path_src.moveTo(floats[0], floats[1]);
             path_src.lineTo(floats[2], floats[3]);
         }
         return path_src;
+    }
+
+    /**
+     * 根据集合 拼凑出需要填充的线条路径
+     *
+     * @param size       每次需要显示的线条数目
+     * @param startIndex 开始线条的下标
+     * @param isLoop     s是否循环，例如：size=3,pathList.size=10,startIndex=9,
+     *                   如果isLoop==false 就只显示一条，true的话就显示三条，就是集合中的9,0,1三条
+     */
+    public Path getFillPath(ArrayList<float[]> pathList, int size, int startIndex,boolean isLoop) {
+        Path path_fill = new Path();
+        if (pathList == null || size <= 0 || startIndex >= pathList.size()) {
+            return path_fill;
+        }
+        int pathListSize = pathList.size();
+        for (int i = 0; i < size; i++) {
+            float[] floats = pathList.get((startIndex + i) % pathListSize);//循环
+            path_fill.moveTo(floats[0], floats[1]);
+            path_fill.lineTo(floats[2], floats[3]);
+        }
+        return path_fill;
     }
 
     private float[] LETTER_A = {
