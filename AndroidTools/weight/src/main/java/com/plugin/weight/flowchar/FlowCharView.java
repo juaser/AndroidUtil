@@ -1,5 +1,7 @@
 package com.plugin.weight.flowchar;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,35 +13,37 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
+import com.plugin.utils.ScreenUtils;
 import com.plugin.utils.log.LogUtils;
 
 import java.util.ArrayList;
 
 /**
- * @Description: 流动的字符
+ * @Description: 流动的字符 支持0-9 a-zA-Z - .
  * @Author: zxl
  * @Date: 2016/12/28 18:06
  */
 
 public class FlowCharView extends View {
-    private int mPaddingLeft, mPaddingTop;//View的左，上padding
+    private int mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom;//View的左，上,右,下padding
     private Path mPathDefault;//默认的线条路径
-    private Path mPathFill;//填充的线条路径
     private Path mAnmiationPathFill;//动态显示的线条路径
+    private Paint mPaintDefault, mPaintFill;//默认，填充画笔
     private int mColorBg = Color.BLACK;//View 的背景颜色
     private int mColorCharDefault = Color.GRAY;//线的默认颜色
     private int mColorCharFill = Color.WHITE;//线的填充颜色
     private int mLineWidth = 4;//线条的宽度
-    private Paint mPaintDefault, mPaintFill;//默认，填充画笔
     private ArrayList<float[]> mPathList;//存储线条的集合
-    private boolean isLooper = true;//线条的选择是否可以循环
-    private int mFillSize = 1;//每次填充的线条数目
-    private int mStartIndex = 0;//线条填充时的下标
-    private float mScale = 1;//缩放比例
+    private float mScale = 0.5f;//缩放比例
     private float mGapBetweenLetter = 30;//两个字符的间距
     private int mDuaration = 2000;//绘制从头到尾执行的时间
-    private float mDefaultPathLength;//默认字符的长度
     private ValueAnimator mAnimator = null;
+    private int mViewWidth, mViewHeight;//测量的View的宽高
+    private int flowModel = 0;
+    public static final int MODEL_GLITTER = 0;//闪烁效果，每次界面显示一个线条
+    public static final int MODEL_STEPBYSTEP = 1;//逐步效果,显示填充效果，之前的也保留下来
+    private int mStartIndex = 0;
+
 
     public FlowCharView(Context context) {
         this(context, null, 0);
@@ -68,16 +72,33 @@ public class FlowCharView extends View {
         mPaintFill.setColor(mColorCharFill);
         mPaintFill.setStrokeWidth(mLineWidth);
         mPaintFill.setStrokeCap(Paint.Cap.ROUND);
+
         mPathDefault = new Path();
-        mPathFill = new Path();
         mAnmiationPathFill = new Path();
+
+        mViewWidth = ScreenUtils.getInstance().getScreenWidth();
+
+        mPaddingLeft = getPaddingLeft();
+        mPaddingTop = getPaddingTop();
+        mPaddingBottom = getPaddingBottom();
+        mPaddingRight = getPaddingRight();
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        mPaddingLeft = getPaddingLeft();
-        mPaddingTop = getPaddingTop();
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        if (!hasWindowFocus) {
+            stopAnimator();
+        }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (mViewHeight == 0) {
+            mViewHeight = mPaddingTop + mPaddingBottom;
+        }
+        LogUtils.e("mViewHeight==" + mViewHeight + "   mViewWidth==" + mViewWidth);
+        setMeasuredDimension(mViewWidth, mViewHeight);
     }
 
     @Override
@@ -90,20 +111,21 @@ public class FlowCharView extends View {
 
     public void setResourseString(String srcString) {
         mPathDefault.reset();
-        mPathFill.reset();
-        mStartIndex = 0;
+        mAnmiationPathFill.reset();
         mPathList = FlowCharPathManager.getInstance().getPathList(srcString, mScale, mGapBetweenLetter);
-        if (mPathList.size() == 0) {
-            return;
-        }
+        mViewHeight = (int) (FlowCharPathManager.getInstance().getPathHeigth(mPathList) + mPaddingTop + mPaddingBottom);//计算展示的view高度
+        requestLayout();//重新绘制View
         mPathDefault = FlowCharPathManager.getInstance().getSrcPath(mPathList);
-        mPathFill = FlowCharPathManager.getInstance().getFillPath(mPathList, mFillSize, mStartIndex, isLooper);
-        mDefaultPathLength = getPathLength(mPathDefault);
-        dealPathFill();
+        loadAnimator(mPathDefault);
     }
 
+    /**
+     * 计算path路径的总长度，因为路径有可能不是连续的，
+     * 所谓连续就是 在设置路径只有一个moveTo,n个lineTo，若有多个moveTo 就代表有多个轮廓 需要用path.nextContour 跳到下个轮廓
+     * pathMeasure.getLength() 是测量当前轮廓的长度
+     */
     public float getPathLength(Path measurePath) {
-        PathMeasure pathMeasure = new PathMeasure(mPathDefault, false);//false是路径不封闭
+        PathMeasure pathMeasure = new PathMeasure(measurePath, false);//false是路径不封闭
         float length = pathMeasure.getLength();
         while (pathMeasure.nextContour()) {
             length += pathMeasure.getLength();
@@ -111,40 +133,61 @@ public class FlowCharView extends View {
         return length;
     }
 
-    public void dealPathFill() {
-        if (mPathFill == null || mDefaultPathLength == 0) {
-            return;
+    /**
+     * 这个是为了测量其中一个轮廓/总轮廓 所用的时间
+     */
+    public long getPathDuration(PathMeasure pathMeasure, int totalDuaration, float totalLength) {
+        if (totalLength == 0 || totalDuaration == 0 || pathMeasure == null) {
+            return 0;
         }
-        PathMeasure pathMeasure = new PathMeasure(mPathFill, false);
         float length = pathMeasure.getLength();//要绘制的路径
-        long duarationPart = (long) (mDuaration * length / mDefaultPathLength);
-        LogUtils.e("mStartIndex==" + mStartIndex + "duarationPart==" + duarationPart + "    length==" + length + "  mDefaultPathLength==" + mDefaultPathLength);
-        loadAnimator(duarationPart, pathMeasure);
+        if (length >= totalLength) {
+            return totalDuaration;
+        }
+        long duarationPart = (long) (totalDuaration * length / totalLength);
+        return duarationPart;
     }
 
-    public void changeAnimatorPath() {
-        mStartIndex++;
-        mStartIndex = mStartIndex % mPathList.size();
-        mPathFill = FlowCharPathManager.getInstance().getFillPath(mPathList, mFillSize, mStartIndex, isLooper);
-        dealPathFill();
-    }
-
-    public void loadAnimator(long duration, final PathMeasure pathMeasure) {
+    /**
+     * 开启动画，先停止之前的动画，然后通过监听动画的进度来进行下一步的刷新动作
+     */
+    public void loadAnimator(final Path pathSrc) {
         stopAnimator();
+        Path pathFill = pathSrc;//重新赋值一个路径方便操作
+        final float mDefaultPathLength = getPathLength(mPathDefault);
+        final PathMeasure pathMeasure = new PathMeasure(pathFill, false);
+        mStartIndex = 0;//第一个轮廓
+        final Path pathPart = new Path();//要动态显示的部分
         mAnimator = ValueAnimator.ofFloat(0, 1f);
-        mAnimator.setInterpolator(new LinearInterpolator());
-        mAnimator.setDuration(duration);//设置需要绘制时间
+        mAnimator.setInterpolator(new LinearInterpolator());//线性变化
+        mAnimator.setDuration(getPathDuration(pathMeasure, mDuaration, mDefaultPathLength));//设置需要绘制时间
+        mAnimator.setRepeatCount(ValueAnimator.INFINITE);//无线循环
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 float animatedValue = (float) valueAnimator.getAnimatedValue();
                 mAnmiationPathFill.reset();
+                pathPart.reset();
                 //取出一部分放到mAnmiationPathFill路径里，true的意思是是否移动到开始的位置
-                pathMeasure.getSegment(0, pathMeasure.getLength() * animatedValue, mAnmiationPathFill, true);
-                invalidate();
-                if (animatedValue == 1) {
-                    changeAnimatorPath();
+                pathMeasure.getSegment(0, pathMeasure.getLength() * animatedValue, pathPart, true);//取出其中一部分路径放到pathPart上
+                if (flowModel == MODEL_STEPBYSTEP) {
+                    //如果是逐步效果，则需要加上之前的路径
+                    mAnmiationPathFill.addPath(FlowCharPathManager.getInstance().getFillPath(mPathList, mStartIndex + 1, 0, false));
                 }
+                mAnmiationPathFill.addPath(pathPart);
+                invalidate();
+            }
+        });
+        mAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                if (!pathMeasure.nextContour()) {
+                    mStartIndex = 0;//重置
+                    pathMeasure.setPath(pathSrc, false);//一个周期走完，重新设置路径
+                }
+                mStartIndex++;
+                animation.setDuration(getPathDuration(pathMeasure, mDuaration, mDefaultPathLength));
+                super.onAnimationRepeat(animation);
             }
         });
         mAnimator.start();
@@ -154,5 +197,16 @@ public class FlowCharView extends View {
         if (mAnimator != null && mAnimator.isRunning()) {
             mAnimator.cancel();
         }
+    }
+
+    public void startAnimator() {
+        if (mAnimator != null && !mAnimator.isRunning()) {
+            mAnimator.start();
+        }
+    }
+
+    public FlowCharView setFlowModel(int flowModel) {
+        this.flowModel = flowModel;
+        return this;
     }
 }

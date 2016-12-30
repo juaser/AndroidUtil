@@ -4,6 +4,8 @@ import android.graphics.Path;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
+import com.plugin.utils.log.LogUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -52,14 +54,14 @@ public class FlowCharPathManager {
         }
         //ASCII  0-9  0==48
         for (int i = 0, length = nums.length; i < length; i++) {
-            sPointList.append(i + 48, letters[i]);
+            sPointList.append(i + 48, nums[i]);
         }
         //'' 空字符 ASCII  32
         sPointList.append(32, Char_NONE);
         //'-' 分割线  ASCII  45
         sPointList.append(45, CHAR_SPLITLINE);
         //'.' 点 ASCII  46
-        sPointList.append(46, Char_NONE);
+        sPointList.append(46, CHAR_POINT);
         return sPointList;
     }
 
@@ -78,6 +80,7 @@ public class FlowCharPathManager {
         for (int i = 0, length = str.length(); i < length; i++) {
             int pos = str.charAt(i);
             int key = sPointList.indexOfKey(pos);
+            LogUtils.e("i==" + i + "    cahr==" + str.charAt(i) + "   pos==" + pos + "    key==" + key);
             if (key < 0) {
                 //如果字符不存在此列表中，跳过
                 continue;
@@ -130,7 +133,7 @@ public class FlowCharPathManager {
      * @param isLoop     s是否循环，例如：size=3,pathList.size=10,startIndex=9,
      *                   如果isLoop==false 就只显示一条，true的话就显示三条，就是集合中的9,0,1三条
      */
-    public Path getFillPath(ArrayList<float[]> pathList, int size, int startIndex,boolean isLoop) {
+    public Path getFillPath(ArrayList<float[]> pathList, int size, int startIndex, boolean isLoop) {
         Path path_fill = new Path();
         if (pathList == null || size <= 0 || startIndex >= pathList.size()) {
             return path_fill;
@@ -142,6 +145,22 @@ public class FlowCharPathManager {
             path_fill.lineTo(floats[2], floats[3]);
         }
         return path_fill;
+    }
+
+    /**
+     * 计算出路径的最高度
+     */
+    public float getPathHeigth(ArrayList<float[]> pathList) {
+        float maxHeigth = 0;
+        for (float[] floats : pathList) {
+            for (int i = 0, length = floats.length; i < length; i++) {
+                if (i % 2 != 0 && floats[i] > maxHeigth) {
+                    //y轴坐标
+                    maxHeigth = floats[i];
+                }
+            }
+        }
+        return maxHeigth;
     }
 
     private float[] LETTER_A = {

@@ -2,16 +2,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_bg"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_char"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_retangle_white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/str_stop"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/tv_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/tv_stop"
+            android:background="@drawable/shape_retangle_white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/str_start"
+            android:textColor="@color/color_black" />
+
+        <EditText
+            android:id="@+id/et_char"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/tv_start"
+            android:background="@drawable/shape_edit_white_gray"
+            android:ellipsize="end"
+            android:hint="@string/str_flowchar_tips"
+            android:maxLines="1"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp" />
+    </RelativeLayout>
 
     <com.plugin.weight.flowchar.FlowCharView
-        android:id="@+id/flowcharView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/flowcharView_glitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp" />
+
+    <com.plugin.weight.flowchar.FlowCharView
+        android:id="@+id/flowcharView_step"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:padding="10dp" />
 </LinearLayout>

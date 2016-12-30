@@ -17,8 +17,10 @@ import butterknife.OnClick;
  */
 
 public class FlowCharActivity extends BaseActivity {
-    @Bind(R.id.flowcharView)
-    FlowCharView flowcharView;
+    @Bind(R.id.flowcharView_glitter)
+    FlowCharView flowcharViewGlitter;
+    @Bind(R.id.flowcharView_step)
+    FlowCharView flowcharViewStep;
     @Bind(R.id.et_char)
     EditText etChar;
 
@@ -29,15 +31,27 @@ public class FlowCharActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        flowcharView.setResourseString("zhang");
+        flowcharViewGlitter.setFlowModel(FlowCharView.MODEL_GLITTER).setResourseString("zhangxinglei");
+        flowcharViewStep.setFlowModel(FlowCharView.MODEL_STEPBYSTEP).setResourseString("zhangxinglei");
     }
 
-    @OnClick(R.id.flowcharView)
+    @OnClick(R.id.flowcharView_glitter)
     void click() {
         String mStr = etChar.getText().toString().trim();
         if (!TextUtils.isEmpty(mStr)) {
-            flowcharView.setResourseString(mStr);
+            flowcharViewGlitter.setResourseString(mStr);
         }
     }
 
+    @OnClick(R.id.tv_start)
+    void start() {
+        if (flowcharViewGlitter != null) {
+            flowcharViewGlitter.startAnimator();
+        }
+    }
+
+    @OnClick(R.id.tv_stop)
+    void stop() {
+        flowcharViewGlitter.stopAnimator();
+    }
 }
