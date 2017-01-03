@@ -31,8 +31,14 @@ public class FlowCharActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        flowcharViewGlitter.setFlowModel(FlowCharView.MODEL_GLITTER).setResourseString("zhangxinglei");
-        flowcharViewStep.setFlowModel(FlowCharView.MODEL_STEPBYSTEP).setResourseString("zhangxinglei");
+        flowcharViewGlitter.setmDuaration(1000)
+                .setFlowModel(FlowCharView.MODEL_GLITTER)
+                .setResourseString("zhangxinglei")
+                .startAnimator();
+        flowcharViewStep.setFlowModel(FlowCharView.MODEL_STEPBYSTEP)
+                .setIsLooper(false)
+                .setResourseString("zhangxinglei")
+                .startAnimator();
     }
 
     @OnClick(R.id.flowcharView_glitter)

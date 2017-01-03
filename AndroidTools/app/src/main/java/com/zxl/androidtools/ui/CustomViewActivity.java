@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.plugin.utils.AppUtils;
 import com.plugin.utils.base.BaseAppCompatActivity;
-import com.plugin.utils.bean.AppInfoBean;
 import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.R;
 import com.zxl.androidtools.adapter.MainRecyclerAdapter;
@@ -49,11 +48,7 @@ public class CustomViewActivity extends BaseAppCompatActivity implements OnClick
     public void getList() {
         activity_labname = new ArrayList<>();
         activity_packagename = new ArrayList<>();
-        AppInfoBean appInfo = AppUtils.getInstance().getAppInfo();
-        if (appInfo == null) {
-            return;
-        }
-        ActivityInfo[] activities = appInfo.getApp_activityInfos();
+        ActivityInfo[] activities = AppUtils.getInstance().getCurrentAppActivityArray();
         if (activities != null) {
             LogUtils.e("activities.length==" + activities.length);
             for (ActivityInfo activityInfo : activities) {

@@ -162,6 +162,21 @@ public class FlowCharPathManager {
         }
         return maxHeigth;
     }
+  /**
+     * 计算出路径的最高度
+     */
+    public float getPathWidth(ArrayList<float[]> pathList) {
+        float maxWidth = 0;
+        for (float[] floats : pathList) {
+            for (int i = 0, length = floats.length; i < length; i++) {
+                if (i % 2 == 0 && floats[i] > maxWidth) {
+                    //x轴坐标
+                    maxWidth = floats[i];
+                }
+            }
+        }
+        return maxWidth;
+    }
 
     private float[] LETTER_A = {
             //A

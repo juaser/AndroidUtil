@@ -4,13 +4,16 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.plugin.utils.bean.AppInfoBean;
@@ -38,8 +41,12 @@ public class AppUtils {
 
     private static volatile AppUtils mInstance = null;
     private AppInfoBean currentAppInfoBean = null;
+    private PackageManager packageManager;
+    private PackageInfo packageInfo;
+    private ActivityInfo[] currentActivityArray;
 
     private AppUtils() {
+        init();
     }
 
     public static AppUtils getInstance() {
@@ -56,6 +63,16 @@ public class AppUtils {
         return instance;
     }
 
+    public void init() {
+        packageManager = getContext().getPackageManager();
+        packageInfo = null;
+        try {
+            packageInfo = packageManager.getPackageInfo(getContext().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            LogUtils.e("PackageManager.NameNotFoundException");
+        }
+    }
+
     /**
      * 获取上下文对象
      *
@@ -67,9 +84,6 @@ public class AppUtils {
 
     /**
      * 安装App
-     * <p>根据路径安装App</p>
-     *
-     * @param filePath 文件路径
      */
     public void installApp(String filePath) {
         installApp(new File(filePath));
@@ -77,9 +91,6 @@ public class AppUtils {
 
     /**
      * 安装App
-     * <p>根据文件安装App</p>
-     *
-     * @param file 文件
      */
     public void installApp(File file) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -90,8 +101,6 @@ public class AppUtils {
 
     /**
      * 卸载指定包名的App
-     *
-     * @param packageName 包名
      */
     public void uninstallApp(String packageName) {
         Intent intent = new Intent(Intent.ACTION_DELETE);
@@ -126,38 +135,17 @@ public class AppUtils {
         if (packageManager != null && packageInfo != null) {
             AppInfoBean appInfoBean = new AppInfoBean();
             ApplicationInfo applicationInfo = packageInfo.applicationInfo;
-            appInfoBean.setApp_name(applicationInfo.loadLabel(packageManager).toString());//app名称
-            appInfoBean.setApp_icon(applicationInfo.loadIcon(packageManager));//app图标
-            appInfoBean.setApp_packageName(applicationInfo.packageName);//app包名
-            appInfoBean.setApp_versionCode(packageInfo.versionCode);//app版本号
-            appInfoBean.setApp_versionName(packageInfo.versionName);//appa版本名
-            appInfoBean.setDevice_manufacture(Build.MANUFACTURER);//厂商
-            appInfoBean.setDevice_type(Build.MODEL == null ? "" : Build.MODEL.trim().replaceAll("\\s*", ""));//设备类型
+            appInfoBean.setApp_name(getAppName(packageManager, packageInfo));//app名称
+            appInfoBean.setApp_icon(getAppIcon(packageManager, packageInfo));//app图标
+            appInfoBean.setApp_packageName(getAppPackageName(packageInfo));//app包名
+            appInfoBean.setApp_versionCode(getAppVersionCode(packageInfo));//app版本号
+            appInfoBean.setApp_versionName(getAppVersionName(packageInfo));//appa版本名
+            appInfoBean.setDevice_manufacture(getDeviceManufactur());//厂商
+            appInfoBean.setDevice_type(getDeviceType());//设备类型
             appInfoBean.setDevice_unique_id(getDeviceUniqueId());//设备唯一标志吗
-            try {
-                PackageInfo packageInfo_activity = packageManager.getPackageInfo(applicationInfo.packageName, PackageManager.GET_ACTIVITIES);
-                appInfoBean.setApp_activityInfos(packageInfo_activity.activities);//app的所有activity
-            } catch (PackageManager.NameNotFoundException e) {
-                LogUtils.e("PackageManager.NameNotFoundException----GET_ACTIVITIES");
-            }
-            try {
-                PackageInfo packageInfo_permissions = packageManager.getPackageInfo(applicationInfo.packageName, PackageManager.GET_PERMISSIONS);
-                appInfoBean.setApp_premissions(packageInfo_permissions.requestedPermissions);//app需要的权限
-            } catch (PackageManager.NameNotFoundException e) {
-                LogUtils.e("PackageManager.NameNotFoundException----GET_PERMISSIONS");
-            }
-            try {
-                PackageInfo packageInfo_signatures = packageManager.getPackageInfo(applicationInfo.packageName, PackageManager.GET_SIGNATURES);
-                Signature[] signatures = packageInfo_signatures.signatures;
-                if (signatures != null && signatures[0] != null) {
-                    appInfoBean.setApp_signature(signatures[0].toCharsString());//app的签名
-                } else {
-                    appInfoBean.setApp_signature("no signature");
-                }
-                signatures = null;
-            } catch (PackageManager.NameNotFoundException e) {
-                LogUtils.e("PackageManager.NameNotFoundException----GET_SIGNATURES");
-            }
+            appInfoBean.setApp_activityInfos(getAppActivityArray(packageManager, getAppPackageName(packageInfo)));//所有的Activity
+            appInfoBean.setApp_premissions(getAppPremissionArray(packageManager, getAppPackageName(packageInfo)));//app需要的权限
+            appInfoBean.setApp_signature(getAppSignaturesArray(packageManager, getAppPackageName(packageInfo)));//app的签名
             return appInfoBean;
         }
         return null;
@@ -175,6 +163,160 @@ public class AppUtils {
             list.add(saveAppInfo(packageManager, packageInfo));
         }
         return list;
+    }
+
+    public ActivityInfo[] getCurrentAppActivityArray() {
+        if (currentActivityArray == null) {
+            currentActivityArray = getAppActivityArray(packageManager, getCurrentAppPackageName());
+        }
+        return currentActivityArray;
+    }
+
+    /**
+     * app所有的activity集合
+     */
+    public ActivityInfo[] getAppActivityArray(PackageManager packageManager, String packageName) {
+        if (packageManager == null || TextUtils.isEmpty(packageName)) {
+            return null;
+        }
+        try {
+            PackageInfo packageInfo_activity = packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+            return packageInfo_activity.activities;//app的所有activity
+        } catch (PackageManager.NameNotFoundException e) {
+            LogUtils.e("PackageManager.NameNotFoundException----GET_ACTIVITIES");
+        }
+        return null;
+    }
+
+    /**
+     * app权限
+     */
+    public String[] getAppPremissionArray(PackageManager packageManager, String packageName) {
+        if (packageManager == null || TextUtils.isEmpty(packageName)) {
+            return null;
+        }
+        try {
+            PackageInfo packageInfo_permissions = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS);
+            return packageInfo_permissions.requestedPermissions;//app需要的权限
+        } catch (PackageManager.NameNotFoundException e) {
+            LogUtils.e("PackageManager.NameNotFoundException----GET_PERMISSIONS");
+        }
+        return null;
+    }
+
+    /**
+     * app签名信息
+     */
+    public String getAppSignaturesArray(PackageManager packageManager, String packageName) {
+        String signaturesStr = " ";
+        if (packageManager == null || TextUtils.isEmpty(packageName)) {
+            return signaturesStr;
+        }
+        try {
+            PackageInfo packageInfo_signatures = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+            Signature[] signatures = packageInfo_signatures.signatures;
+            if (signatures != null && signatures[0] != null) {
+                signaturesStr = signatures[0].toCharsString();
+            } else {
+                signaturesStr = "no signature";
+            }
+            signatures = null;
+        } catch (PackageManager.NameNotFoundException e) {
+            LogUtils.e("PackageManager.NameNotFoundException----GET_SIGNATURES");
+        }
+        return signaturesStr;
+    }
+
+    public String getCurrentAppPackageName() {
+        return getAppPackageName(packageInfo);
+    }
+
+    /**
+     * app的包名
+     */
+    public String getAppPackageName(PackageInfo packageInfo) {
+        if (packageInfo == null) {
+            return "";
+        }
+        return packageInfo.packageName;
+    }
+
+    public int getCurrentAppVersionCode() {
+        return getAppVersionCode(packageInfo);
+    }
+
+    /**
+     * 版本号
+     */
+    public int getAppVersionCode(PackageInfo packageInfo) {
+        if (packageInfo == null) {
+            return 0;
+        }
+        return packageInfo.versionCode;
+    }
+
+    public String getCurrentAppVersionName() {
+        return getAppVersionName(packageInfo);
+    }
+
+    /**
+     * 版本名
+     */
+    public String getAppVersionName(PackageInfo packageInfo) {
+        if (packageInfo == null) {
+            return "";
+        }
+        return packageInfo.versionName;
+    }
+
+    public String getCurrentAppName() {
+        return getAppName(packageManager, packageInfo);
+    }
+
+    /**
+     * app名称
+     */
+    public String getAppName(PackageManager packageManager, PackageInfo packageInfo) {
+        if (packageManager == null || packageInfo == null && packageInfo.applicationInfo == null) {
+            return "";
+        }
+        return packageInfo.applicationInfo.loadLabel(packageManager).toString();
+    }
+
+    public Drawable getCurrentAppIcon() {
+        return getAppIcon(packageManager, packageInfo);
+    }
+
+    /**
+     * app图标
+     */
+    public Drawable getAppIcon(PackageManager packageManager, PackageInfo packageInfo) {
+        if (packageManager == null || packageInfo == null && packageInfo.applicationInfo == null) {
+            return null;
+        }
+        return packageInfo.applicationInfo.loadIcon(packageManager);
+    }
+
+    /**
+     * 厂商
+     */
+    public String getDeviceManufactur() {
+        String manufacturStr = Build.MANUFACTURER;
+        if (TextUtils.isEmpty(manufacturStr)) {
+            manufacturStr = "未知";
+        }
+        return manufacturStr;
+    }
+
+    /**
+     * 设备类型
+     */
+    public String getDeviceType() {
+        String deviceStr = Build.MODEL;
+        if (TextUtils.isEmpty(deviceStr)) {
+            return "";
+        }
+        return deviceStr.trim().replaceAll("\\s*", "");
     }
 
     /**
@@ -287,7 +429,6 @@ public class AppUtils {
     public String getDeviceUniqueId() {
         try {
             TelephonyManager tm = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
-            LogUtils.e(tm.getDeviceId());
             return tm.getDeviceId();
         } catch (Exception e) {
             return "";

@@ -7,8 +7,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.plugin.utils.AppUtils;
 import com.plugin.utils.base.BaseAppCompatActivity;
-import com.plugin.utils.bean.AppInfoBean;
-import com.plugin.utils.log.LogUtils;
 import com.zxl.androidtools.adapter.MainRecyclerAdapter;
 import com.zxl.androidtools.inter.OnClickPositonListerner;
 
@@ -43,13 +41,8 @@ public class MainActivity extends BaseAppCompatActivity implements OnClickPosito
     public void getList() {
         activity_labname = new ArrayList<>();
         activity_packagename = new ArrayList<>();
-        AppInfoBean appInfo = AppUtils.getInstance().getAppInfo();
-        if (appInfo == null) {
-            return;
-        }
-        ActivityInfo[] activities = appInfo.getApp_activityInfos();
+        ActivityInfo[] activities = AppUtils.getInstance().getCurrentAppActivityArray();
         if (activities != null) {
-            LogUtils.e("appInfo==" + appInfo.toString());
             for (ActivityInfo activityInfo : activities) {
                 if (activityInfo.labelRes != 0) {
                     if (!activityInfo.name.contains(getString(R.string.group_activity_animations))

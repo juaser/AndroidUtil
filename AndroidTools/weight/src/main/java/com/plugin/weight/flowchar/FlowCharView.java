@@ -13,7 +13,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-import com.plugin.utils.ScreenUtils;
+import com.plugin.utils.DisplayUtils;
 import com.plugin.utils.log.LogUtils;
 
 import java.util.ArrayList;
@@ -43,7 +43,8 @@ public class FlowCharView extends View {
     public static final int MODEL_GLITTER = 0;//闪烁效果，每次界面显示一个线条
     public static final int MODEL_STEPBYSTEP = 1;//逐步效果,显示填充效果，之前的也保留下来
     private int mStartIndex = 0;
-
+    private boolean isLooper = true;
+    private OnFinishedListener onFinishedListener;
 
     public FlowCharView(Context context) {
         this(context, null, 0);
@@ -76,7 +77,7 @@ public class FlowCharView extends View {
         mPathDefault = new Path();
         mAnmiationPathFill = new Path();
 
-        mViewWidth = ScreenUtils.getInstance().getScreenWidth();
+        mViewWidth = DisplayUtils.getInstance().getScreenWidth();
 
         mPaddingLeft = getPaddingLeft();
         mPaddingTop = getPaddingTop();
@@ -109,14 +110,16 @@ public class FlowCharView extends View {
         canvas.drawPath(mAnmiationPathFill, mPaintFill);//绘制要填充的背景
     }
 
-    public void setResourseString(String srcString) {
+    public FlowCharView setResourseString(String srcString) {
         mPathDefault.reset();
         mAnmiationPathFill.reset();
         mPathList = FlowCharPathManager.getInstance().getPathList(srcString, mScale, mGapBetweenLetter);
         mViewHeight = (int) (FlowCharPathManager.getInstance().getPathHeigth(mPathList) + mPaddingTop + mPaddingBottom);//计算展示的view高度
+        mViewWidth = (int) (FlowCharPathManager.getInstance().getPathWidth(mPathList) + mPaddingLeft + mPaddingRight);//计算展示的view宽度
         requestLayout();//重新绘制View
         mPathDefault = FlowCharPathManager.getInstance().getSrcPath(mPathList);
         loadAnimator(mPathDefault);
+        return this;
     }
 
     /**
@@ -181,16 +184,33 @@ public class FlowCharView extends View {
         mAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationRepeat(Animator animation) {
-                if (!pathMeasure.nextContour()) {
-                    mStartIndex = 0;//重置
-                    pathMeasure.setPath(pathSrc, false);//一个周期走完，重新设置路径
+                boolean isNext = pathMeasure.nextContour();
+                LogUtils.e("onAnimationRepeat---"+isNext);
+                if (!isNext && !isLooper) {
+                    animation.cancel();
+                    if (onFinishedListener != null) {
+                        onFinishedListener.finished();
+                    }
+                } else {
+                    if (!isNext) {
+                        mStartIndex = 0;//重置
+                        pathMeasure.setPath(pathSrc, false);//一个周期走完，重新设置路径
+                    }
+                    mStartIndex++;
+                    animation.setDuration(getPathDuration(pathMeasure, mDuaration, mDefaultPathLength));
                 }
-                mStartIndex++;
-                animation.setDuration(getPathDuration(pathMeasure, mDuaration, mDefaultPathLength));
                 super.onAnimationRepeat(animation);
             }
         });
-        mAnimator.start();
+    }
+
+    public interface OnFinishedListener {
+        void finished();
+    }
+
+    public FlowCharView setOnFinishedListner(OnFinishedListener onFinishedListner) {
+        this.onFinishedListener = onFinishedListner;
+        return this;
     }
 
     public void stopAnimator() {
@@ -207,6 +227,26 @@ public class FlowCharView extends View {
 
     public FlowCharView setFlowModel(int flowModel) {
         this.flowModel = flowModel;
+        return this;
+    }
+
+    public FlowCharView setmDuaration(int mDuaration) {
+        this.mDuaration = mDuaration;
+        return this;
+    }
+
+    public FlowCharView setmColorBg(int mColorBg) {
+        this.mColorBg = mColorBg;
+        return this;
+    }
+
+    public FlowCharView setmScale(int mScale) {
+        this.mScale = mScale;
+        return this;
+    }
+
+    public FlowCharView setIsLooper(boolean isLooper) {
+        this.isLooper = isLooper;
         return this;
     }
 }
