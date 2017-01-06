@@ -46,9 +46,6 @@
         <activity
             android:name=".ui.SystemViewActivity"
             android:label="@string/label_systemview" />
-        <activity
-            android:name=".ui.TestGroupActivity"
-            android:label="@string/label_testgroup" />
         <!--自定义View-->
         <activity
             android:name=".ui.customviews.SwitchButtonActivity"
@@ -127,27 +124,6 @@
         <activity
             android:name=".ui.systemviews.EditStatusColorActivity"
             android:label="@string/label_statuscolor" />
-
-        <!--测试组-->
-        <activity
-            android:name=".ui.testgroup.TestXmlActivity"
-            android:label="@string/label_xml" />
-        <activity
-            android:name=".ui.testgroup.TestHttpActivity"
-            android:label="@string/label_http" />
-
-        <activity
-            android:name=".ui.testgroup.TestDialogActivity"
-            android:label="@string/label_testdialog" />
-        <activity
-            android:name=".ui.testgroup.TestFrescoActivity"
-            android:label="@string/label_testfresco" />
-        <activity
-            android:name=".ui.testgroup.TestSchemeActivity"
-            android:label="@string/label_testscheme" />
-        <activity
-            android:name=".ui.testgroup.TestShadowActivity"
-            android:label="@string/label_shadow" />
 
         <activity android:name=".ui.testgroup.TestSchemeResultActivity">
             <intent-filter>
