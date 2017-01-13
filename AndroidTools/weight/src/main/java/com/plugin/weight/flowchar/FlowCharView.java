@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.plugin.utils.DisplayUtils;
-import com.plugin.utils.log.LogUtils;
 
 import java.util.ArrayList;
 
@@ -90,6 +89,8 @@ public class FlowCharView extends View {
         super.onWindowFocusChanged(hasWindowFocus);
         if (!hasWindowFocus) {
             stopAnimator();
+        }else {
+            startAnimator();
         }
     }
 
@@ -98,7 +99,6 @@ public class FlowCharView extends View {
         if (mViewHeight == 0) {
             mViewHeight = mPaddingTop + mPaddingBottom;
         }
-        LogUtils.e("mViewHeight==" + mViewHeight + "   mViewWidth==" + mViewWidth);
         setMeasuredDimension(mViewWidth, mViewHeight);
     }
 
@@ -185,7 +185,6 @@ public class FlowCharView extends View {
             @Override
             public void onAnimationRepeat(Animator animation) {
                 boolean isNext = pathMeasure.nextContour();
-                LogUtils.e("onAnimationRepeat---"+isNext);
                 if (!isNext && !isLooper) {
                     animation.cancel();
                     if (onFinishedListener != null) {

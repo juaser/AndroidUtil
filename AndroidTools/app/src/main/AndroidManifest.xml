@@ -124,6 +124,10 @@
         <activity
             android:name=".ui.systemviews.EditStatusColorActivity"
             android:label="@string/label_statuscolor" />
+        <activity
+            android:name=".ui.systemviews.EditCoveredActivity"
+            android:label="@string/label_editcovered"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity android:name=".ui.testgroup.TestSchemeResultActivity">
             <intent-filter>

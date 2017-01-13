@@ -4,7 +4,6 @@ import android.graphics.Path;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
-import com.plugin.utils.log.LogUtils;
 
 import java.util.ArrayList;
 
@@ -80,7 +79,6 @@ public class FlowCharPathManager {
         for (int i = 0, length = str.length(); i < length; i++) {
             int pos = str.charAt(i);
             int key = sPointList.indexOfKey(pos);
-            LogUtils.e("i==" + i + "    cahr==" + str.charAt(i) + "   pos==" + pos + "    key==" + key);
             if (key < 0) {
                 //如果字符不存在此列表中，跳过
                 continue;

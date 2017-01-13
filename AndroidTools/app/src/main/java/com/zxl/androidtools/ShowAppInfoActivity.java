@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.plugin.utils.AppUtils;
 import com.plugin.utils.DisplayUtils;
+import com.plugin.utils.NetworkUtils;
 import com.plugin.utils.base.BaseAppCompatActivity;
 import com.zxl.androidtools.adapter.ShowAppInfoRecyclerAdapter;
 
@@ -46,6 +47,8 @@ public class ShowAppInfoActivity extends BaseAppCompatActivity {
         AppUtils appUtils = AppUtils.getInstance();
         data.add("厂商：" + appUtils.getDeviceManufactur());
         data.add("型号：" + appUtils.getDeviceType());
+        data.add("网络运营商："+ NetworkUtils.getInstance().getPhoneProvider());
+        data.add("当前网络类型："+ NetworkUtils.getInstance().getNetWorkTypeName());
         data.add("设备唯一ID：" + appUtils.getDeviceUniqueId());
         data.add("app名称：" + appUtils.getCurrentAppName());
         data.add("app包名：" + appUtils.getCurrentAppPackageName());
