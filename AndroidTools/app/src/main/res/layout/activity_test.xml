@@ -19,9 +19,4 @@
             android:text="测试" />
     </RelativeLayout>
 
-    <com.plugin.weight.view.TimeClockView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:padding="50dp" />
 </LinearLayout>

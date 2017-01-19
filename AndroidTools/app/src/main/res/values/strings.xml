@@ -32,6 +32,7 @@
     <string name="label_drawboard">画板</string>
     <string name="label_arcring">圆环效果</string>
     <string name="label_flowchar">流动的字符</string>
+    <string name="label_timeclock">时钟</string>
 
     <!--动画效果-->
     <string name="label_add2cart">添加到购物车动画</string>
