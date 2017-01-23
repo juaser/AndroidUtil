@@ -35,138 +35,147 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".ShowAppInfoActivity"
-            android:label="@string/label_appinfo" />
+            android:label="@string/label_appinfo"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TestActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_test" />
+            android:label="@string/label_test"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.AnimationActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_animations" />
+            android:label="@string/label_animations"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.CustomViewActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_customview" />
+            android:label="@string/label_customview"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.SystemViewActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_systemview" />
+            android:label="@string/label_systemview"
+            android:screenOrientation="portrait" />
         <!--自定义View-->
         <activity
             android:name=".ui.customviews.SwitchButtonActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_switch" />
+            android:label="@string/label_switch"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.customviews.DialogActivity"
+            android:label="@string/label_dialog"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.customviews.FlowLayoutActivty"
-            android:screenOrientation="portrait"
-            android:label="@string/label_flow" />
+            android:label="@string/label_flow"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.customviews.MarqueeActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_marquee" />
+            android:label="@string/label_marquee"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.customviews.CircleWaveActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_circlewave" />
+            android:label="@string/label_circlewave"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.customviews.CalendarActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_calendar" />
+            android:label="@string/label_calendar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.customviews.ProgessActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_progress" />
+            android:label="@string/label_progress"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.customviews.TestWebViewActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_testwebview" />
+            android:label="@string/label_testwebview"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.customviews.RippleActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_ripple" />
+            android:label="@string/label_ripple"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.customviews.DrawBoardActivity"
             android:label="@string/label_drawboard"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.customviews.ArcActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_arcring" />
+            android:label="@string/label_arcring"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.customviews.FlowCharActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_flowchar" />
+            android:label="@string/label_flowchar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.customviews.TimeClockActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_timeclock" />
+            android:label="@string/label_timeclock"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.customviews.ZoomDragActivity"
+            android:label="@string/label_zoomdrag"
+            android:screenOrientation="portrait" />
 
         <!--动画效果-->
         <activity
             android:name=".ui.animations.BaseAnimationActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_base_animation" />
+            android:label="@string/label_base_animation"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.animations.Add2CartActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_add2cart" />
+            android:label="@string/label_add2cart"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.animations.JitterViewActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_jitter" />
+            android:label="@string/label_jitter"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.animations.ExplosionParticleActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_explosionparticle" />
+            android:label="@string/label_explosionparticle"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.animations.BubbleActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_bubble" />
+            android:label="@string/label_bubble"
+            android:screenOrientation="portrait" />
 
         <!--系统的View-->
         <activity
             android:name=".ui.systemviews.TabLayoutActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_tablayout" />
+            android:label="@string/label_tablayout"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.systemviews.DrawerLayoutActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_drawerlayout" />
+            android:label="@string/label_drawerlayout"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.systemviews.CoordinatorLayoutActivity"
-            android:screenOrientation="portrait"
             android:label="@string/label_coordinatorlayout"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.systemviews.VectorActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_vector" />
+            android:label="@string/label_vector"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.systemviews.ImmersiveActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_immersive" />
+            android:label="@string/label_immersive"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.systemviews.FullScreenActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_fullscreen" />
+            android:label="@string/label_fullscreen"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.systemviews.CardViewPagerActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_card_viewpager" />
+            android:label="@string/label_card_viewpager"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.systemviews.EditStatusColorActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/label_statuscolor" />
+            android:label="@string/label_statuscolor"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.systemviews.EditCoveredActivity"
-            android:screenOrientation="portrait"
             android:label="@string/label_editcovered"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".ui.testgroup.TestSchemeResultActivity"
+        <activity
+            android:name=".ui.testgroup.TestSchemeResultActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
