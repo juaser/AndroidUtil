@@ -70,7 +70,15 @@ public class ZoomDragView extends View {
         canvas.drawText("radius::::" + drawCircle_radius, 0, mViewHeight / 2 + 60, paint_text);
     }
 
-
+    /***
+     * 1、第一个手指按下，记录x,y坐标，模式为拖动模式
+     *    第二个手指按下，记录第一个手指和第二个手指之间的距离，记录为缩放模式
+     * 2、手指抬起 第二个手机抬起，记录绘制的圆的半径，当前模式为无
+     *             第一个手指抬起，记录圆的中心坐标，当前模式为无
+     * 3、手指处于移动中时，判断模式，若是缩放模式或手指大于1，则计算圆的半径，中心点坐标不变
+     *                                若是拖动模式，则计算圆滑动后的中心点坐标，圆半径不变
+     *                                若是为无模式，则记录为滑动模式，记录按下的坐标，以及圆的半径，中心点坐标
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         action = event.getAction() & MotionEvent.ACTION_MASK;
