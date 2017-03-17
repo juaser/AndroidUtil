@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,7 +23,7 @@ import com.plugin.utils.manager.AppManager;
 /**
  * @Description: 屏幕尺寸相关的工具类
  * @Author: zxl
- * @Date: 2017/9/1 16:39
+ * @Date: 2016/9/1 16:39
  */
 
 public class DisplayUtils {
@@ -44,6 +45,7 @@ public class DisplayUtils {
         }
         return instance;
     }
+
     /**
      * @description: 获取上下文
      */
@@ -320,5 +322,12 @@ public class DisplayUtils {
             LogUtils.e("Exception" + e.getMessage());
         }
         return true;
+    }
+
+    /**
+     * 触发移动事件的最短距离
+     */
+    public int getMovedMinDistace(Context context) {
+        return ViewConfiguration.get(context).getScaledTouchSlop();
     }
 }
