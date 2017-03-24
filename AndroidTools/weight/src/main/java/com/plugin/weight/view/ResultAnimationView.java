@@ -12,8 +12,6 @@ import android.graphics.PathMeasure;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.plugin.utils.log.LogUtils;
-
 /**
  * @Description:
  * @Author: zxl
