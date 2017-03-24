@@ -111,6 +111,10 @@
             android:name=".ui.customviews.ZoomDragActivity"
             android:label="@string/label_zoomdrag"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.customviews.XListActivity"
+            android:label="@string/label_xlist"
+            android:screenOrientation="portrait" />
 
         <!--动画效果-->
         <activity
