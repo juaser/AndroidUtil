@@ -52,6 +52,7 @@
     <string name="label_fullscreen">全屏(去除下方导航栏)</string>
     <string name="label_statuscolor">状态栏颜色修改(API>=19)</string>
     <string name="label_editcovered">软键盘遮挡问题</string>
+    <string name="label_tabhgost">TabHost的使用</string>
 
     <string name="str_parser_dom">DOM解析</string>
     <string name="str_parser_dom4J">dom4j解析</string>
