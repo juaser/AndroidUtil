@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 /**
  * @Description:
@@ -24,15 +25,13 @@ public class ResultAnimationView extends View {
     public static final int RESULT_RIGHT = 1;//正确动画
     public static final int RESULT_WRONG = 2;//错误动画
     private int mResultType = RESULT_WRONG; //当前结果类型
-    private boolean isMeasured = false;
-    private Path mPath;
-    private Path mPathDst;
+    private Path mPath, mPathDst, mPathFilled;
     private int mViewWidth;
     private Paint mPaint;
     private ValueAnimator mCircleAnimator;
     private PathMeasure mPathMeasure;
-    private int mDuaration = 2000;//绘制从头到尾执行的时间
-    private float mDefaultPathLength;
+    private int mDuaration = 1000;//绘制从头到尾执行的时间
+    private int mIndex = 0;
 
     public ResultAnimationView(Context context) {
         this(context, null, 0);
@@ -51,22 +50,33 @@ public class ResultAnimationView extends View {
     public void init() {
         mPath = new Path();
         mPathDst = new Path();
+        mPathFilled = new Path();
         mLineWidth = dp2px(3);
+        mViewWidth = dp2px(50);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStrokeWidth(mLineWidth);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(Color.GREEN);
+        measured();
+        startAnimator();
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        if(!hasWindowFocus){
+            stopAnimation();
+        }else {
+            mPathDst.reset();
+            mPathDst.addPath(mPath);
+            invalidate();
+        }
+    }
 
-    /**
-     * 固定写死了宽高，可重新手动调配
-     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(dp2px(50), dp2px(50));
+        setMeasuredDimension(mViewWidth, mViewWidth);
     }
 
     private int dp2px(int dp) {
@@ -76,70 +86,72 @@ public class ResultAnimationView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        measured();
         canvas.drawPath(mPathDst, mPaint);
     }
 
 
     public void measured() {
-        if (isMeasured) {
-            return;
-        }
-        isMeasured = true;
-        mViewWidth = getWidth();
         mPath.reset();
+        mPathDst.reset();
         mPath.addCircle(mViewWidth / 2, mViewWidth / 2, mViewWidth / 2 - mLineWidth, Path.Direction.CW);
         if (mResultType == RESULT_RIGHT) {
             mPaint.setColor(Color.GREEN);
-            Path pathRight = new Path();
-            pathRight.moveTo(mViewWidth / 4, getWidth() / 2);
-            pathRight.lineTo(mViewWidth / 2, getWidth() / 4 * 3);
-            pathRight.lineTo(mViewWidth / 4 * 3, getWidth() / 4);
-            mPath.addPath(pathRight);
+            Path path = new Path();
+            path.moveTo(mViewWidth / 4, mViewWidth / 2);
+            path.lineTo(mViewWidth / 2, mViewWidth / 4 * 3);
+            path.lineTo(mViewWidth / 4 * 3, mViewWidth / 4);
+            mPath.addPath(path);
         } else if (mResultType == RESULT_WRONG) {
             mPaint.setColor(Color.RED);
-            Path pathWrong1 = new Path();
-            pathWrong1.moveTo(mViewWidth / 4 * 3, mViewWidth / 4);
-            pathWrong1.lineTo(mViewWidth / 4, mViewWidth / 4 * 3);
-            Path pathWrong2 = new Path();
-            pathWrong2.moveTo(mViewWidth / 4, mViewWidth / 4);
-            pathWrong2.lineTo(mViewWidth / 4 * 3, mViewWidth / 4 * 3);
-            mPath.addPath(pathWrong1);
-            mPath.addPath(pathWrong2);
+            Path path = new Path();
+            path.moveTo(mViewWidth / 4 * 3, mViewWidth / 4);
+            path.lineTo(mViewWidth / 2, mViewWidth / 2);
+            path.lineTo(mViewWidth / 4, mViewWidth / 4 * 3);
+            mPath.addPath(path);
+
+            Path path2 = new Path();
+            path2.moveTo(mViewWidth / 4, mViewWidth / 4);
+            path2.lineTo(mViewWidth / 2, mViewWidth / 2);
+            path2.lineTo(mViewWidth / 4 * 3, mViewWidth / 4 * 3);
+            mPath.addPath(path2);
         }
         mPathMeasure = new PathMeasure(mPath, false);
-        mDefaultPathLength = getPathLength(mPath);
     }
 
 
     public ResultAnimationView setmResultType(int mResultType) {
-        if (mCircleAnimator != null && mCircleAnimator.isRunning()) {
-            mCircleAnimator.cancel();
-        }
         this.mResultType = mResultType;
-        isMeasured = false;
-        mPath.reset();
-        mPathDst.reset();
+        measured();
         return this;
+    }
+
+    public void switchAnimator() {
+        if (mResultType == RESULT_WRONG) {
+            setmResultType(RESULT_RIGHT);
+        } else {
+            setmResultType(RESULT_WRONG);
+        }
+        startAnimator();
     }
 
     public void startAnimator() {
         if (mCircleAnimator != null && mCircleAnimator.isRunning()) {
-            return;
+            mCircleAnimator.cancel();
         }
+        mPathFilled.reset();
+        mIndex = 0;
         mCircleAnimator = ValueAnimator.ofFloat(0, 1);
-        mCircleAnimator.setDuration(getPathDuration(mPathMeasure, mDuaration, mDefaultPathLength));
+        mCircleAnimator.setInterpolator(new LinearInterpolator());//线性变化
+        mCircleAnimator.setDuration(mDuaration);
         mCircleAnimator.setRepeatCount(ValueAnimator.INFINITE);//无线循环
         mCircleAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                if (mPathMeasure == null) {
-                    valueAnimator.cancel();
-                    return;
-                }
                 float value = (float) valueAnimator.getAnimatedValue();
                 Path partPath = new Path();
                 mPathMeasure.getSegment(0, mPathMeasure.getLength() * value, partPath, true);
+                mPathDst.reset();
+                mPathDst.addPath(mPathFilled);
                 mPathDst.addPath(partPath);
                 invalidate();
             }
@@ -147,49 +159,45 @@ public class ResultAnimationView extends View {
         mCircleAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationRepeat(Animator animation) {
-                if (mPathMeasure.nextContour()) {
-                    long time=getPathDuration(mPathMeasure, mDuaration, mDefaultPathLength);
-                    animation.setDuration(time);
+                mIndex++;
+                getFillPath(mPath, mIndex);
+                boolean isNext = mPathMeasure.nextContour();
+                if (isNext) {
+                    animation.setDuration(mDuaration);
                 } else {
                     animation.cancel();
                 }
                 super.onAnimationRepeat(animation);
+
             }
         });
         mCircleAnimator.start();
-        invalidate();
     }
 
-    /**
-     * 这个是为了测量其中一个轮廓/总轮廓 所用的时间
-     */
-    public long getPathDuration(PathMeasure pathMeasure, int totalDuaration, float totalLength) {
-        if (totalLength == 0 || totalDuaration == 0 || pathMeasure == null) {
-            return 0;
-        }
-        float length = pathMeasure.getLength();//要绘制的路径
-        if (length >= totalLength) {
-            return totalDuaration;
-        }
-        long duarationPart = (long) (totalDuaration * length / totalLength);
-        return duarationPart;
-    }
 
-    public float getPathLength(Path measurePath) {
-        PathMeasure pathMeasure = new PathMeasure(measurePath, false);//false是路径不封闭
-        float length = pathMeasure.getLength();
+    public void getFillPath(Path pathSrc, int index) {
+        mPathFilled.reset();
+        Path path = new Path();
+        path.addPath(pathSrc);
+        PathMeasure pathMeasure = new PathMeasure(path, false);
+        int i = 0;
+        Path partPath = new Path();
+        pathMeasure.getSegment(0, pathMeasure.getLength(), partPath, true);
+        mPathFilled.addPath(partPath);
         while (pathMeasure.nextContour()) {
-            length += pathMeasure.getLength();
+            i++;
+            if (i < index) {
+                pathMeasure.getSegment(0, pathMeasure.getLength(), partPath, true);
+                mPathFilled.addPath(partPath);
+            } else {
+                break;
+            }
         }
-        return length;
     }
 
-    public void switchAnimator(){
-        if(mResultType==RESULT_WRONG){
-            setmResultType(RESULT_RIGHT);
-        }else {
-            setmResultType(RESULT_WRONG);
+    public void stopAnimation() {
+        if (mCircleAnimator != null && mCircleAnimator.isRunning()) {
+            mCircleAnimator.cancel();
         }
-        startAnimator();
     }
 }
