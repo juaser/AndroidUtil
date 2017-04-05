@@ -17,4 +17,11 @@
     <color name="color_green_83af9b">#83af9b</color>
     <color name="color_status_green">#43cb75</color>
     <color name="color_yellowe5cfb7">#e5cfb7</color>
+
+    <!-- 软键盘颜色 -->
+    <color name="keyboard_bg">#BEC1C6</color>
+    <color name="key_bg">#FFFFFF</color>
+    <color name="key_press">#DADADA</color>
+    <color name="key_tx_bg">#000000</color>
+
 </resources>

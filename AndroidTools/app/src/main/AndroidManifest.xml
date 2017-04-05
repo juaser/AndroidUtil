@@ -115,6 +115,10 @@
             android:name=".ui.customviews.XListActivity"
             android:label="@string/label_xlist"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.customviews.KeyBoardActivity"
+            android:label="@string/label_keyboard"
+            android:screenOrientation="portrait" />
 
         <!--动画效果-->
         <activity

@@ -36,6 +36,7 @@
     <string name="label_dialog">对话框展示</string>
     <string name="label_zoomdrag">拖拽缩放展示</string>
     <string name="label_xlist">刷新控件</string>
+    <string name="label_keyboard">自定义键盘</string>
 
     <!--动画效果-->
     <string name="label_add2cart">添加到购物车动画</string>
