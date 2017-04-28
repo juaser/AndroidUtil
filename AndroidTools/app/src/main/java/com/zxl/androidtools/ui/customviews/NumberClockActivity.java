@@ -3,6 +3,8 @@ package com.zxl.androidtools.ui.customviews;
 import android.app.Service;
 import android.graphics.Color;
 import android.os.PowerManager;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.plugin.utils.TimeUtils;
 import com.plugin.weight.dynamicweather.DynamicWeatherView;
@@ -62,6 +64,16 @@ public class NumberClockActivity extends FullScreenActivity {
         }
     }
 
+    @OnClick(R.id.v_set_light)
+    void setLight() {
+        setWindowMaxLight();
+    }
+
+    @OnClick(R.id.v_remove_light)
+    void removeLight() {
+        removeWindowMaxLight();
+    }
+
     public boolean isChangeBg() {
         currentTime = TimeUtils.getInstance().getCurrentTimeStamp();
         distance = currentTime - lastTime;
@@ -84,6 +96,20 @@ public class NumberClockActivity extends FullScreenActivity {
         mWakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");
         //是否需计算锁的数量
         mWakeLock.setReferenceCounted(false);
+    }
+
+    public void setWindowMaxLight() {
+        Window window = getWindow();
+        WindowManager.LayoutParams windowLayoutParams = window.getAttributes();
+        windowLayoutParams.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL;
+        window.setAttributes(windowLayoutParams);
+    }
+
+    public void removeWindowMaxLight() {
+        Window window = getWindow();
+        WindowManager.LayoutParams windowLayoutParams = window.getAttributes();
+        windowLayoutParams.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+        window.setAttributes(windowLayoutParams);
     }
 
     @Override

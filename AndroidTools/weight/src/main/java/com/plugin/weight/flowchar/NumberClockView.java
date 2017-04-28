@@ -10,9 +10,10 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+
+import com.plugin.utils.log.LogUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class NumberClockView extends View {
     private int mViewWidth, mViewHeight;//测量的View的宽高
     private float mPathMaxWidth, mPathMaxHeight;
     private boolean isMeasured = false;
+    private long mStartTamp = 0;
+    private long mStopTamp = 0;
 
     public NumberClockView(Context context) {
         this(context, null);
@@ -127,7 +130,6 @@ public class NumberClockView extends View {
         } else {
             mPaddingTop = (int) (mViewHeight - mPathMaxHeight) / 2;
         }
-        Log.e("TAG" + currentTimeStr, "(" + mViewWidth + "," + mViewHeight + ") (" + mPathMaxWidth + "," + mPathMaxHeight + " ) (" + mPaddingLeft + "," + mPaddingTop + ")");
     }
 
     public void setResourseString(String srcString) {
@@ -182,9 +184,13 @@ public class NumberClockView extends View {
                     }
                 } else {
                     if (!isNext) {
+                        mStopTamp = System.currentTimeMillis();
+//                        LogUtils.e(currentTimeStr + "[" + mStartTamp + "," + mStopTamp + "]" + (mStopTamp - mStartTamp));
                         animation.cancel();
                         initResource();
                     }
+                    mStartIndex++;
+                    animation.setDuration(getPathDuration(pathMeasure, mDuaration, mDefaultPathLength));
                 }
                 super.onAnimationRepeat(animation);
             }
@@ -237,7 +243,8 @@ public class NumberClockView extends View {
      * 将时间戳转为时间字符串
      */
     public String convertTimeStamp2String() {
-        return DEFAULT_SDF.format(new Date(System.currentTimeMillis()));
+        mStartTamp = System.currentTimeMillis();
+        return DEFAULT_SDF.format(new Date(mStartTamp));
     }
 
     public interface OnFinishedListener {
