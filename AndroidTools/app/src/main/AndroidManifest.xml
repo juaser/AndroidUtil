@@ -108,6 +108,9 @@
             android:label="@string/label_timeclock"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.customviews.NumberClockActivity"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".ui.customviews.ZoomDragActivity"
             android:label="@string/label_zoomdrag"
             android:screenOrientation="portrait" />

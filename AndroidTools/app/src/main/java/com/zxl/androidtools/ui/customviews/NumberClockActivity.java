@@ -1,49 +1,68 @@
 package com.zxl.androidtools.ui.customviews;
 
 import android.app.Service;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.PowerManager;
 
 import com.plugin.utils.TimeUtils;
-import com.plugin.utils.base.BaseActivity;
-import com.plugin.weight.view.TimeClockView;
+import com.plugin.weight.dynamicweather.DynamicWeatherView;
+import com.plugin.weight.dynamicweather.RainTypeImpl;
+import com.plugin.weight.flowchar.NumberClockView;
 import com.zxl.androidtools.R;
+import com.zxl.androidtools.ui.systemviews.FullScreenActivity;
 
+import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * @Description: 自定义一个时钟
+ * @Description: 数字时钟
  * @Author: zxl
- * @Date: 2017/1/19 10:39
+ * @Date: 2017/1/19 17:12
  */
 
-public class TimeClockActivity extends BaseActivity {
+public class NumberClockActivity extends FullScreenActivity {
+
     private PowerManager powerManager = null;
     private PowerManager.WakeLock mWakeLock = null;
-    private TimeClockView timeclock;
+    @Bind(R.id.numberclock)
+    NumberClockView mNumberClockView;
+    @Bind(R.id.dynamic_weather_view)
+    DynamicWeatherView mDynamicWeatherView;
+
     private int count = 0;
     private long lastTime = 0;
     private long currentTime = 0;
     private long distance;
 
+    private boolean isWeather = false;
+
     @Override
     public int getLayoutId() {
-        return R.layout.activity_timeclock;
+        return R.layout.activity_numberclock;
     }
 
     @Override
     public void initView() {
         keepScreenLight();
+        mDynamicWeatherView.setType(new RainTypeImpl(this, mDynamicWeatherView));
+        mDynamicWeatherView.stopDraw();
     }
 
-    @OnClick(R.id.timeclock)
+    @OnClick(R.id.numberclock)
     void click() {
-        if (isJump()) {
-            startActivity(new Intent(this, NumberClockActivity.class));
+        if (isChangeBg()) {
+            if (isWeather) {
+                mDynamicWeatherView.stopDraw();
+                mNumberClockView.setmColorBg(Color.BLACK);
+            } else {
+                mNumberClockView.setmColorBg(0x00000000);
+                mDynamicWeatherView.startDraw();
+            }
+            isWeather = !isWeather;
         }
     }
 
-    public boolean isJump() {
+    public boolean isChangeBg() {
         currentTime = TimeUtils.getInstance().getCurrentTimeStamp();
         distance = currentTime - lastTime;
         if (distance < 500) {
@@ -59,11 +78,6 @@ public class TimeClockActivity extends BaseActivity {
         return false;
     }
 
-    /**
-     * 保持屏幕不锁屏有两种方法
-     * 第一种需要在AndroidManifest.xml添加权限  <uses-permission android:name="android.permission.WAKE_LOCK" />
-     * 第二种  onCreate() 添加方法 getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-     */
     public void keepScreenLight() {
         //不锁屏
         powerManager = (PowerManager) this.getSystemService(Service.POWER_SERVICE);

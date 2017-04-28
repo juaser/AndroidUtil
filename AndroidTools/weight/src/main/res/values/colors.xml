@@ -26,4 +26,12 @@
 
     <!--涟漪-->
     <color name="rippelColor">#ffffff</color>
+
+
+
+    <color name="rain_sky_day_start">#2b4151</color>
+    <color name="rain_sky_day_end">#316081</color>
+
+    <color name="rain_sky_night_start">#041d31</color>
+    <color name="rain_sky_night_end">#081621</color>
 </resources>
