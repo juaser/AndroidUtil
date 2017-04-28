@@ -115,8 +115,6 @@ public class DynamicWeatherView extends SurfaceView implements SurfaceHolder.Cal
     }
 
     public void stopDraw() {
-        if (mDrawThread != null) {
-            isRunning = false;
-        }
+        isRunning = false;
     }
 }
